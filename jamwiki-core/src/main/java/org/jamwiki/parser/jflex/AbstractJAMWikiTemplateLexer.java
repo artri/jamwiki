@@ -17,22 +17,23 @@
 package org.jamwiki.parser.jflex;
 
 import org.jamwiki.Environment;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract class that is extended by the template JFlex lexer.
  */
 public abstract class AbstractJAMWikiTemplateLexer extends JFlexLexer {
 
-	protected static final WikiLogger logger = WikiLogger.getLogger(AbstractJAMWikiTemplateLexer.class.getName());
-	/** String used to build up current template tag content. */
-	protected StringBuilder templateString = new StringBuilder();
+	protected static final Logger logger = LoggerFactory.getLogger(AbstractJAMWikiTemplateLexer.class);
+    /** String used to build up current template tag content. */
+    protected StringBuilder templateString = new StringBuilder();
 
-	/**
-	 * Utility method used to indicate whether templates are allowed in wiki syntax
-	 * or not.
-	 */
-	protected boolean allowTemplates() {
-		return Environment.getBooleanValue(Environment.PROP_PARSER_ALLOW_TEMPLATES);
-	}
+    /**
+     * Utility method used to indicate whether templates are allowed in wiki syntax
+     * or not.
+     */
+    protected boolean allowTemplates() {
+        return Environment.getBooleanValue(Environment.PROP_PARSER_ALLOW_TEMPLATES);
+    }
 }

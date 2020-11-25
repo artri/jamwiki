@@ -25,7 +25,8 @@ import org.jamwiki.WikiMessage;
 import org.jamwiki.model.Category;
 import org.jamwiki.model.Namespace;
 import org.jamwiki.utils.Pagination;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -34,39 +35,39 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class CategoryServlet extends JAMWikiServlet {
 
-	/** Logger for this class and subclasses. */
-	private static final WikiLogger logger = WikiLogger.getLogger(CategoryServlet.class.getName());
-	/** The name of the JSP file used to render the servlet output. */
-	protected static final String JSP_CATEGORIES = "categories.jsp";
+    /** Logger for this class and subclasses. */
+    private static final Logger logger = LoggerFactory.getLogger(CategoryServlet.class.getName());
+    /** The name of the JSP file used to render the servlet output. */
+    protected static final String JSP_CATEGORIES = "categories.jsp";
 
-	/**
-	 *
-	 */
-	public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		this.viewCategories(request, next, pageInfo);
-		return next;
-	}
+    /**
+     *
+     */
+    public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        this.viewCategories(request, next, pageInfo);
+        return next;
+    }
 
-	/**
-	 *
-	 */
-	private void viewCategories(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		String virtualWiki = pageInfo.getVirtualWikiName();
-		Pagination pagination = ServletUtil.loadPagination(request, next);
-		List<Category> categoryObjects = WikiBase.getDataHandler().getAllCategories(virtualWiki, pagination);
-		LinkedHashMap<String, String> categories = new LinkedHashMap<String, String>();
-		for (Category category : categoryObjects) {
-			String key = category.getName();
-			String value = key.substring(Namespace.namespace(Namespace.CATEGORY_ID).getLabel(virtualWiki).length() + Namespace.SEPARATOR.length());
-			categories.put(key, value);
-		}
-		next.addObject("categoryCount", categories.size());
-		next.addObject("categories", categories);
-		if (categories.isEmpty()) {
-			pageInfo.addMessage(new WikiMessage("allcategories.message.none"));
-		}
-		pageInfo.setPageTitle(new WikiMessage("allcategories.title"));
-		pageInfo.setContentJsp(JSP_CATEGORIES);
-		pageInfo.setSpecial(true);
-	}
+    /**
+     *
+     */
+    private void viewCategories(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        String virtualWiki = pageInfo.getVirtualWikiName();
+        Pagination pagination = ServletUtil.loadPagination(request, next);
+        List<Category> categoryObjects = WikiBase.getDataHandler().getAllCategories(virtualWiki, pagination);
+        LinkedHashMap<String, String> categories = new LinkedHashMap<String, String>();
+        for (Category category : categoryObjects) {
+            String key = category.getName();
+            String value = key.substring(Namespace.namespace(Namespace.CATEGORY_ID).getLabel(virtualWiki).length() + Namespace.SEPARATOR.length());
+            categories.put(key, value);
+        }
+        next.addObject("categoryCount", categories.size());
+        next.addObject("categories", categories);
+        if (categories.isEmpty()) {
+            pageInfo.addMessage(new WikiMessage("allcategories.message.none"));
+        }
+        pageInfo.setPageTitle(new WikiMessage("allcategories.title"));
+        pageInfo.setContentJsp(JSP_CATEGORIES);
+        pageInfo.setSpecial(true);
+    }
 }

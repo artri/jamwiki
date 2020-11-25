@@ -18,7 +18,8 @@ package org.jamwiki.parser.jflex;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jamwiki.parser.ParserException;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class handles the internal-use-only <__NOPARSE></__NOPARSE> directive, which
@@ -36,41 +37,41 @@ import org.jamwiki.utils.WikiLogger;
  */
 public class NoParseDirectiveTag implements JFlexParserTag {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(NoParseDirectiveTag.class.getName());
-	/**
-	 * Parser directive that can be used in custom tag output when the generated
-	 * custom tag content contains HTML or other content that would not normally
-	 * be permitted by the parser.  Example: "<__NOPARSE><script></script></__NOPARSE>".
-	 */
-	protected static final String NOPARSE_DIRECTIVE = "__NOPARSE";
-	/** Open tag for the NOPARSE directive. */
-	protected static final String NOPARSE_DIRECTIVE_OPEN = "<" + NOPARSE_DIRECTIVE + ">";
-	/** Close tag for the NOPARSE directive. */
-	protected static final String NOPARSE_DIRECTIVE_CLOSE = "</" + NOPARSE_DIRECTIVE + ">";
+    private static final Logger logger = LoggerFactory.getLogger(NoParseDirectiveTag.class.getName());
+    /**
+     * Parser directive that can be used in custom tag output when the generated
+     * custom tag content contains HTML or other content that would not normally
+     * be permitted by the parser.  Example: "<__NOPARSE><script></script></__NOPARSE>".
+     */
+    protected static final String NOPARSE_DIRECTIVE = "__NOPARSE";
+    /** Open tag for the NOPARSE directive. */
+    protected static final String NOPARSE_DIRECTIVE_OPEN = "<" + NOPARSE_DIRECTIVE + ">";
+    /** Close tag for the NOPARSE directive. */
+    protected static final String NOPARSE_DIRECTIVE_CLOSE = "</" + NOPARSE_DIRECTIVE + ">";
 
-	/**
-	 * Parse a call to a Mediawiki NOPARSE directive of the form
-	 * "<__NOPARSE>text</__NOPARSE>" and return the resulting output.
-	 */
-	public String parse(JFlexLexer lexer, String raw, Object... args) throws ParserException {
-		if (lexer.getMode() < JFlexParser.MODE_CUSTOM) {
-			// not allowed at this stage of parsing - probably came from end user
-			return StringEscapeUtils.escapeHtml4(raw);
-		}
-		if (lexer.getMode() >= JFlexParser.MODE_POSTPROCESS) {
-			// during the final stage of parsing remove the tags and return the content
-			return JFlexParserUtil.tagContent(raw);
-		}
-		if (lexer instanceof JAMWikiLexer) {
-			// during main processing handle this as a push and a pop to allow
-			// paragraphs to be processed correctly.
-			JAMWikiLexer jamwikiLexer = (JAMWikiLexer)lexer;
-			jamwikiLexer.pushTag(new JFlexTagItem(NOPARSE_DIRECTIVE));
-			jamwikiLexer.peekTag().getTagContent().append(JFlexParserUtil.tagContent(raw));
-			jamwikiLexer.popTag(NOPARSE_DIRECTIVE);
-			return "";
-		}
-		// at all other times leave the content unmodified.
-		return raw;
-	}
+    /**
+     * Parse a call to a Mediawiki NOPARSE directive of the form
+     * "<__NOPARSE>text</__NOPARSE>" and return the resulting output.
+     */
+    public String parse(JFlexLexer lexer, String raw, Object... args) throws ParserException {
+        if (lexer.getMode() < JFlexParser.MODE_CUSTOM) {
+            // not allowed at this stage of parsing - probably came from end user
+            return StringEscapeUtils.escapeHtml4(raw);
+        }
+        if (lexer.getMode() >= JFlexParser.MODE_POSTPROCESS) {
+            // during the final stage of parsing remove the tags and return the content
+            return JFlexParserUtil.tagContent(raw);
+        }
+        if (lexer instanceof JAMWikiLexer) {
+            // during main processing handle this as a push and a pop to allow
+            // paragraphs to be processed correctly.
+            JAMWikiLexer jamwikiLexer = (JAMWikiLexer)lexer;
+            jamwikiLexer.pushTag(new JFlexTagItem(NOPARSE_DIRECTIVE));
+            jamwikiLexer.peekTag().getTagContent().append(JFlexParserUtil.tagContent(raw));
+            jamwikiLexer.popTag(NOPARSE_DIRECTIVE);
+            return "";
+        }
+        // at all other times leave the content unmodified.
+        return raw;
+    }
 }

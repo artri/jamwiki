@@ -20,5 +20,5 @@ package org.jamwiki.parser.image;
  *
  */
 public enum ImageHorizontalAlignmentEnum {
-	LEFT, RIGHT, CENTER, NONE, NOT_SPECIFIED
+    LEFT, RIGHT, CENTER, NONE, NOT_SPECIFIED
 }

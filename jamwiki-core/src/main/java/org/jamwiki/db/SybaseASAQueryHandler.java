@@ -18,7 +18,8 @@ package org.jamwiki.db;
 
 import java.util.Properties;
 import org.jamwiki.Environment;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Sybase ASA-specific implementation of the {@link QueryHandler} interface.
@@ -27,15 +28,15 @@ import org.jamwiki.utils.WikiLogger;
  */
 public class SybaseASAQueryHandler extends AnsiQueryHandler {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(SybaseASAQueryHandler.class.getName());
-	private static final String SQL_PROPERTY_FILE_NAME = "sql/sql.asa.properties";
+    private static final Logger logger = LoggerFactory.getLogger(SybaseASAQueryHandler.class.getName());
+    private static final String SQL_PROPERTY_FILE_NAME = "sql/sql.asa.properties";
 
-	/**
-	 *
-	 */
-	public SybaseASAQueryHandler() {
-		Properties defaults = Environment.loadProperties(AnsiQueryHandler.SQL_PROPERTY_FILE_NAME);
-		Properties props = Environment.loadProperties(SQL_PROPERTY_FILE_NAME, defaults);
-		super.init(props);
-	}
+    /**
+     *
+     */
+    public SybaseASAQueryHandler() {
+        Properties defaults = Environment.loadProperties(AnsiQueryHandler.SQL_PROPERTY_FILE_NAME);
+        Properties props = Environment.loadProperties(SQL_PROPERTY_FILE_NAME, defaults);
+        super.init(props);
+    }
 }

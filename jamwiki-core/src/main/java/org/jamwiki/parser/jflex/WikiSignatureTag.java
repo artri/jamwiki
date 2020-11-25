@@ -25,7 +25,8 @@ import org.jamwiki.model.WikiUser;
 import org.jamwiki.parser.ParserException;
 import org.jamwiki.parser.ParserInput;
 import org.jamwiki.utils.DateUtil;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class parses signature tags of the form <code>~~~</code>,
@@ -33,87 +34,87 @@ import org.jamwiki.utils.WikiLogger;
  */
 public class WikiSignatureTag implements JFlexParserTag {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(WikiSignatureTag.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(WikiSignatureTag.class.getName());
 
-	/**
-	 *
-	 */
-	private String buildWikiSignature(JFlexLexer lexer, boolean includeUser, boolean includeDate) throws ParserException {
-		String signature = "";
-		if (includeUser) {
-			signature = this.retrieveUserSignature(lexer.getParserInput());
-			if (lexer.getMode() != JFlexParser.MODE_MINIMAL) {
-				try {
-					// parsing will also process metadata such as link to records
-					signature = JFlexParserUtil.parseFragment(lexer.getParserInput(), lexer.getParserOutput(), signature, lexer.getMode());
-				} catch (ParserException e) {
-					logger.error("Failure while building wiki signature", e);
-					// FIXME - return empty or a failure indicator?
-					return "";
-				}
-			}
-		}
-		if (includeUser && includeDate) {
-			signature += " ";
-		}
-		if (includeDate) {
-			// dates in signatures will be the same for all users to match Mediawiki
-			Date now = new Date();
-			String pattern = Environment.getValue(Environment.PROP_PARSER_SIGNATURE_DATE_PATTERN);
-			signature += DateUtil.formatDate(now, pattern, null, null, DateUtil.DateFormatType.DATE_AND_TIME);
-		}
-		return signature;
-	}
+    /**
+     *
+     */
+    private String buildWikiSignature(JFlexLexer lexer, boolean includeUser, boolean includeDate) throws ParserException {
+        String signature = "";
+        if (includeUser) {
+            signature = this.retrieveUserSignature(lexer.getParserInput());
+            if (lexer.getMode() != JFlexParser.MODE_MINIMAL) {
+                try {
+                    // parsing will also process metadata such as link to records
+                    signature = JFlexParserUtil.parseFragment(lexer.getParserInput(), lexer.getParserOutput(), signature, lexer.getMode());
+                } catch (ParserException e) {
+                    logger.error("Failure while building wiki signature", e);
+                    // FIXME - return empty or a failure indicator?
+                    return "";
+                }
+            }
+        }
+        if (includeUser && includeDate) {
+            signature += " ";
+        }
+        if (includeDate) {
+            // dates in signatures will be the same for all users to match Mediawiki
+            Date now = new Date();
+            String pattern = Environment.getValue(Environment.PROP_PARSER_SIGNATURE_DATE_PATTERN);
+            signature += DateUtil.formatDate(now, pattern, null, null, DateUtil.DateFormatType.DATE_AND_TIME);
+        }
+        return signature;
+    }
 
-	/**
-	 * Parse a Mediawiki signature of the form "~~~~" and return the resulting
-	 * HTML output.
-	 */
-	public String parse(JFlexLexer lexer, String raw, Object... args) throws ParserException {
-		if (raw.equals("~~~")) {
-			return this.buildWikiSignature(lexer, true, false);
-		}
-		if (raw.equals("~~~~")) {
-			return this.buildWikiSignature(lexer, true, true);
-		}
-		if (raw.equals("~~~~~")) {
-			return this.buildWikiSignature(lexer, false, true);
-		}
-		return raw;
-	}
+    /**
+     * Parse a Mediawiki signature of the form "~~~~" and return the resulting
+     * HTML output.
+     */
+    public String parse(JFlexLexer lexer, String raw, Object... args) throws ParserException {
+        if (raw.equals("~~~")) {
+            return this.buildWikiSignature(lexer, true, false);
+        }
+        if (raw.equals("~~~~")) {
+            return this.buildWikiSignature(lexer, true, true);
+        }
+        if (raw.equals("~~~~~")) {
+            return this.buildWikiSignature(lexer, false, true);
+        }
+        return raw;
+    }
 
-	/**
-	 *
-	 */
-	private String retrieveUserSignature(ParserInput parserInput) {
-		WikiUser user = parserInput.getWikiUser();
-		if (user != null && !StringUtils.isBlank(user.getSignature())) {
-			return user.getSignature();
-		}
-		String login = parserInput.getUserDisplay();
-		String email = parserInput.getUserDisplay();
-		String displayName = parserInput.getUserDisplay();
-		String userId = "-1";
-		if (user != null && !StringUtils.isBlank(user.getUsername())) {
-			login = user.getUsername();
-			displayName = (!StringUtils.isBlank(user.getDisplayName())) ? user.getDisplayName() : login;
-			email = user.getEmail();
-			userId = Integer.toString(user.getUserId());
-		}
-		if (login == null || displayName == null) {
-			logger.info("Signature tagged parsed without user information available, returning empty");
-			return "";
-		}
-		MessageFormat formatter = new MessageFormat(Environment.getValue(Environment.PROP_PARSER_SIGNATURE_USER_PATTERN));
-		Object params[] = new Object[7];
-		params[0] = Namespace.namespace(Namespace.USER_ID).getLabel(parserInput.getVirtualWiki()) + Namespace.SEPARATOR + login;
-		// FIXME - hard coding
-		params[1] = Namespace.namespace(Namespace.SPECIAL_ID).getLabel(parserInput.getVirtualWiki()) + Namespace.SEPARATOR + "Contributions?contributor=" + login;
-		params[2] = Namespace.namespace(Namespace.USER_COMMENTS_ID).getLabel(parserInput.getVirtualWiki()) + Namespace.SEPARATOR + login;
-		params[3] = login;
-		params[4] = displayName;
-		params[5] = email!=null ? email : "";
-		params[6] = userId;
-		return formatter.format(params);
-	}
+    /**
+     *
+     */
+    private String retrieveUserSignature(ParserInput parserInput) {
+        WikiUser user = parserInput.getWikiUser();
+        if (user != null && !StringUtils.isBlank(user.getSignature())) {
+            return user.getSignature();
+        }
+        String login = parserInput.getUserDisplay();
+        String email = parserInput.getUserDisplay();
+        String displayName = parserInput.getUserDisplay();
+        String userId = "-1";
+        if (user != null && !StringUtils.isBlank(user.getUsername())) {
+            login = user.getUsername();
+            displayName = (!StringUtils.isBlank(user.getDisplayName())) ? user.getDisplayName() : login;
+            email = user.getEmail();
+            userId = Integer.toString(user.getUserId());
+        }
+        if (login == null || displayName == null) {
+            logger.info("Signature tagged parsed without user information available, returning empty");
+            return "";
+        }
+        MessageFormat formatter = new MessageFormat(Environment.getValue(Environment.PROP_PARSER_SIGNATURE_USER_PATTERN));
+        Object params[] = new Object[7];
+        params[0] = Namespace.namespace(Namespace.USER_ID).getLabel(parserInput.getVirtualWiki()) + Namespace.SEPARATOR + login;
+        // FIXME - hard coding
+        params[1] = Namespace.namespace(Namespace.SPECIAL_ID).getLabel(parserInput.getVirtualWiki()) + Namespace.SEPARATOR + "Contributions?contributor=" + login;
+        params[2] = Namespace.namespace(Namespace.USER_COMMENTS_ID).getLabel(parserInput.getVirtualWiki()) + Namespace.SEPARATOR + login;
+        params[3] = login;
+        params[4] = displayName;
+        params[5] = email!=null ? email : "";
+        params[6] = userId;
+        return formatter.format(params);
+    }
 }

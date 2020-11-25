@@ -28,7 +28,8 @@ import org.jamwiki.model.Topic;
 import org.jamwiki.model.TopicVersion;
 import org.jamwiki.model.WikiUser;
 import org.jamwiki.utils.Pagination;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jamwiki.utils.WikiUtil;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -37,68 +38,68 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class HistoryServlet extends JAMWikiServlet {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(HistoryServlet.class.getName());
-	/** The name of the JSP file used to render the servlet output. */
-	protected static final String JSP_HISTORY = "history.jsp";
+    private static final Logger logger = LoggerFactory.getLogger(HistoryServlet.class.getName());
+    /** The name of the JSP file used to render the servlet output. */
+    protected static final String JSP_HISTORY = "history.jsp";
 
-	/**
-	 *
-	 */
-	public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		if (!StringUtils.isBlank(request.getParameter("topicVersionId"))) {
-			viewVersion(request, next, pageInfo);
-		} else {
-			history(request, next, pageInfo);
-		}
-		return next;
-	}
+    /**
+     *
+     */
+    public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        if (!StringUtils.isBlank(request.getParameter("topicVersionId"))) {
+            viewVersion(request, next, pageInfo);
+        } else {
+            history(request, next, pageInfo);
+        }
+        return next;
+    }
 
-	/**
-	 *
-	 */
-	private void history(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		String virtualWiki = pageInfo.getVirtualWikiName();
-		String topicName = WikiUtil.getTopicFromRequest(request);
-		if (StringUtils.isBlank(topicName)) {
-			throw new WikiException(new WikiMessage("common.exception.notopic"));
-		}
-		pageInfo.setContentJsp(JSP_HISTORY);
-		pageInfo.setTopicName(topicName);
-		pageInfo.setPageTitle(new WikiMessage("history.title", topicName));
-		Pagination pagination = ServletUtil.loadPagination(request, next);
-		Topic topic = WikiBase.getDataHandler().lookupTopic(virtualWiki, topicName, true);
-		List<RecentChange> changes = WikiBase.getDataHandler().getTopicHistory(topic, pagination, true);
-		next.addObject("changes", changes);
-		next.addObject("numChanges", changes.size());
-	}
+    /**
+     *
+     */
+    private void history(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        String virtualWiki = pageInfo.getVirtualWikiName();
+        String topicName = WikiUtil.getTopicFromRequest(request);
+        if (StringUtils.isBlank(topicName)) {
+            throw new WikiException(new WikiMessage("common.exception.notopic"));
+        }
+        pageInfo.setContentJsp(JSP_HISTORY);
+        pageInfo.setTopicName(topicName);
+        pageInfo.setPageTitle(new WikiMessage("history.title", topicName));
+        Pagination pagination = ServletUtil.loadPagination(request, next);
+        Topic topic = WikiBase.getDataHandler().lookupTopic(virtualWiki, topicName, true);
+        List<RecentChange> changes = WikiBase.getDataHandler().getTopicHistory(topic, pagination, true);
+        next.addObject("changes", changes);
+        next.addObject("numChanges", changes.size());
+    }
 
-	/**
-	 *
-	 */
-	private void viewVersion(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		// display an older version
-		String virtualWiki = pageInfo.getVirtualWikiName();
-		String topicName = WikiUtil.getTopicFromRequest(request);
-		int topicVersionId = Integer.parseInt(request.getParameter("topicVersionId"));
-		TopicVersion topicVersion = WikiBase.getDataHandler().lookupTopicVersion(topicVersionId);
-		if (topicVersion == null) {
-			throw new WikiException(new WikiMessage("common.exception.notopic"));
-		}
-		Topic topic = WikiBase.getDataHandler().lookupTopic(virtualWiki, topicName, true);
-		if (topic == null) {
-			throw new WikiException(new WikiMessage("history.message.notopic", topicName));
-		}
-		topic.setTopicContent(topicVersion.getVersionContent());
-		WikiUser user = (topicVersion.getAuthorId() != null) ? WikiBase.getDataHandler().lookupWikiUser(topicVersion.getAuthorId()) : null;
-		String author = ((user != null) ? user.getUsername() : topicVersion.getAuthorDisplay());
-		next.addObject("version", RecentChange.initRecentChange(topic, topicVersion, author));
-		if (topic.getDeleted()) {
-			ServletUtil.viewTopicSource(next, pageInfo, topic);
-		} else {
-			Integer nextTopicVersionId = WikiBase.getDataHandler().lookupTopicVersionNextId(topicVersion.getTopicVersionId());
-			next.addObject("nextTopicVersionId", nextTopicVersionId);
-			WikiMessage pageTitle = new WikiMessage("topic.title", topicName);
-			ServletUtil.viewTopic(request, next, pageInfo, pageTitle, topic, false, false);
-		}
-	}
+    /**
+     *
+     */
+    private void viewVersion(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        // display an older version
+        String virtualWiki = pageInfo.getVirtualWikiName();
+        String topicName = WikiUtil.getTopicFromRequest(request);
+        int topicVersionId = Integer.parseInt(request.getParameter("topicVersionId"));
+        TopicVersion topicVersion = WikiBase.getDataHandler().lookupTopicVersion(topicVersionId);
+        if (topicVersion == null) {
+            throw new WikiException(new WikiMessage("common.exception.notopic"));
+        }
+        Topic topic = WikiBase.getDataHandler().lookupTopic(virtualWiki, topicName, true);
+        if (topic == null) {
+            throw new WikiException(new WikiMessage("history.message.notopic", topicName));
+        }
+        topic.setTopicContent(topicVersion.getVersionContent());
+        WikiUser user = (topicVersion.getAuthorId() != null) ? WikiBase.getDataHandler().lookupWikiUser(topicVersion.getAuthorId()) : null;
+        String author = ((user != null) ? user.getUsername() : topicVersion.getAuthorDisplay());
+        next.addObject("version", RecentChange.initRecentChange(topic, topicVersion, author));
+        if (topic.getDeleted()) {
+            ServletUtil.viewTopicSource(next, pageInfo, topic);
+        } else {
+            Integer nextTopicVersionId = WikiBase.getDataHandler().lookupTopicVersionNextId(topicVersion.getTopicVersionId());
+            next.addObject("nextTopicVersionId", nextTopicVersionId);
+            WikiMessage pageTitle = new WikiMessage("topic.title", topicName);
+            ServletUtil.viewTopic(request, next, pageInfo, pageTitle, topic, false, false);
+        }
+    }
 }

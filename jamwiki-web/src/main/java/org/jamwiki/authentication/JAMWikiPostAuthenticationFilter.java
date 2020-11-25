@@ -32,7 +32,8 @@ import org.jamwiki.DataAccessException;
 import org.jamwiki.WikiBase;
 import org.jamwiki.WikiException;
 import org.jamwiki.model.WikiUser;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -49,141 +50,141 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 public class JAMWikiPostAuthenticationFilter implements Filter {
 
-	/** Standard logger. */
-	private static final WikiLogger logger = WikiLogger.getLogger(JAMWikiPostAuthenticationFilter.class.getName());
-	private String key;
-	private boolean useJAMWikiAnonymousRoles;
+    /** Standard logger. */
+    private static final Logger logger = LoggerFactory.getLogger(JAMWikiPostAuthenticationFilter.class.getName());
+    private String key;
+    private boolean useJAMWikiAnonymousRoles;
 
-	/**
-	 *
-	 */
-	public void destroy() {
-	}
+    /**
+     *
+     */
+    public void destroy() {
+    }
 
-	/**
-	 *
-	 */
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		if (!(request instanceof HttpServletRequest)) {
-			throw new ServletException("HttpServletRequest required");
-		}
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth instanceof AnonymousAuthenticationToken) {
-			// anonymous user
-			this.handleAnonymousUser(auth);
-		} else if (auth != null && auth.isAuthenticated()) {
-			// registered user
-			this.handleRegisteredUser(auth);
-		}
-		chain.doFilter(request, response);
-	}
+    /**
+     *
+     */
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        if (!(request instanceof HttpServletRequest)) {
+            throw new ServletException("HttpServletRequest required");
+        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof AnonymousAuthenticationToken) {
+            // anonymous user
+            this.handleAnonymousUser(auth);
+        } else if (auth != null && auth.isAuthenticated()) {
+            // registered user
+            this.handleRegisteredUser(auth);
+        }
+        chain.doFilter(request, response);
+    }
 
-	/**
-	 *
-	 */
-	private void handleAnonymousUser(Authentication auth) {
-		if (!this.getUseJAMWikiAnonymousRoles()) {
-			// the configuration file indicates that JAMWiki anonymous roles should not be 
-			// used, so assume that an external system is providing this information.
-			return;
-		}
-		// get arrays of existing Spring Security roles and JAMWiki anonymous user roles
-		Collection<? extends GrantedAuthority> springSecurityAnonymousAuthorities = auth.getAuthorities();
-		Collection<? extends GrantedAuthority> jamwikiAnonymousAuthorities = JAMWikiAuthenticationConfiguration.getJamwikiAnonymousAuthorities();
-		if (springSecurityAnonymousAuthorities == null || jamwikiAnonymousAuthorities == null) {
-			return;
-		}
-		List<GrantedAuthority> anonymousAuthorities = new ArrayList<GrantedAuthority>();
-		anonymousAuthorities.addAll(springSecurityAnonymousAuthorities);
-		anonymousAuthorities.addAll(jamwikiAnonymousAuthorities);
-		// replace the existing anonymous authentication object with the new authentication array
-		AnonymousAuthenticationToken jamwikiAuth = new AnonymousAuthenticationToken(this.getKey(), auth.getPrincipal(), anonymousAuthorities);
-		jamwikiAuth.setDetails(auth.getDetails());
-		jamwikiAuth.setAuthenticated(auth.isAuthenticated());
-		SecurityContextHolder.getContext().setAuthentication(jamwikiAuth);
-	}
+    /**
+     *
+     */
+    private void handleAnonymousUser(Authentication auth) {
+        if (!this.getUseJAMWikiAnonymousRoles()) {
+            // the configuration file indicates that JAMWiki anonymous roles should not be 
+            // used, so assume that an external system is providing this information.
+            return;
+        }
+        // get arrays of existing Spring Security roles and JAMWiki anonymous user roles
+        Collection<? extends GrantedAuthority> springSecurityAnonymousAuthorities = auth.getAuthorities();
+        Collection<? extends GrantedAuthority> jamwikiAnonymousAuthorities = JAMWikiAuthenticationConfiguration.getJamwikiAnonymousAuthorities();
+        if (springSecurityAnonymousAuthorities == null || jamwikiAnonymousAuthorities == null) {
+            return;
+        }
+        List<GrantedAuthority> anonymousAuthorities = new ArrayList<GrantedAuthority>();
+        anonymousAuthorities.addAll(springSecurityAnonymousAuthorities);
+        anonymousAuthorities.addAll(jamwikiAnonymousAuthorities);
+        // replace the existing anonymous authentication object with the new authentication array
+        AnonymousAuthenticationToken jamwikiAuth = new AnonymousAuthenticationToken(this.getKey(), auth.getPrincipal(), anonymousAuthorities);
+        jamwikiAuth.setDetails(auth.getDetails());
+        jamwikiAuth.setAuthenticated(auth.isAuthenticated());
+        SecurityContextHolder.getContext().setAuthentication(jamwikiAuth);
+    }
 
-	/**
-	 *
-	 */
-	private void handleRegisteredUser(Authentication auth) throws ServletException {
-		Object principal = auth.getPrincipal();
-		// Check if Authentication returns a known principal
-		if (principal instanceof WikiUserDetailsImpl) {
-			// user has gone through the normal authentication path, no need to process further
-			return;
-		}
-		// find out authenticated username
-		String username;
-		if (principal instanceof UserDetails) {
-			// using custom authentication with Spring Security UserDetail service
-			username = ((UserDetails)principal).getUsername();
-		} else if (principal instanceof String) {
-			// external authentication returns only username
-			username = String.valueOf(principal);
-		} else {
-			// no known principal was found
-			logger.warn("Unknown principal type: " + principal);
-			username = null;
-			return;
-		}
-		if (StringUtils.isBlank(username)) {
-			logger.warn("Null or empty username found for authenticated principal");
-			return;
-		}
-		// for LDAP and other authentication methods, verify that JAMWiki database records exist
-		try {
-			if (WikiBase.getDataHandler().lookupWikiUser(username) == null) {
-				// if there is a valid security credential & no JAMWiki record for the user, create one
-				WikiUser user = new WikiUser(username);
-				// default the password empty so that the user cannot login directly
-				String encryptedPassword = "";
-				WikiBase.getDataHandler().writeWikiUser(user, username, encryptedPassword);
-			}
-		} catch (DataAccessException e) {
-			logger.error("Failure while processing user credentials for " + username, e);
-			throw new ServletException(e);
-		} catch (WikiException e) {
-			logger.error("Failure while processing user credentials for " + username, e);
-			throw new ServletException(e);
-		}
-	}
+    /**
+     *
+     */
+    private void handleRegisteredUser(Authentication auth) throws ServletException {
+        Object principal = auth.getPrincipal();
+        // Check if Authentication returns a known principal
+        if (principal instanceof WikiUserDetailsImpl) {
+            // user has gone through the normal authentication path, no need to process further
+            return;
+        }
+        // find out authenticated username
+        String username;
+        if (principal instanceof UserDetails) {
+            // using custom authentication with Spring Security UserDetail service
+            username = ((UserDetails)principal).getUsername();
+        } else if (principal instanceof String) {
+            // external authentication returns only username
+            username = String.valueOf(principal);
+        } else {
+            // no known principal was found
+            logger.warn("Unknown principal type: " + principal);
+            username = null;
+            return;
+        }
+        if (StringUtils.isBlank(username)) {
+            logger.warn("Null or empty username found for authenticated principal");
+            return;
+        }
+        // for LDAP and other authentication methods, verify that JAMWiki database records exist
+        try {
+            if (WikiBase.getDataHandler().lookupWikiUser(username) == null) {
+                // if there is a valid security credential & no JAMWiki record for the user, create one
+                WikiUser user = new WikiUser(username);
+                // default the password empty so that the user cannot login directly
+                String encryptedPassword = "";
+                WikiBase.getDataHandler().writeWikiUser(user, username, encryptedPassword);
+            }
+        } catch (DataAccessException e) {
+            logger.error("Failure while processing user credentials for " + username, e);
+            throw new ServletException(e);
+        } catch (WikiException e) {
+            logger.error("Failure while processing user credentials for " + username, e);
+            throw new ServletException(e);
+        }
+    }
 
-	/**
-	 *
-	 */
-	public void init(FilterConfig filterConfig) throws ServletException {
-	}
+    /**
+     *
+     */
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
-	/**
-	 * Standard get method to return the anonymous authentication token key configured
-	 * for anonymous users.  This value is set from the configuration file and MUST match
-	 * the value used when creating anonymous authentication credentials.
-	 */
-	public String getKey() {
-		return key;
-	}
+    /**
+     * Standard get method to return the anonymous authentication token key configured
+     * for anonymous users.  This value is set from the configuration file and MUST match
+     * the value used when creating anonymous authentication credentials.
+     */
+    public String getKey() {
+        return key;
+    }
 
-	/**
-	 *
-	 */
-	public void setKey(String key) {
-		this.key = key;
-	}
+    /**
+     *
+     */
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-	/**
-	 * Provide a flag to disable the addition of JAMWiki GROUP_ANONYMOUS permissions to
-	 * all anonymous users.
-	 */
-	public boolean getUseJAMWikiAnonymousRoles() {
-		return useJAMWikiAnonymousRoles;
-	}
+    /**
+     * Provide a flag to disable the addition of JAMWiki GROUP_ANONYMOUS permissions to
+     * all anonymous users.
+     */
+    public boolean getUseJAMWikiAnonymousRoles() {
+        return useJAMWikiAnonymousRoles;
+    }
 
-	/**
-	 * Provide a flag to disable the addition of JAMWiki GROUP_ANONYMOUS permissions to
-	 * all anonymous users.
-	 */
-	public void setUseJAMWikiAnonymousRoles(boolean useJAMWikiAnonymousRoles) {
-		this.useJAMWikiAnonymousRoles = useJAMWikiAnonymousRoles;
-	}
+    /**
+     * Provide a flag to disable the addition of JAMWiki GROUP_ANONYMOUS permissions to
+     * all anonymous users.
+     */
+    public void setUseJAMWikiAnonymousRoles(boolean useJAMWikiAnonymousRoles) {
+        this.useJAMWikiAnonymousRoles = useJAMWikiAnonymousRoles;
+    }
 }

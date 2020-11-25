@@ -19,7 +19,8 @@ package org.jamwiki.servlets;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jamwiki.WikiMessage;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -27,30 +28,30 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class SpecialPagesServlet extends JAMWikiServlet {
 
-	/** Logger for this class and subclasses. */
-	private static final WikiLogger logger = WikiLogger.getLogger(SpecialPagesServlet.class.getName());
-	/** The name of the JSP file used to render the servlet output. */
-	protected static final String JSP_SPECIAL_PAGES = "all-special-pages.jsp";
+    /** Logger for this class and subclasses. */
+    private static final Logger logger = LoggerFactory.getLogger(SpecialPagesServlet.class.getName());
+    /** The name of the JSP file used to render the servlet output. */
+    protected static final String JSP_SPECIAL_PAGES = "all-special-pages.jsp";
 
-	/**
-	 * This method handles the request after its parent class receives control. It gets the topic's name and the
-	 * virtual wiki name from the uri, loads the topic and returns a view to the end user.
-	 *
-	 * @param request - Standard HttpServletRequest object.
-	 * @param response - Standard HttpServletResponse object.
-	 * @return A <code>ModelAndView</code> object to be handled by the rest of the Spring framework.
-	 */
-	public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		specialPages(request, next, pageInfo);
-		return next;
-	}
+    /**
+     * This method handles the request after its parent class receives control. It gets the topic's name and the
+     * virtual wiki name from the uri, loads the topic and returns a view to the end user.
+     *
+     * @param request - Standard HttpServletRequest object.
+     * @param response - Standard HttpServletResponse object.
+     * @return A <code>ModelAndView</code> object to be handled by the rest of the Spring framework.
+     */
+    public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        specialPages(request, next, pageInfo);
+        return next;
+    }
 
-	/**
-	 *
-	 */
-	private void specialPages(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		pageInfo.setPageTitle(new WikiMessage("specialpages.title"));
-		pageInfo.setContentJsp(JSP_SPECIAL_PAGES);
-		pageInfo.setSpecial(true);
-	}
+    /**
+     *
+     */
+    private void specialPages(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        pageInfo.setPageTitle(new WikiMessage("specialpages.title"));
+        pageInfo.setContentJsp(JSP_SPECIAL_PAGES);
+        pageInfo.setSpecial(true);
+    }
 }

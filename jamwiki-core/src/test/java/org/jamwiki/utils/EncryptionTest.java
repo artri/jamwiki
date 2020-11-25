@@ -28,82 +28,82 @@ import static org.junit.Assert.*;
  */
 public class EncryptionTest extends JAMWikiUnitTest {
 
-	/**
-	 *
-	 */
-	@Test
-	public void testGetEncryptedProperty() throws Throwable {
-		Encryption.getEncryptedProperty("", null);
-		assertTrue("Test completed without Exception", true);
-		// dependencies on static and environment state led to removal of 1 assertion(s)
-	}
+    /**
+     *
+     */
+    @Test
+    public void testGetEncryptedProperty() throws Throwable {
+        Encryption.getEncryptedProperty("", null);
+        assertTrue("Test completed without Exception", true);
+        // dependencies on static and environment state led to removal of 1 assertion(s)
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testGetEncryptedProperty1() throws Throwable {
-		Properties props = new SortedProperties();
-		props.put("", "");
-		String result = Encryption.getEncryptedProperty("", props);
-		assertSame("result", "", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testGetEncryptedProperty1() throws Throwable {
+        Properties props = new SortedProperties();
+        props.put("", "");
+        String result = Encryption.getEncryptedProperty("", props);
+        assertSame("result", "", result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testGetEncryptedProperty2() throws Throwable {
-		String result = Encryption.getEncryptedProperty("testEncryptionName", new Properties());
-		assertNull("result", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testGetEncryptedProperty2() throws Throwable {
+        String result = Encryption.getEncryptedProperty("testEncryptionName", new Properties());
+        assertNull("result", result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testSetEncryptedProperty() throws Throwable {
-		Encryption.setEncryptedProperty("testEncryptionName", "", null);
-		assertTrue("Test completed without Exception", true);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testSetEncryptedProperty() throws Throwable {
+        Encryption.setEncryptedProperty("testEncryptionName", "", null);
+        assertTrue("Test completed without Exception", true);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testSetEncryptedProperty1() throws Throwable {
-		Encryption.setEncryptedProperty("testEncryptionName", null, null);
-		assertTrue("Test completed without Exception", true);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testSetEncryptedProperty1() throws Throwable {
+        Encryption.setEncryptedProperty("testEncryptionName", null, null);
+        assertTrue("Test completed without Exception", true);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testSetEncryptedProperty2() throws Throwable {
-		Properties props = new Properties();
-		Encryption.setEncryptedProperty("testEncryptionName", "", props);
-		assertEquals("props.size()", 1, props.size());
-		assertEquals("props.get(\"testEncryptionName\")", "", props.get("testEncryptionName"));
-	}
+    /**
+     *
+     */
+    @Test
+    public void testSetEncryptedProperty2() throws Throwable {
+        Properties props = new Properties();
+        Encryption.setEncryptedProperty("testEncryptionName", "", props);
+        assertEquals("props.size()", 1, props.size());
+        assertEquals("props.get(\"testEncryptionName\")", "", props.get("testEncryptionName"));
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testSetEncryptedProperty3() throws Throwable {
-		Properties props = new SortedProperties();
-		Encryption.setEncryptedProperty("testEncryptionName", null, props);
-		assertEquals("(SortedProperties) props.size()", 1, props.size());
-		assertEquals("(SortedProperties) props.get(\"testEncryptionName\")", "", props.get("testEncryptionName"));
-	}
+    /**
+     *
+     */
+    @Test
+    public void testSetEncryptedProperty3() throws Throwable {
+        Properties props = new SortedProperties();
+        Encryption.setEncryptedProperty("testEncryptionName", null, props);
+        assertEquals("(SortedProperties) props.size()", 1, props.size());
+        assertEquals("(SortedProperties) props.get(\"testEncryptionName\")", "", props.get("testEncryptionName"));
+    }
 
-	/**
-	 *
-	 */
-	@Test(expected=IllegalArgumentException.class)
-	public void testEncryptThrowsNullPointerException() throws Throwable {
-		Encryption.encrypt(null);
-	}
+    /**
+     *
+     */
+    @Test(expected=IllegalArgumentException.class)
+    public void testEncryptThrowsNullPointerException() throws Throwable {
+        Encryption.encrypt(null);
+    }
 }
 

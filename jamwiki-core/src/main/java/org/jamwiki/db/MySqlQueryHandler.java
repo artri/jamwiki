@@ -18,7 +18,8 @@ package org.jamwiki.db;
 
 import java.util.Properties;
 import org.jamwiki.Environment;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * MySQL-specific implementation of the QueryHandler interface.  This class implements
@@ -27,22 +28,22 @@ import org.jamwiki.utils.WikiLogger;
  */
 public class MySqlQueryHandler extends AnsiQueryHandler {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(MySqlQueryHandler.class.getName());
-	private static final String SQL_PROPERTY_FILE_NAME = "sql/sql.mysql.properties";
+    private static final Logger logger = LoggerFactory.getLogger(MySqlQueryHandler.class.getName());
+    private static final String SQL_PROPERTY_FILE_NAME = "sql/sql.mysql.properties";
 
-	/**
-	 *
-	 */
-	public MySqlQueryHandler() {
-		Properties defaults = Environment.loadProperties(AnsiQueryHandler.SQL_PROPERTY_FILE_NAME);
-		Properties props = Environment.loadProperties(SQL_PROPERTY_FILE_NAME, defaults);
-		super.init(props);
-	}
+    /**
+     *
+     */
+    public MySqlQueryHandler() {
+        Properties defaults = Environment.loadProperties(AnsiQueryHandler.SQL_PROPERTY_FILE_NAME);
+        Properties props = Environment.loadProperties(SQL_PROPERTY_FILE_NAME, defaults);
+        super.init(props);
+    }
 
-	/**
-	 *
-	 */
-	public boolean autoIncrementPrimaryKeys() {
-		return true;
-	}
+    /**
+     *
+     */
+    public boolean autoIncrementPrimaryKeys() {
+        return true;
+    }
 }

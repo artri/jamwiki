@@ -25,7 +25,8 @@ import org.jamwiki.DataAccessException;
 import org.jamwiki.model.WikiFileVersion;
 import org.jamwiki.parser.image.ImageMetadata;
 import org.jamwiki.parser.image.ImageUtil;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jamwiki.utils.WikiUtil;
 
 /**
@@ -34,150 +35,150 @@ import org.jamwiki.utils.WikiUtil;
  */
 public class ImageLinkTag extends TagSupport {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(ImageLinkTag.class.getName());
-	private String allowEnlarge = null;
-	private WikiFileVersion fileVersion = null;
-	private String maxHeight = null;
-	private String maxWidth = null;
-	private String style = null;
-	private String value = null;
-	private String virtualWiki = null;
+    private static final Logger logger = LoggerFactory.getLogger(ImageLinkTag.class.getName());
+    private String allowEnlarge = null;
+    private WikiFileVersion fileVersion = null;
+    private String maxHeight = null;
+    private String maxWidth = null;
+    private String style = null;
+    private String value = null;
+    private String virtualWiki = null;
 
-	/**
-	 *
-	 */
-	public int doEndTag() throws JspException {
-		int linkHeight = (this.maxHeight != null) ? Integer.valueOf(this.maxHeight) : -1;
-		int linkWidth = (this.maxWidth != null) ? Integer.valueOf(this.maxWidth) : -1;
-		HttpServletRequest request = (HttpServletRequest)this.pageContext.getRequest();
-		String tagVirtualWiki = (StringUtils.isBlank(this.virtualWiki)) ? WikiUtil.getVirtualWikiFromRequest(request) : this.virtualWiki;
-		String html = null;
-		ImageMetadata imageMetadata = new ImageMetadata();
-		imageMetadata.setMaxHeight(linkHeight);
-		imageMetadata.setMaxWidth(linkWidth);
-		// set the link field empty to prevent the image from being clickable
-		imageMetadata.setLink("");
-		if (this.allowEnlarge != null) {
-			imageMetadata.setAllowEnlarge(Boolean.valueOf(this.allowEnlarge));
-		}
-		try {
-			try {
-				html = ImageUtil.buildImageLinkHtml(request.getContextPath(), tagVirtualWiki, this.value, imageMetadata, this.style, true, this.fileVersion);
-			} catch (IOException e) {
-				// FIXME - display a broken image icon or something better
-				logger.warn("I/O Failure while parsing image link: " + e.getMessage(), e);
-				html = this.value;
-			} catch (DataAccessException e) {
-				logger.error("Failure while building url " + html + " with value " + this.value, e);
-				throw new JspException(e);
-			}
-			if (html != null) {
-				this.pageContext.getOut().print(html);
-			}
-		} catch (IOException e) {
-			logger.error("Failure while building url " + html + " with value " + this.value, e);
-			throw new JspException(e);
-		}
-		return EVAL_PAGE;
-	}
+    /**
+     *
+     */
+    public int doEndTag() throws JspException {
+        int linkHeight = (this.maxHeight != null) ? Integer.valueOf(this.maxHeight) : -1;
+        int linkWidth = (this.maxWidth != null) ? Integer.valueOf(this.maxWidth) : -1;
+        HttpServletRequest request = (HttpServletRequest)this.pageContext.getRequest();
+        String tagVirtualWiki = (StringUtils.isBlank(this.virtualWiki)) ? WikiUtil.getVirtualWikiFromRequest(request) : this.virtualWiki;
+        String html = null;
+        ImageMetadata imageMetadata = new ImageMetadata();
+        imageMetadata.setMaxHeight(linkHeight);
+        imageMetadata.setMaxWidth(linkWidth);
+        // set the link field empty to prevent the image from being clickable
+        imageMetadata.setLink("");
+        if (this.allowEnlarge != null) {
+            imageMetadata.setAllowEnlarge(Boolean.valueOf(this.allowEnlarge));
+        }
+        try {
+            try {
+                html = ImageUtil.buildImageLinkHtml(request.getContextPath(), tagVirtualWiki, this.value, imageMetadata, this.style, true, this.fileVersion);
+            } catch (IOException e) {
+                // FIXME - display a broken image icon or something better
+                logger.warn("I/O Failure while parsing image link: " + e.getMessage(), e);
+                html = this.value;
+            } catch (DataAccessException e) {
+                logger.error("Failure while building url " + html + " with value " + this.value, e);
+                throw new JspException(e);
+            }
+            if (html != null) {
+                this.pageContext.getOut().print(html);
+            }
+        } catch (IOException e) {
+            logger.error("Failure while building url " + html + " with value " + this.value, e);
+            throw new JspException(e);
+        }
+        return EVAL_PAGE;
+    }
 
-	/**
-	 *
-	 */
-	public String getAllowEnlarge() {
-		return this.allowEnlarge;
-	}
+    /**
+     *
+     */
+    public String getAllowEnlarge() {
+        return this.allowEnlarge;
+    }
 
-	/**
-	 *
-	 */
-	public void setAllowEnlarge(String allowEnlarge) {
-		this.allowEnlarge = allowEnlarge;
-	}
+    /**
+     *
+     */
+    public void setAllowEnlarge(String allowEnlarge) {
+        this.allowEnlarge = allowEnlarge;
+    }
 
-	/**
-	 * If rendering an image for anything but the current version then
-	 * the file version object must be supplied.
-	 */
-	public WikiFileVersion getFileVersion() {
-		return this.fileVersion;
-	}
+    /**
+     * If rendering an image for anything but the current version then
+     * the file version object must be supplied.
+     */
+    public WikiFileVersion getFileVersion() {
+        return this.fileVersion;
+    }
 
-	/**
-	 * If rendering an image for anything but the current version then
-	 * the file version object must be supplied.
-	 */
-	public void setFileVersion(WikiFileVersion fileVersion) {
-		this.fileVersion = fileVersion;
-	}
+    /**
+     * If rendering an image for anything but the current version then
+     * the file version object must be supplied.
+     */
+    public void setFileVersion(WikiFileVersion fileVersion) {
+        this.fileVersion = fileVersion;
+    }
 
-	/**
-	 *
-	 */
-	public String getMaxHeight() {
-		return this.maxHeight;
-	}
+    /**
+     *
+     */
+    public String getMaxHeight() {
+        return this.maxHeight;
+    }
 
-	/**
-	 *
-	 */
-	public void setMaxHeight(String maxHeight) {
-		this.maxHeight = maxHeight;
-	}
+    /**
+     *
+     */
+    public void setMaxHeight(String maxHeight) {
+        this.maxHeight = maxHeight;
+    }
 
-	/**
-	 *
-	 */
-	public String getMaxWidth() {
-		return this.maxWidth;
-	}
+    /**
+     *
+     */
+    public String getMaxWidth() {
+        return this.maxWidth;
+    }
 
-	/**
-	 *
-	 */
-	public void setMaxWidth(String maxWidth) {
-		this.maxWidth = maxWidth;
-	}
+    /**
+     *
+     */
+    public void setMaxWidth(String maxWidth) {
+        this.maxWidth = maxWidth;
+    }
 
-	/**
-	 *
-	 */
-	public String getStyle() {
-		return this.style;
-	}
+    /**
+     *
+     */
+    public String getStyle() {
+        return this.style;
+    }
 
-	/**
-	 *
-	 */
-	public void setStyle(String style) {
-		this.style = style;
-	}
+    /**
+     *
+     */
+    public void setStyle(String style) {
+        this.style = style;
+    }
 
-	/**
-	 *
-	 */
-	public String getValue() {
-		return this.value;
-	}
+    /**
+     *
+     */
+    public String getValue() {
+        return this.value;
+    }
 
-	/**
-	 *
-	 */
-	public void setValue(String value) {
-		this.value = value;
-	}
+    /**
+     *
+     */
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	/**
-	 *
-	 */
-	public String getVirtualWiki() {
-		return this.virtualWiki;
-	}
+    /**
+     *
+     */
+    public String getVirtualWiki() {
+        return this.virtualWiki;
+    }
 
-	/**
-	 *
-	 */
-	public void setVirtualWiki(String virtualWiki) {
-		this.virtualWiki = virtualWiki;
-	}
+    /**
+     *
+     */
+    public void setVirtualWiki(String virtualWiki) {
+        this.virtualWiki = virtualWiki;
+    }
 }

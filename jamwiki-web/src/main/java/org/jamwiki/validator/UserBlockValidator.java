@@ -22,7 +22,8 @@ import org.jamwiki.WikiBase;
 import org.jamwiki.model.UserBlock;
 import org.jamwiki.model.WikiUser;
 import org.jamwiki.servlets.ServletUtil;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Validator used when determining if a request represents a user or IP
@@ -30,25 +31,25 @@ import org.jamwiki.utils.WikiLogger;
  */
 public class UserBlockValidator implements RequestValidator {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(UserBlockValidator.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(UserBlockValidator.class.getName());
 
-	/**
-	 * Determine if the specified request represents a user or IP
-	 * address block using the wiki block list.
-	 *
-	 * @param request The current servlet request.
-	 * @return Returns a non-null {@link UserBlockValidatorInfo} object that
-	 * encapsulates the validation result.
-	 */
-	public UserBlockValidatorInfo validate(HttpServletRequest request) {
-		WikiUser wikiUser = ServletUtil.currentWikiUser();
-		Integer wikiUserId = (wikiUser.getUserId() > 0) ? wikiUser.getUserId() : null;
-		UserBlock userBlock = null;
-		try {
-			userBlock = WikiBase.getDataHandler().lookupUserBlock(wikiUserId, request.getRemoteAddr());
-		} catch (DataAccessException e) {
-			logger.error("Data access exception while retrieving user block status, e");
-		}
-		return new UserBlockValidatorInfo(userBlock);
-	}
+    /**
+     * Determine if the specified request represents a user or IP
+     * address block using the wiki block list.
+     *
+     * @param request The current servlet request.
+     * @return Returns a non-null {@link UserBlockValidatorInfo} object that
+     * encapsulates the validation result.
+     */
+    public UserBlockValidatorInfo validate(HttpServletRequest request) {
+        WikiUser wikiUser = ServletUtil.currentWikiUser();
+        Integer wikiUserId = (wikiUser.getUserId() > 0) ? wikiUser.getUserId() : null;
+        UserBlock userBlock = null;
+        try {
+            userBlock = WikiBase.getDataHandler().lookupUserBlock(wikiUserId, request.getRemoteAddr());
+        } catch (DataAccessException e) {
+            logger.error("Data access exception while retrieving user block status, e");
+        }
+        return new UserBlockValidatorInfo(userBlock);
+    }
 }

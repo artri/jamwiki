@@ -28,22 +28,22 @@ import static org.junit.Assert.*;
  */
 public class SortedPropertiesTest extends JAMWikiUnitTest {
 
-	/**
-	 *
-	 */
-	@Test
-	public void testConstructor() throws Throwable {
-		Properties properties = new SortedProperties();
-		new SortedProperties(properties);
-		assertEquals("(SortedProperties) properties.size()", 0, properties.size());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testConstructor() throws Throwable {
+        Properties properties = new SortedProperties();
+        new SortedProperties(properties);
+        assertEquals("(SortedProperties) properties.size()", 0, properties.size());
+    }
 
-	/**
-	 *
-	 */
-	@Test(expected=NullPointerException.class)
-	public void testConstructorThrowsNullPointerException() throws Throwable {
-		new SortedProperties(null);
-	}
+    /**
+     *
+     */
+    @Test(expected=NullPointerException.class)
+    public void testConstructorThrowsNullPointerException() throws Throwable {
+        new SortedProperties(null);
+    }
 }
 

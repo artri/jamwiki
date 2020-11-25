@@ -21,32 +21,32 @@ package org.jamwiki.validator;
  */
 public class RequestValidatorInfo {
 
-	/**
-	 * Flag indicating whether the request that led to the creation of this
-	 * object should be considered valid or not.
-	 */
-	private final boolean valid;
+    /**
+     * Flag indicating whether the request that led to the creation of this
+     * object should be considered valid or not.
+     */
+    private final boolean valid;
 
-	/**
-	 * Standard constructor.
-	 *
-	 * @param valid <code>true</code> if the request should be considered
-	 *  acceptable, or <code>false</code> if the request should be considered
-	 *  invalid.
-	 */
-	public RequestValidatorInfo(boolean valid) {
-		this.valid = valid;
-	}
+    /**
+     * Standard constructor.
+     *
+     * @param valid <code>true</code> if the request should be considered
+     *  acceptable, or <code>false</code> if the request should be considered
+     *  invalid.
+     */
+    public RequestValidatorInfo(boolean valid) {
+        this.valid = valid;
+    }
 
-	/**
-	 * Return a boolean value indicating whether or not the request that led
-	 * to the creation of this object should be considered valid or not.
-	 *
-	 * @return Returns <code>true</code> if the request should be considered
-	 *  acceptable, or <code>false</code> if the request should be considered
-	 *  invalid.
-	 */
-	public boolean isValid() {
-		return this.valid;
-	}
+    /**
+     * Return a boolean value indicating whether or not the request that led
+     * to the creation of this object should be considered valid or not.
+     *
+     * @return Returns <code>true</code> if the request should be considered
+     *  acceptable, or <code>false</code> if the request should be considered
+     *  invalid.
+     */
+    public boolean isValid() {
+        return this.valid;
+    }
 }

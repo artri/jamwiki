@@ -23,7 +23,8 @@ import org.jamwiki.WikiBase;
 import org.jamwiki.WikiException;
 import org.jamwiki.WikiMessage;
 import org.jamwiki.model.Topic;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jamwiki.utils.WikiUtil;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,38 +33,38 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class PrintableServlet extends JAMWikiServlet {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(PrintableServlet.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(PrintableServlet.class.getName());
 
-	/**
-	 * This servlet requires slightly different initialization parameters from most
-	 * servlets.
-	 */
-	public PrintableServlet() {
-		this.displayJSP = "printable";
-	}
+    /**
+     * This servlet requires slightly different initialization parameters from most
+     * servlets.
+     */
+    public PrintableServlet() {
+        this.displayJSP = "printable";
+    }
 
-	/**
-	 *
-	 */
-	public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		this.print(request, next, pageInfo);
-		return next;
-	}
+    /**
+     *
+     */
+    public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        this.print(request, next, pageInfo);
+        return next;
+    }
 
-	/**
-	 *
-	 */
-	private void print(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		String virtualWiki = pageInfo.getVirtualWikiName();
-		String topicName = WikiUtil.getTopicFromRequest(request);
-		if (StringUtils.isBlank(topicName)) {
-			throw new WikiException(new WikiMessage("common.exception.notopic"));
-		}
-		Topic topic = WikiBase.getDataHandler().lookupTopic(virtualWiki, topicName, false);
-		if (topic == null) {
-			throw new WikiException(new WikiMessage("common.exception.notopic"));
-		}
-		WikiMessage pageTitle = new WikiMessage("topic.title", topicName);
-		ServletUtil.viewTopic(request, next, pageInfo, pageTitle, topic, false, true);
-	}
+    /**
+     *
+     */
+    private void print(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        String virtualWiki = pageInfo.getVirtualWikiName();
+        String topicName = WikiUtil.getTopicFromRequest(request);
+        if (StringUtils.isBlank(topicName)) {
+            throw new WikiException(new WikiMessage("common.exception.notopic"));
+        }
+        Topic topic = WikiBase.getDataHandler().lookupTopic(virtualWiki, topicName, false);
+        if (topic == null) {
+            throw new WikiException(new WikiMessage("common.exception.notopic"));
+        }
+        WikiMessage pageTitle = new WikiMessage("topic.title", topicName);
+        ServletUtil.viewTopic(request, next, pageInfo, pageTitle, topic, false, true);
+    }
 }

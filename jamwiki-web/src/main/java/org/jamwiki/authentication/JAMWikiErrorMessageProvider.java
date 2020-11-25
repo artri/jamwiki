@@ -21,7 +21,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.web.util.AntPathRequestMatcher;
 import org.springframework.security.web.util.RequestMatcher;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class provides a configurable bean object that can be used with the
@@ -30,46 +31,46 @@ import org.jamwiki.utils.WikiLogger;
  */
 public class JAMWikiErrorMessageProvider {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(JAMWikiErrorMessageProvider.class.getName());
-	private LinkedHashMap<RequestMatcher, String> matcherToKeyMap;
-	private LinkedHashMap<String, String> urlPatterns;
+    private static final Logger logger = LoggerFactory.getLogger(JAMWikiErrorMessageProvider.class.getName());
+    private LinkedHashMap<RequestMatcher, String> matcherToKeyMap;
+    private LinkedHashMap<String, String> urlPatterns;
 
-	/**
-	 *
-	 */
-	public String getErrorMessageKey(HttpServletRequest request) {
-		return this.retrieveErrorKey(request);
-	}
+    /**
+     *
+     */
+    public String getErrorMessageKey(HttpServletRequest request) {
+        return this.retrieveErrorKey(request);
+    }
 
-	/**
-	 *
-	 */
-	public LinkedHashMap<String, String> getUrlPatterns() {
-		return this.urlPatterns;
-	}
+    /**
+     *
+     */
+    public LinkedHashMap<String, String> getUrlPatterns() {
+        return this.urlPatterns;
+    }
 
-	/**
-	 *
-	 */
-	private String retrieveErrorKey(HttpServletRequest request) {
-		if (this.matcherToKeyMap == null) {
-			this.matcherToKeyMap = new LinkedHashMap<RequestMatcher, String>();
-			for (Map.Entry<String, String> entry : this.getUrlPatterns().entrySet()) {
-				this.matcherToKeyMap.put(new AntPathRequestMatcher(entry.getKey()), entry.getValue());
-			}
-		}
-		for (Map.Entry<RequestMatcher, String> entry : this.matcherToKeyMap.entrySet()) {
-			if (entry.getKey().matches(request)) {
-				return entry.getValue();
-			}
-		}
-		return null;
-	}
+    /**
+     *
+     */
+    private String retrieveErrorKey(HttpServletRequest request) {
+        if (this.matcherToKeyMap == null) {
+            this.matcherToKeyMap = new LinkedHashMap<RequestMatcher, String>();
+            for (Map.Entry<String, String> entry : this.getUrlPatterns().entrySet()) {
+                this.matcherToKeyMap.put(new AntPathRequestMatcher(entry.getKey()), entry.getValue());
+            }
+        }
+        for (Map.Entry<RequestMatcher, String> entry : this.matcherToKeyMap.entrySet()) {
+            if (entry.getKey().matches(request)) {
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
 
-	/**
-	 *
-	 */
-	public void setUrlPatterns(LinkedHashMap<String, String> urlPatterns) {
-		this.urlPatterns = urlPatterns;
-	}
+    /**
+     *
+     */
+    public void setUrlPatterns(LinkedHashMap<String, String> urlPatterns) {
+        this.urlPatterns = urlPatterns;
+    }
 }

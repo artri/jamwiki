@@ -23,7 +23,8 @@ import org.jamwiki.WikiBase;
 import org.jamwiki.WikiMessage;
 import org.jamwiki.model.Topic;
 import org.jamwiki.model.VirtualWiki;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jamwiki.utils.WikiUtil;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,46 +33,46 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class TopicServlet extends JAMWikiServlet {
 
-	/** Logger for this class and subclasses. */
-	private static final WikiLogger logger = WikiLogger.getLogger(TopicServlet.class.getName());
+    /** Logger for this class and subclasses. */
+    private static final Logger logger = LoggerFactory.getLogger(TopicServlet.class.getName());
 
-	/**
-	 * This method handles the request after its parent class receives control. It gets the topic's name and the
-	 * virtual wiki name from the uri, loads the topic and returns a view to the end user.
-	 *
-	 * @param request - Standard HttpServletRequest object.
-	 * @param response - Standard HttpServletResponse object.
-	 * @return A <code>ModelAndView</code> object to be handled by the rest of the Spring framework.
-	 */
-	public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		view(request, response, next, pageInfo);
-		return next;
-	}
+    /**
+     * This method handles the request after its parent class receives control. It gets the topic's name and the
+     * virtual wiki name from the uri, loads the topic and returns a view to the end user.
+     *
+     * @param request - Standard HttpServletRequest object.
+     * @param response - Standard HttpServletResponse object.
+     * @return A <code>ModelAndView</code> object to be handled by the rest of the Spring framework.
+     */
+    public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        view(request, response, next, pageInfo);
+        return next;
+    }
 
-	/**
-	 *
-	 */
-	private void view(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		String topicName = WikiUtil.getTopicFromURI(request);
-		if (StringUtils.isBlank(topicName)) {
-			String virtualWikiName = pageInfo.getVirtualWikiName();
-			VirtualWiki virtualWiki = WikiBase.getDataHandler().lookupVirtualWiki(virtualWikiName);
-			topicName = virtualWiki.getRootTopicName();
-		}
-		String virtualWiki = pageInfo.getVirtualWikiName();
-		if (StringUtils.isBlank(virtualWiki)) {
-			virtualWiki = VirtualWiki.defaultVirtualWiki().getName();
-		}
-		Topic topic = ServletUtil.initializeTopic(virtualWiki, topicName);
-		if (topic.getTopicId() <= 0) {
-			// topic does not exist, return 404 and display empty page
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			WikiMessage wikiMessage = new WikiMessage("topic.notcreated");
-			// topic name is escaped from WikiUtil.getTopicFromURI, so do not double-escape
-			wikiMessage.setParamsWithoutEscaping(new String[]{topicName});
-			next.addObject("notopic", wikiMessage);
-		}
-		WikiMessage pageTitle = new WikiMessage("topic.title", topicName);
-		ServletUtil.viewTopic(request, next, pageInfo, pageTitle, topic, true, true);
-	}
+    /**
+     *
+     */
+    private void view(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        String topicName = WikiUtil.getTopicFromURI(request);
+        if (StringUtils.isBlank(topicName)) {
+            String virtualWikiName = pageInfo.getVirtualWikiName();
+            VirtualWiki virtualWiki = WikiBase.getDataHandler().lookupVirtualWiki(virtualWikiName);
+            topicName = virtualWiki.getRootTopicName();
+        }
+        String virtualWiki = pageInfo.getVirtualWikiName();
+        if (StringUtils.isBlank(virtualWiki)) {
+            virtualWiki = VirtualWiki.defaultVirtualWiki().getName();
+        }
+        Topic topic = ServletUtil.initializeTopic(virtualWiki, topicName);
+        if (topic.getTopicId() <= 0) {
+            // topic does not exist, return 404 and display empty page
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            WikiMessage wikiMessage = new WikiMessage("topic.notcreated");
+            // topic name is escaped from WikiUtil.getTopicFromURI, so do not double-escape
+            wikiMessage.setParamsWithoutEscaping(new String[]{topicName});
+            next.addObject("notopic", wikiMessage);
+        }
+        WikiMessage pageTitle = new WikiMessage("topic.title", topicName);
+        ServletUtil.viewTopic(request, next, pageInfo, pageTitle, topic, true, true);
+    }
 }

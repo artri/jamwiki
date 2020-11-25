@@ -24,15 +24,15 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface RequestValidator {
 
-	/**
-	 * Determine if the specified request should be considered valid or not.
-	 * This method will attempt to perform whatever validation is required,
-	 * and will then return a non-null {@link RequestValidatorInfo} object
-	 * that encapsulates the validation result.
-	 *
-	 * @param request The current servlet request.
-	 * @return Returns a non-null {@link RequestValidatorInfo} object that
-	 * encapsulates the validation result.
-	 */
-	public <T extends RequestValidatorInfo> T validate(HttpServletRequest request);
+    /**
+     * Determine if the specified request should be considered valid or not.
+     * This method will attempt to perform whatever validation is required,
+     * and will then return a non-null {@link RequestValidatorInfo} object
+     * that encapsulates the validation result.
+     *
+     * @param request The current servlet request.
+     * @return Returns a non-null {@link RequestValidatorInfo} object that
+     * encapsulates the validation result.
+     */
+    public <T extends RequestValidatorInfo> T validate(HttpServletRequest request);
 }

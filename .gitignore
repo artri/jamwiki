@@ -1,0 +1,47 @@
+#
+# Operating System Files
+#
+
+# Mac
+**/*.DS_Store
+
+# Windows
+**/Thumbs.db
+
+**/*.checkstyle
+**/*.class
+**/*.gitignore
+**/*.log
+**/*.swp
+**/*.tmp
+**/*~
+
+
+### STS / Eclipse ###
+**/.apt_generated
+**/.classpath
+**/.factorypath
+**/.project
+**/.settings
+**/.springBeans
+
+### IntelliJ IDEA ###
+.idea/
+**/*.iws
+**/*.iml
+**/*.ipr
+
+### NetBeans ###
+**/nbproject/private/
+**/build/
+**/nbbuild/
+**/dist/
+**/nbdist/
+**/.nb-gradle/
+
+# Maven
+**/bin/
+**/target/
+
+# JRebel
+**/rebel.xml

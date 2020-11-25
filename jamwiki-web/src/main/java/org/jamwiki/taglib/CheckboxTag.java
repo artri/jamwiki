@@ -21,13 +21,13 @@ package org.jamwiki.taglib;
  */
 public class CheckboxTag extends AbstractButtonTag {
 
-	private static final long serialVersionUID = -7902653586729676006L;
+    private static final long serialVersionUID = -7902653586729676006L;
 
-	/**
-	 *
-	 */
-	public String getButtonType() {
-		return "checkbox";
-	}
+    /**
+     *
+     */
+    public String getButtonType() {
+        return "checkbox";
+    }
 
 }

@@ -29,92 +29,92 @@ import static org.junit.Assert.*;
  */
 public class XMLUtilTest extends JAMWikiUnitTest {
 
-	/**
-	 *
-	 */
-	@Test
-	public void testBuildTag() throws Throwable {
-		String result = XMLUtil.buildTag("testXMLUtilTagName", 100L);
-		assertEquals("result", "<testXMLUtilTagName>100</testXMLUtilTagName>", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testBuildTag() throws Throwable {
+        String result = XMLUtil.buildTag("testXMLUtilTagName", 100L);
+        assertEquals("result", "<testXMLUtilTagName>100</testXMLUtilTagName>", result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testBuildTag1() throws Throwable {
-		String result = XMLUtil.buildTag("testXMLUtilTagName", true);
-		assertEquals("result", "<testXMLUtilTagName>true</testXMLUtilTagName>", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testBuildTag1() throws Throwable {
+        String result = XMLUtil.buildTag("testXMLUtilTagName", true);
+        assertEquals("result", "<testXMLUtilTagName>true</testXMLUtilTagName>", result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testBuildTag2() throws Throwable {
-		String result = XMLUtil.buildTag("testXMLUtilTagName", 0);
-		assertEquals("result", "<testXMLUtilTagName>0</testXMLUtilTagName>", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testBuildTag2() throws Throwable {
+        String result = XMLUtil.buildTag("testXMLUtilTagName", 0);
+        assertEquals("result", "<testXMLUtilTagName>0</testXMLUtilTagName>", result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testBuildTag4() throws Throwable {
-		String result = XMLUtil.buildTag("testXMLUtilTagName", (Timestamp) null);
-		assertEquals("result", "", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testBuildTag4() throws Throwable {
+        String result = XMLUtil.buildTag("testXMLUtilTagName", (Timestamp) null);
+        assertEquals("result", "", result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testBuildTag5() throws Throwable {
-		String result = XMLUtil.buildTag("testXMLUtilTagName", 100);
-		assertEquals("result", "<testXMLUtilTagName>100</testXMLUtilTagName>", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testBuildTag5() throws Throwable {
+        String result = XMLUtil.buildTag("testXMLUtilTagName", 100);
+        assertEquals("result", "<testXMLUtilTagName>100</testXMLUtilTagName>", result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testBuildTag6() throws Throwable {
-		String result = XMLUtil.buildTag("testXMLUtilTagName", "testXMLUtilTagValue", true);
-		assertEquals("result", "<testXMLUtilTagName>testXMLUtilTagValue</testXMLUtilTagName>", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testBuildTag6() throws Throwable {
+        String result = XMLUtil.buildTag("testXMLUtilTagName", "testXMLUtilTagValue", true);
+        assertEquals("result", "<testXMLUtilTagName>testXMLUtilTagValue</testXMLUtilTagName>", result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testBuildTag7() throws Throwable {
-		String result = XMLUtil.buildTag("testXMLUtilTagName", "testXMLUtilTagValue", false);
-		assertEquals("result", "<testXMLUtilTagName>testXMLUtilTagValue</testXMLUtilTagName>", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testBuildTag7() throws Throwable {
+        String result = XMLUtil.buildTag("testXMLUtilTagName", "testXMLUtilTagValue", false);
+        assertEquals("result", "<testXMLUtilTagName>testXMLUtilTagValue</testXMLUtilTagName>", result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testBuildTag8() throws Throwable {
-		String result = XMLUtil.buildTag("testXMLUtilTagName", null, true);
-		assertEquals("result", "", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testBuildTag8() throws Throwable {
+        String result = XMLUtil.buildTag("testXMLUtilTagName", null, true);
+        assertEquals("result", "", result);
+    }
 
-	/**
-	 *
-	 */
-	@Test(expected=NullPointerException.class)
-	public void testGetTextContentThrowsNullPointerException() throws Throwable {
-		XMLUtil.getTextContent(null);
-	}
+    /**
+     *
+     */
+    @Test(expected=NullPointerException.class)
+    public void testGetTextContentThrowsNullPointerException() throws Throwable {
+        XMLUtil.getTextContent(null);
+    }
 
-	/**
-	 *
-	 */
-	@Test(expected=NullPointerException.class)
-	public void testParseXMLThrowsNullPointerException() throws Throwable {
-		XMLUtil.parseXML((File) null, true);
-	}
+    /**
+     *
+     */
+    @Test(expected=NullPointerException.class)
+    public void testParseXMLThrowsNullPointerException() throws Throwable {
+        XMLUtil.parseXML((File) null, true);
+    }
 }
 

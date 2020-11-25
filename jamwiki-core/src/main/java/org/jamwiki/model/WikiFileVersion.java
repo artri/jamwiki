@@ -26,148 +26,148 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class WikiFileVersion implements Serializable {
 
-	private Integer authorId;
-	private String authorDisplay;
-	private int fileId = -1;
-	private long fileSize = -1;
-	private int fileVersionId = -1;
-	private String mimeType = WikiFile.UNKNOWN_MIME_TYPE;
-	private String uploadComment;
-	private Timestamp uploadDate = new Timestamp(System.currentTimeMillis());
-	private String url;
+    private Integer authorId;
+    private String authorDisplay;
+    private int fileId = -1;
+    private long fileSize = -1;
+    private int fileVersionId = -1;
+    private String mimeType = WikiFile.UNKNOWN_MIME_TYPE;
+    private String uploadComment;
+    private Timestamp uploadDate = new Timestamp(System.currentTimeMillis());
+    private String url;
 
-	/**
-	 *
-	 */
-	public Integer getAuthorId() {
-		return this.authorId;
-	}
+    /**
+     *
+     */
+    public Integer getAuthorId() {
+        return this.authorId;
+    }
 
-	/**
-	 *
-	 */
-	public void setAuthorId(Integer authorId) {
-		this.authorId = authorId;
-	}
+    /**
+     *
+     */
+    public void setAuthorId(Integer authorId) {
+        this.authorId = authorId;
+    }
 
-	/**
-	 *
-	 */
-	public String getAuthorDisplay() {
-		return this.authorDisplay;
-	}
+    /**
+     *
+     */
+    public String getAuthorDisplay() {
+        return this.authorDisplay;
+    }
 
-	/**
-	 *
-	 */
-	public void setAuthorDisplay(String authorDisplay) {
-		this.authorDisplay = authorDisplay;
-	}
+    /**
+     *
+     */
+    public void setAuthorDisplay(String authorDisplay) {
+        this.authorDisplay = authorDisplay;
+    }
 
-	/**
-	 *
-	 */
-	public int getFileId() {
-		return this.fileId;
-	}
+    /**
+     *
+     */
+    public int getFileId() {
+        return this.fileId;
+    }
 
-	/**
-	 *
-	 */
-	public void setFileId(int fileId) {
-		this.fileId = fileId;
-	}
+    /**
+     *
+     */
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
+    }
 
-	/**
-	 *
-	 */
-	public long getFileSize() {
-		return this.fileSize;
-	}
+    /**
+     *
+     */
+    public long getFileSize() {
+        return this.fileSize;
+    }
 
-	/**
-	 *
-	 */
-	public void setFileSize(long fileSize) {
-		this.fileSize = fileSize;
-	}
+    /**
+     *
+     */
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
+    }
 
-	/**
-	 *
-	 */
-	public int getFileVersionId() {
-		return this.fileVersionId;
-	}
+    /**
+     *
+     */
+    public int getFileVersionId() {
+        return this.fileVersionId;
+    }
 
-	/**
-	 *
-	 */
-	public void setFileVersionId(int fileVersionId) {
-		this.fileVersionId = fileVersionId;
-	}
+    /**
+     *
+     */
+    public void setFileVersionId(int fileVersionId) {
+        this.fileVersionId = fileVersionId;
+    }
 
-	/**
-	 * This method will either return the MIME type set for the file, or a default
-	 * MIME type indicating that the MIME type is unknown.  This method will never
-	 * return <code>null</code>.
-	 */
-	public String getMimeType() {
-		return (StringUtils.isBlank(this.mimeType)) ? WikiFile.UNKNOWN_MIME_TYPE : this.mimeType;
-	}
+    /**
+     * This method will either return the MIME type set for the file, or a default
+     * MIME type indicating that the MIME type is unknown.  This method will never
+     * return <code>null</code>.
+     */
+    public String getMimeType() {
+        return (StringUtils.isBlank(this.mimeType)) ? WikiFile.UNKNOWN_MIME_TYPE : this.mimeType;
+    }
 
-	/**
-	 *
-	 */
-	public void setMimeType(String mimeType) {
-		this.mimeType = mimeType;
-	}
+    /**
+     *
+     */
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
 
-	/**
-	 *
-	 */
-	public String getUploadComment() {
-		return this.uploadComment;
-	}
+    /**
+     *
+     */
+    public String getUploadComment() {
+        return this.uploadComment;
+    }
 
-	/**
-	 *
-	 */
-	public void setUploadComment(String uploadComment) {
-		this.uploadComment = uploadComment;
-	}
+    /**
+     *
+     */
+    public void setUploadComment(String uploadComment) {
+        this.uploadComment = uploadComment;
+    }
 
-	/**
-	 *
-	 */
-	public Timestamp getUploadDate() {
-		return this.uploadDate;
-	}
+    /**
+     *
+     */
+    public Timestamp getUploadDate() {
+        return this.uploadDate;
+    }
 
-	/**
-	 *
-	 */
-	public void setUploadDate(Timestamp uploadDate) {
-		this.uploadDate = uploadDate;
-	}
+    /**
+     *
+     */
+    public void setUploadDate(Timestamp uploadDate) {
+        this.uploadDate = uploadDate;
+    }
 
-	/**
-	 *
-	 */
-	public void setUploadDate(Date uploadDate) {
-		this.uploadDate = new Timestamp(uploadDate.getTime());
-	}
+    /**
+     *
+     */
+    public void setUploadDate(Date uploadDate) {
+        this.uploadDate = new Timestamp(uploadDate.getTime());
+    }
 
-	/**
-	 *
-	 */
-	public String getUrl() {
-		return this.url;
-	}
+    /**
+     *
+     */
+    public String getUrl() {
+        return this.url;
+    }
 
-	/**
-	 *
-	 */
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    /**
+     *
+     */
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

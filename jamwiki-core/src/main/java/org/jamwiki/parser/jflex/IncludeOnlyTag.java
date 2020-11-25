@@ -16,28 +16,29 @@
  */
 package org.jamwiki.parser.jflex;
 
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class parses nowiki tags of the form <code>&lt;includeonly&gt;content&lt;/includeonly&gt;</code>.
  */
 public class IncludeOnlyTag implements JFlexParserTag {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(IncludeOnlyTag.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(IncludeOnlyTag.class.getName());
 
-	/**
-	 * Parse a call to a Mediawiki includeonly tag of the form
-	 * "<includeonly>text</includeonly>" and return the resulting output.
-	 */
-	public String parse(JFlexLexer lexer, String raw, Object... args) {
-		if (lexer.getMode() <= JFlexParser.MODE_MINIMAL) {
-			return raw;
-		}
-		if (lexer.getParserInput().getTemplateDepth() == 0) {
-			// if this isn't an inclusion then the tag content should not render
-			return "";
-		}
-		// there is no need to parse the tag content since that will be done by TemplateTag
-		return JFlexParserUtil.tagContent(raw);
-	}
+    /**
+     * Parse a call to a Mediawiki includeonly tag of the form
+     * "<includeonly>text</includeonly>" and return the resulting output.
+     */
+    public String parse(JFlexLexer lexer, String raw, Object... args) {
+        if (lexer.getMode() <= JFlexParser.MODE_MINIMAL) {
+            return raw;
+        }
+        if (lexer.getParserInput().getTemplateDepth() == 0) {
+            // if this isn't an inclusion then the tag content should not render
+            return "";
+        }
+        // there is no need to parse the tag content since that will be done by TemplateTag
+        return JFlexParserUtil.tagContent(raw);
+    }
 }

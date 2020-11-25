@@ -19,7 +19,8 @@ package org.jamwiki.taglib;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import org.jamwiki.Environment;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * JSP tag that executes its tag content only if the specified property has
@@ -27,40 +28,40 @@ import org.jamwiki.utils.WikiLogger;
  */
 public class EnabledTag extends BodyTagSupport {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(EnabledTag.class.getName());
-	private String property = null;
+    private static final Logger logger = LoggerFactory.getLogger(EnabledTag.class.getName());
+    private String property = null;
 
-	/**
-	 *
-	 */
-	public int doStartTag() throws JspException {
-		String propertyName = null;
-		try {
-			propertyName = (String)Environment.class.getField(this.property).get(null);
-		} catch (NoSuchFieldException e) {
-			logger.error("Failure in enabled tag for " + this.property, e);
-			throw new JspException(e);
-		} catch (IllegalAccessException e) {
-			logger.error("Failure in enabled tag for " + this.property, e);
-			throw new JspException(e);
-		}
-		if (Environment.getBooleanValue(propertyName)) {
-			return EVAL_BODY_INCLUDE;
-		}
-		return SKIP_BODY;
-	}
+    /**
+     *
+     */
+    public int doStartTag() throws JspException {
+        String propertyName = null;
+        try {
+            propertyName = (String)Environment.class.getField(this.property).get(null);
+        } catch (NoSuchFieldException e) {
+            logger.error("Failure in enabled tag for " + this.property, e);
+            throw new JspException(e);
+        } catch (IllegalAccessException e) {
+            logger.error("Failure in enabled tag for " + this.property, e);
+            throw new JspException(e);
+        }
+        if (Environment.getBooleanValue(propertyName)) {
+            return EVAL_BODY_INCLUDE;
+        }
+        return SKIP_BODY;
+    }
 
-	/**
-	 *
-	 */
-	public String getProperty() {
-		return this.property;
-	}
+    /**
+     *
+     */
+    public String getProperty() {
+        return this.property;
+    }
 
-	/**
-	 *
-	 */
-	public void setProperty(String property) {
-		this.property = property;
-	}
+    /**
+     *
+     */
+    public void setProperty(String property) {
+        this.property = property;
+    }
 }

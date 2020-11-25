@@ -27,13 +27,13 @@ import static org.junit.Assert.*;
  */
 public class PseudoTopicHandlerTest extends JAMWikiUnitTest {
 
-	/**
-	 *
-	 */
-	@Test
-	public void testIsPseudoTopic() throws Throwable {
-		boolean result = PseudoTopicHandler.isPseudoTopic("testPseudoTopicHandlerPseudotopicName");
-		assertFalse("result", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testIsPseudoTopic() throws Throwable {
+        boolean result = PseudoTopicHandler.isPseudoTopic("testPseudoTopicHandlerPseudotopicName");
+        assertFalse("result", result);
+    }
 }
 

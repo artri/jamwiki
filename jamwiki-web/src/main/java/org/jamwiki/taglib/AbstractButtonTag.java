@@ -20,7 +20,8 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import org.apache.commons.lang3.StringUtils;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This abstract class implements functionality for both the "radio" tag and
@@ -31,157 +32,157 @@ import org.jamwiki.utils.WikiLogger;
  */
 public abstract class AbstractButtonTag extends TagSupport {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(AbstractButtonTag.class.getName());
-	private String checked = null;
-	private String id = null;
-	private String name = null;
-	private String onchange = null;
-	private String onclick = null;
-	private String style = null;
-	private String value = null;
+    private static final Logger logger = LoggerFactory.getLogger(AbstractButtonTag.class.getName());
+    private String checked = null;
+    private String id = null;
+    private String name = null;
+    private String onchange = null;
+    private String onclick = null;
+    private String style = null;
+    private String value = null;
 
-	/**
-	 *
-	 */
-	public AbstractButtonTag() {
-		super();
-	}
+    /**
+     *
+     */
+    public AbstractButtonTag() {
+        super();
+    }
 
-	/**
-	 * Generate the tag HTML output.
-	 */
-	public int doEndTag() throws JspException {
-		StringBuilder output = new StringBuilder();
-		output.append("<input type=\"").append(this.getButtonType()).append('\"');
-		output.append(" value=\"").append(this.value).append('\"');
-		output.append(" name=\"").append(this.name).append('\"');
-		if (!StringUtils.isBlank(this.id)) {
-			output.append(" id=\"").append(this.id).append('\"');
-		}
-		if (!StringUtils.isBlank(this.style)) {
-			output.append(" style=\"").append(this.style).append('\"');
-		}
-		if (!StringUtils.isBlank(this.onchange)) {
-			output.append(" onchange=\"").append(this.onchange).append('\"');
-		}
-		if (!StringUtils.isBlank(this.onclick)) {
-			output.append(" onclick=\"").append(this.onclick).append('\"');
-		}
-		if (!StringUtils.isBlank(this.checked) && this.checked.equals(this.value)) {
-			output.append(" checked=\"checked\"");
-		}
-		output.append(" />");
-		try {
-			this.pageContext.getOut().print(output.toString());
-		} catch (IOException e) {
-			logger.error("Failure in " + getButtonType() + " tag for " + this.id + " / " + this.name + " / " + this.style + " / " + this.value, e);
-			throw new JspException(e);
-		}
-		return EVAL_PAGE;
-	}
+    /**
+     * Generate the tag HTML output.
+     */
+    public int doEndTag() throws JspException {
+        StringBuilder output = new StringBuilder();
+        output.append("<input type=\"").append(this.getButtonType()).append('\"');
+        output.append(" value=\"").append(this.value).append('\"');
+        output.append(" name=\"").append(this.name).append('\"');
+        if (!StringUtils.isBlank(this.id)) {
+            output.append(" id=\"").append(this.id).append('\"');
+        }
+        if (!StringUtils.isBlank(this.style)) {
+            output.append(" style=\"").append(this.style).append('\"');
+        }
+        if (!StringUtils.isBlank(this.onchange)) {
+            output.append(" onchange=\"").append(this.onchange).append('\"');
+        }
+        if (!StringUtils.isBlank(this.onclick)) {
+            output.append(" onclick=\"").append(this.onclick).append('\"');
+        }
+        if (!StringUtils.isBlank(this.checked) && this.checked.equals(this.value)) {
+            output.append(" checked=\"checked\"");
+        }
+        output.append(" />");
+        try {
+            this.pageContext.getOut().print(output.toString());
+        } catch (IOException e) {
+            logger.error("Failure in " + getButtonType() + " tag for " + this.id + " / " + this.name + " / " + this.style + " / " + this.value, e);
+            throw new JspException(e);
+        }
+        return EVAL_PAGE;
+    }
 
-	/**
-	 * Return the form tag checked value.
-	 */
-	public String getChecked() {
-		return this.checked;
-	}
+    /**
+     * Return the form tag checked value.
+     */
+    public String getChecked() {
+        return this.checked;
+    }
 
-	/**
-	 * Set the form tag checked value.
-	 */
-	public void setChecked(String checked) {
-		this.checked = checked;
-	}
+    /**
+     * Set the form tag checked value.
+     */
+    public void setChecked(String checked) {
+        this.checked = checked;
+    }
 
-	/**
-	 * Return the form tag ID value.
-	 */
-	public String getId() {
-		return this.id;
-	}
+    /**
+     * Return the form tag ID value.
+     */
+    public String getId() {
+        return this.id;
+    }
 
-	/**
-	 * Set the form tag ID value.
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+    /**
+     * Set the form tag ID value.
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	/**
-	 * Return the form tag name value.
-	 */
-	public String getName() {
-		return this.name;
-	}
+    /**
+     * Return the form tag name value.
+     */
+    public String getName() {
+        return this.name;
+    }
 
-	/**
-	 * Set the form tag name value.
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * Set the form tag name value.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 * Return the form tag onchange value.
-	 */
-	public String getOnchange() {
-		return this.onchange;
-	}
+    /**
+     * Return the form tag onchange value.
+     */
+    public String getOnchange() {
+        return this.onchange;
+    }
 
-	/**
-	 * Set the form tag onchange value.
-	 */
-	public void setOnchange(String onchange) {
-		this.onchange = onchange;
-	}
+    /**
+     * Set the form tag onchange value.
+     */
+    public void setOnchange(String onchange) {
+        this.onchange = onchange;
+    }
 
-	/**
-	 * Return the form tag onclick value.
-	 */
-	public String getOnclick() {
-		return this.onclick;
-	}
+    /**
+     * Return the form tag onclick value.
+     */
+    public String getOnclick() {
+        return this.onclick;
+    }
 
-	/**
-	 * Set the form tag onclick value.
-	 */
-	public void setOnclick(String onclick) {
-		this.onclick = onclick;
-	}
+    /**
+     * Set the form tag onclick value.
+     */
+    public void setOnclick(String onclick) {
+        this.onclick = onclick;
+    }
 
-	/**
-	 * Return the form tag CSS style value.
-	 */
-	public String getStyle() {
-		return this.style;
-	}
+    /**
+     * Return the form tag CSS style value.
+     */
+    public String getStyle() {
+        return this.style;
+    }
 
-	/**
-	 * Set the form tag CSS style value.
-	 */
-	public void setStyle(String style) {
-		this.style = style;
-	}
+    /**
+     * Set the form tag CSS style value.
+     */
+    public void setStyle(String style) {
+        this.style = style;
+    }
 
-	/**
-	 * Set the form tag value (if any).
-	 */
-	public String getValue() {
-		return this.value;
-	}
+    /**
+     * Set the form tag value (if any).
+     */
+    public String getValue() {
+        return this.value;
+    }
 
-	/**
-	 * Returns the form tag value (if any).
-	 */
-	public void setValue(String value) {
-		this.value = value;
-	}
+    /**
+     * Returns the form tag value (if any).
+     */
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	/**
-	 * Returns the type of button, eg. "checkbox" or "radio".
-	 *
-	 * @return The type of button, eg. "checkbox" or "radio".
-	 */
-	public abstract String getButtonType() ;
+    /**
+     * Returns the type of button, eg. "checkbox" or "radio".
+     *
+     * @return The type of button, eg. "checkbox" or "radio".
+     */
+    public abstract String getButtonType() ;
 }

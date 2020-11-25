@@ -26,73 +26,73 @@ import org.jamwiki.utils.Utilities;
  */
 public class WikiReference implements Serializable {
 
-	private final int citation;
-	private String content;
-	private final int count;
-	private final String name;
+    private final int citation;
+    private String content;
+    private final int count;
+    private final String name;
 
-	/**
-	 *
-	 */
-	public WikiReference(String name, String content, int citation, int count) {
-		this.name = name;
-		this.content = content;
-		this.citation = citation;
-		this.count = count;
-	}
+    /**
+     *
+     */
+    public WikiReference(String name, String content, int citation, int count) {
+        this.name = name;
+        this.content = content;
+        this.citation = citation;
+        this.count = count;
+    }
 
-	/**
-	 *
-	 */
-	public int getCitation() {
-		return this.citation;
-	}
+    /**
+     *
+     */
+    public int getCitation() {
+        return this.citation;
+    }
 
-	/**
-	 *
-	 */
-	public String getContent() {
-		return this.content;
-	}
+    /**
+     *
+     */
+    public String getContent() {
+        return this.content;
+    }
 
-	/**
-	 *
-	 */
-	public void setContent(String content) {
-		this.content = content;
-	}
+    /**
+     *
+     */
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	/**
-	 *
-	 */
-	public int getCount() {
-		return this.count;
-	}
+    /**
+     *
+     */
+    public int getCount() {
+        return this.count;
+    }
 
-	/**
-	 *
-	 */
-	public String getName() {
-		return this.name;
-	}
+    /**
+     *
+     */
+    public String getName() {
+        return this.name;
+    }
 
-	/**
-	 *
-	 */
-	public String getNotationName() {
-		if (StringUtils.isBlank(this.name)) {
-			return "cite_note-" + this.citation;
-		}
-		return "cite_note-" + Utilities.encodeAndEscapeTopicName(this.name);
-	}
+    /**
+     *
+     */
+    public String getNotationName() {
+        if (StringUtils.isBlank(this.name)) {
+            return "cite_note-" + this.citation;
+        }
+        return "cite_note-" + Utilities.encodeAndEscapeTopicName(this.name);
+    }
 
-	/**
-	 *
-	 */
-	public String getReferenceName() {
-		if (StringUtils.isBlank(this.name)) {
-			return "cite_ref-" + this.citation;
-		}
-		return "cite_ref-" + Utilities.encodeAndEscapeTopicName(this.name) + "_" + this.count;
-	}
+    /**
+     *
+     */
+    public String getReferenceName() {
+        if (StringUtils.isBlank(this.name)) {
+            return "cite_ref-" + this.citation;
+        }
+        return "cite_ref-" + Utilities.encodeAndEscapeTopicName(this.name) + "_" + this.count;
+    }
 }

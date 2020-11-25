@@ -26,58 +26,58 @@ import org.jamwiki.model.Topic;
  */
 public class TestSearchEngine implements SearchEngine {
 
-	/**
-	 *
-	 */
-	public void addToIndex(Topic topic) {
-	}
+    /**
+     *
+     */
+    public void addToIndex(Topic topic) {
+    }
 
-	/**
-	 *
-	 */
-	public void commit(String virtualWiki) {
-	}
+    /**
+     *
+     */
+    public void commit(String virtualWiki) {
+    }
 
-	/**
-	 *
-	 */
-	public void deleteFromIndex(Topic topic) {
-	}
+    /**
+     *
+     */
+    public void deleteFromIndex(Topic topic) {
+    }
 
-	/**
-	 *
-	 */
-	public List<SearchResultEntry> findResults(String virtualWiki, String text, List<Integer> namespaces) {
-		return new ArrayList<SearchResultEntry>();
-	}
+    /**
+     *
+     */
+    public List<SearchResultEntry> findResults(String virtualWiki, String text, List<Integer> namespaces) {
+        return new ArrayList<SearchResultEntry>();
+    }
 
-	/**
-	 *
-	 */
-	public void refreshIndex() throws Exception {
-	}
+    /**
+     *
+     */
+    public void refreshIndex() throws Exception {
+    }
 
-	/**
-	 *
-	 */
-	public void setAutoCommit(boolean autoCommit) {
-	}
+    /**
+     *
+     */
+    public void setAutoCommit(boolean autoCommit) {
+    }
 
-	/**
-	 *
-	 */
-	public void setDisabled(boolean disabled) {
-	}
+    /**
+     *
+     */
+    public void setDisabled(boolean disabled) {
+    }
 
-	/**
-	 *
-	 */
-	public void shutdown() {
-	}
+    /**
+     *
+     */
+    public void shutdown() {
+    }
 
-	/**
-	 *
-	 */
-	public void updateInIndex(Topic topic) {
-	}
+    /**
+     *
+     */
+    public void updateInIndex(Topic topic) {
+    }
 }

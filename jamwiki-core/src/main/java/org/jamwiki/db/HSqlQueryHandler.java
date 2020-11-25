@@ -18,7 +18,8 @@ package org.jamwiki.db;
 
 import java.util.Properties;
 import org.jamwiki.Environment;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * HSQL-specific implementation of the QueryHandler interface.  This class implements
@@ -27,15 +28,15 @@ import org.jamwiki.utils.WikiLogger;
  */
 public class HSqlQueryHandler extends AnsiQueryHandler {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(HSqlQueryHandler.class.getName());
-	private static final String SQL_PROPERTY_FILE_NAME = "sql/sql.hsql.properties";
+    private static final Logger logger = LoggerFactory.getLogger(HSqlQueryHandler.class.getName());
+    private static final String SQL_PROPERTY_FILE_NAME = "sql/sql.hsql.properties";
 
-	/**
-	 *
-	 */
-	public HSqlQueryHandler() {
-		Properties defaults = Environment.loadProperties(AnsiQueryHandler.SQL_PROPERTY_FILE_NAME);
-		Properties props = Environment.loadProperties(SQL_PROPERTY_FILE_NAME, defaults);
-		super.init(props);
-	}
+    /**
+     *
+     */
+    public HSqlQueryHandler() {
+        Properties defaults = Environment.loadProperties(AnsiQueryHandler.SQL_PROPERTY_FILE_NAME);
+        Properties props = Environment.loadProperties(SQL_PROPERTY_FILE_NAME, defaults);
+        super.init(props);
+    }
 }

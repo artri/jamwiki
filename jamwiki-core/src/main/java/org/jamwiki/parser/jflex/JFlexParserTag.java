@@ -23,11 +23,11 @@ import org.jamwiki.parser.ParserException;
  */
 public interface JFlexParserTag {
 
-	/**
-	 * Instantiate tag parsing.
-	 *
-	 * @param lexer A reference to the current lexer instance.
-	 * @param raw Raw text to be parsed.
-	 */
-	public String parse(JFlexLexer lexer, String raw, Object... args) throws ParserException;
+    /**
+     * Instantiate tag parsing.
+     *
+     * @param lexer A reference to the current lexer instance.
+     * @param raw Raw text to be parsed.
+     */
+    public String parse(JFlexLexer lexer, String raw, Object... args) throws ParserException;
 }

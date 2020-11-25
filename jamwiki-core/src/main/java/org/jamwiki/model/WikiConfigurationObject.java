@@ -25,106 +25,106 @@ import java.util.Map;
  */
 public class WikiConfigurationObject {
 
-	private String clazz;
-	private String key;
-	private String key2;
-	private String name;
-	private String state;
-	private Map<String, String> initParams;
+    private String clazz;
+    private String key;
+    private String key2;
+    private String name;
+    private String state;
+    private Map<String, String> initParams;
 
-	/**
-	 *
-	 */
-	public String getClazz() {
-		return this.clazz;
-	}
+    /**
+     *
+     */
+    public String getClazz() {
+        return this.clazz;
+    }
 
-	/**
-	 *
-	 */
-	public void setClazz(String clazz) {
-		this.clazz = clazz;
-	}
+    /**
+     *
+     */
+    public void setClazz(String clazz) {
+        this.clazz = clazz;
+    }
 
-	/**
-	 *
-	 */
-	public boolean isExperimental() {
-		return (this.state != null && this.state.equalsIgnoreCase("experimental"));
-	}
+    /**
+     *
+     */
+    public boolean isExperimental() {
+        return (this.state != null && this.state.equalsIgnoreCase("experimental"));
+    }
 
-	/**
-	 *
-	 */
-	public String getKey() {
-		return this.key;
-	}
+    /**
+     *
+     */
+    public String getKey() {
+        return this.key;
+    }
 
-	/**
-	 *
-	 */
-	public void setKey(String key) {
-		this.key = key;
-	}
+    /**
+     *
+     */
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-	/**
-	 *
-	 */
-	public String getKey2() {
-		return this.key2;
-	}
+    /**
+     *
+     */
+    public String getKey2() {
+        return this.key2;
+    }
 
-	/**
-	 *
-	 */
-	public void setKey2(String key2) {
-		this.key2 = key2;
-	}
+    /**
+     *
+     */
+    public void setKey2(String key2) {
+        this.key2 = key2;
+    }
 
-	/**
-	 *
-	 */
-	public String getName() {
-		return this.name;
-	}
+    /**
+     *
+     */
+    public String getName() {
+        return this.name;
+    }
 
-	/**
-	 *
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     *
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 *
-	 */
-	public String getState() {
-		return this.state;
-	}
+    /**
+     *
+     */
+    public String getState() {
+        return this.state;
+    }
 
-	/**
-	 *
-	 */
-	public void setState(String state) {
-		this.state = state;
-	}
+    /**
+     *
+     */
+    public void setState(String state) {
+        this.state = state;
+    }
 
-	/**
-	 * Return a mapping of of key-value pairs representing initialization parameters.
-	 * This method will never return <code>null</code>.
-	 */
-	public Map<String, String> getInitParams() {
-		if (this.initParams == null) {
-			this.initParams = new HashMap<String, String>();
-		}
-		return this.initParams;
-	}
+    /**
+     * Return a mapping of of key-value pairs representing initialization parameters.
+     * This method will never return <code>null</code>.
+     */
+    public Map<String, String> getInitParams() {
+        if (this.initParams == null) {
+            this.initParams = new HashMap<String, String>();
+        }
+        return this.initParams;
+    }
 
-	/**
-	 * Add a key-value pair to the mapping of of key-value pairs representing
-	 * initialization parameters.
-	 */
-	public void addInitParam(String key, String value) {
-		this.getInitParams().put(key, value);
-	}
+    /**
+     * Add a key-value pair to the mapping of of key-value pairs representing
+     * initialization parameters.
+     */
+    public void addInitParam(String key, String value) {
+        this.getInitParams().put(key, value);
+    }
 }

@@ -17,37 +17,38 @@
 package org.jamwiki.parser.jflex;
 
 import org.jamwiki.parser.ParserException;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class parses wiki headings of the form <code>==heading content==</code>.
  */
 public class WikiHeadingTag extends AbstractHeadingTag {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(WikiHeadingTag.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(WikiHeadingTag.class.getName());
 
-	/**
-	 *
-	 */
-	protected int generateTagLevel(String raw, Object... args) throws ParserException {
-		if (args.length == 0) {
-			throw new IllegalArgumentException("Must pass heading depth to WikiHeadingTag.parse");
-		}
-		return (Integer)args[0];
-	}
+    /**
+     *
+     */
+    protected int generateTagLevel(String raw, Object... args) throws ParserException {
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Must pass heading depth to WikiHeadingTag.parse");
+        }
+        return (Integer)args[0];
+    }
 
-	/**
-	 *
-	 */
-	protected String generateTagOpen(String raw, Object... args) throws ParserException {
-		return "<h" + this.generateTagLevel(raw, args) + ">";
-	}
+    /**
+     *
+     */
+    protected String generateTagOpen(String raw, Object... args) throws ParserException {
+        return "<h" + this.generateTagLevel(raw, args) + ">";
+    }
 
-	/**
-	 *
-	 */
-	protected String generateTagText(String raw, Object... args) throws ParserException {
-		int level = this.generateTagLevel(raw, args);
-		return raw.substring(level, raw.length() - level).trim();
-	}
+    /**
+     *
+     */
+    protected String generateTagText(String raw, Object... args) throws ParserException {
+        int level = this.generateTagLevel(raw, args);
+        return raw.substring(level, raw.length() - level).trim();
+    }
 }

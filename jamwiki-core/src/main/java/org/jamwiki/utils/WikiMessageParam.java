@@ -22,65 +22,65 @@ package org.jamwiki.utils;
  */
 public class WikiMessageParam {
 
-	private String param = null;
-	private String paramText = null;
-	private boolean isWikiLink = false;
+    private String param = null;
+    private String paramText = null;
+    private boolean isWikiLink = false;
 
-	/**
-	 * Create a WikiMessageParam that represents a string value.  Note that this
-	 * value should be properly escaped prior to being stored as a parameter.
-	 */
-	public WikiMessageParam(String param) {
-		this.param = param;
-	}
+    /**
+     * Create a WikiMessageParam that represents a string value.  Note that this
+     * value should be properly escaped prior to being stored as a parameter.
+     */
+    public WikiMessageParam(String param) {
+        this.param = param;
+    }
 
-	/**
-	 * Create a WikiMessageParam and optionally set that param to represent a
-	 * wiki link object.  Note that if the parameter is not a wiki link then the
-	 * value should be properly escaped prior to being stored as a parameter.
-	 */
-	public WikiMessageParam(String param, boolean isWikiLink) {
-		this.param = param;
-		this.isWikiLink = isWikiLink;
-	}
+    /**
+     * Create a WikiMessageParam and optionally set that param to represent a
+     * wiki link object.  Note that if the parameter is not a wiki link then the
+     * value should be properly escaped prior to being stored as a parameter.
+     */
+    public WikiMessageParam(String param, boolean isWikiLink) {
+        this.param = param;
+        this.isWikiLink = isWikiLink;
+    }
 
-	/**
-	 * Create a WikiMessageParam that represents a wiki link, specifying both
-	 * the link target and the link text.
-	 */
-	public WikiMessageParam(String linkValue, String linkText) {
-		this.param = linkValue;
-		this.paramText = linkText;
-		this.isWikiLink = true;
-	}
+    /**
+     * Create a WikiMessageParam that represents a wiki link, specifying both
+     * the link target and the link text.
+     */
+    public WikiMessageParam(String linkValue, String linkText) {
+        this.param = linkValue;
+        this.paramText = linkText;
+        this.isWikiLink = true;
+    }
 
-	/**
-	 * Return a flag indicating whether this message param should be formatted
-	 * as a wiki link.
-	 */
-	public boolean isWikiLink() {
-		return this.isWikiLink;
-	}
+    /**
+     * Return a flag indicating whether this message param should be formatted
+     * as a wiki link.
+     */
+    public boolean isWikiLink() {
+        return this.isWikiLink;
+    }
 
-	/**
-	 * Return the param value.
-	 */
-	public String getParam() {
-		return this.param;
-	}
+    /**
+     * Return the param value.
+     */
+    public String getParam() {
+        return this.param;
+    }
 
-	/**
-	 * Return the param text (if set) or the param value if there is no param
-	 * text.
-	 */
-	public String getParamText() {
-		return (this.paramText == null) ? this.param : this.paramText;
-	}
+    /**
+     * Return the param text (if set) or the param value if there is no param
+     * text.
+     */
+    public String getParamText() {
+        return (this.paramText == null) ? this.param : this.paramText;
+    }
 
-	/**
-	 * Return the param value for this object when converting to a string.
-	 */
-	public String toString() {
-		return this.param;
-	}
+    /**
+     * Return the param value for this object when converting to a string.
+     */
+    public String toString() {
+        return this.param;
+    }
 }

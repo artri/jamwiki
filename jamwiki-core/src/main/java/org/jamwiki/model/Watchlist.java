@@ -26,76 +26,76 @@ import java.util.List;
  */
 public class Watchlist implements Serializable {
 
-	private String virtualWiki;
-	private List<String> topics;
+    private String virtualWiki;
+    private List<String> topics;
 
-	/**
-	 *
-	 */
-	public Watchlist() {
-	}
+    /**
+     *
+     */
+    public Watchlist() {
+    }
 
-	/**
-	 *
-	 */
-	public Watchlist(String virtualWiki, List<String> topics) {
-		this.virtualWiki = virtualWiki;
-		this.topics = topics;
-	}
+    /**
+     *
+     */
+    public Watchlist(String virtualWiki, List<String> topics) {
+        this.virtualWiki = virtualWiki;
+        this.topics = topics;
+    }
 
-	/**
-	 *
-	 */
-	public void add(String topicName) {
-		if (topicName != null) {
-			this.getTopics().add(topicName);
-		}
-	}
+    /**
+     *
+     */
+    public void add(String topicName) {
+        if (topicName != null) {
+            this.getTopics().add(topicName);
+        }
+    }
 
-	/**
-	 *
-	 */
-	public boolean containsTopic(String topicName) {
-		return (topicName == null || this.topics == null) ? false : this.getTopics().contains(topicName);
-	}
+    /**
+     *
+     */
+    public boolean containsTopic(String topicName) {
+        return (topicName == null || this.topics == null) ? false : this.getTopics().contains(topicName);
+    }
 
-	/**
-	 *
-	 */
-	public List<String> getTopics() {
-		if (this.topics == null) {
-			this.topics = new ArrayList<String>();
-		}
-		return this.topics;
-	}
+    /**
+     *
+     */
+    public List<String> getTopics() {
+        if (this.topics == null) {
+            this.topics = new ArrayList<String>();
+        }
+        return this.topics;
+    }
 
-	/**
-	 *
-	 */
-	public void setTopics(List<String> topics) {
-		this.topics = topics;
-	}
+    /**
+     *
+     */
+    public void setTopics(List<String> topics) {
+        this.topics = topics;
+    }
 
-	/**
-	 *
-	 */
-	public String getVirtualWiki() {
-		return this.virtualWiki;
-	}
+    /**
+     *
+     */
+    public String getVirtualWiki() {
+        return this.virtualWiki;
+    }
 
-	/**
-	 *
-	 */
-	public void remove(String topicName) {
-		if (topicName != null) {
-			this.getTopics().remove(topicName);
-		}
-	}
+    /**
+     *
+     */
+    public void remove(String topicName) {
+        if (topicName != null) {
+            this.getTopics().remove(topicName);
+        }
+    }
 
-	/**
-	 *
-	 */
-	public void setVirtualWiki(String virtualWiki) {
-		this.virtualWiki = virtualWiki;
-	}
+    /**
+     *
+     */
+    public void setVirtualWiki(String virtualWiki) {
+        this.virtualWiki = virtualWiki;
+    }
 }

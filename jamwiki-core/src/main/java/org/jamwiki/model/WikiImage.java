@@ -21,62 +21,62 @@ package org.jamwiki.model;
  */
 public class WikiImage extends WikiFile {
 
-	private int fileVersionId = -1;
-	private int height = -1;
-	private int width = -1;
+    private int fileVersionId = -1;
+    private int height = -1;
+    private int width = -1;
 
-	/**
-	 *
-	 */
-	public WikiImage() {
-	}
+    /**
+     *
+     */
+    public WikiImage() {
+    }
 
-	/**
-	 *
-	 */
-	public WikiImage(WikiFile wikiFile) {
-		super(wikiFile);
-	}
+    /**
+     *
+     */
+    public WikiImage(WikiFile wikiFile) {
+        super(wikiFile);
+    }
 
-	/**
-	 *
-	 */
-	public int getFileVersionId() {
-		return this.fileVersionId;
-	}
+    /**
+     *
+     */
+    public int getFileVersionId() {
+        return this.fileVersionId;
+    }
 
-	/**
-	 *
-	 */
-	public void setFileVersionId(int fileVersionId) {
-		this.fileVersionId = fileVersionId;
-	}
+    /**
+     *
+     */
+    public void setFileVersionId(int fileVersionId) {
+        this.fileVersionId = fileVersionId;
+    }
 
-	/**
-	 *
-	 */
-	public int getHeight() {
-		return this.height;
-	}
+    /**
+     *
+     */
+    public int getHeight() {
+        return this.height;
+    }
 
-	/**
-	 *
-	 */
-	public void setHeight(int height) {
-		this.height = height;
-	}
+    /**
+     *
+     */
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
-	/**
-	 *
-	 */
-	public int getWidth() {
-		return this.width;
-	}
+    /**
+     *
+     */
+    public int getWidth() {
+        return this.width;
+    }
 
-	/**
-	 *
-	 */
-	public void setWidth(int width) {
-		this.width = width;
-	}
+    /**
+     *
+     */
+    public void setWidth(int width) {
+        this.width = width;
+    }
 }

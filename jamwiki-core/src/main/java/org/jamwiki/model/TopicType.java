@@ -23,46 +23,46 @@ import java.util.EnumSet;
  */
 public enum TopicType {
 
-	/* Standard topic type. */
-	ARTICLE(1),
-	/* Topic redirects to another topic. */
-	REDIRECT(2),
-	/* Topic is an image. */
-	IMAGE(4),
-	/* Topic is a category. */
-	CATEGORY(5),
-	/* Topic is a non-image file. */
-	FILE(6),
-	/* Internal files, do not display on Special:AllPages */
-	SYSTEM_FILE(7),
-	/* Wiki templates. */
-	TEMPLATE(8);
+    /* Standard topic type. */
+    ARTICLE(1),
+    /* Topic redirects to another topic. */
+    REDIRECT(2),
+    /* Topic is an image. */
+    IMAGE(4),
+    /* Topic is a category. */
+    CATEGORY(5),
+    /* Topic is a non-image file. */
+    FILE(6),
+    /* Internal files, do not display on Special:AllPages */
+    SYSTEM_FILE(7),
+    /* Wiki templates. */
+    TEMPLATE(8);
 
-	private final int id;
+    private final int id;
 
-	/**
-	 *
-	 */
-	private TopicType(int id) {
-		this.id = id;
-	}
+    /**
+     *
+     */
+    private TopicType(int id) {
+        this.id = id;
+    }
 
-	/**
-	 *
-	 */
-	public int id() {
-		return this.id;
-	}
+    /**
+     *
+     */
+    public int id() {
+        return this.id;
+    }
 
-	/**
-	 *
-	 */
-	public static TopicType findTopicType(int id) {
-		for (TopicType topicType : EnumSet.allOf(TopicType.class)) {
-			if (topicType.id == id) {
-				return topicType;
-			}
-		}
-		return null;
-	}
+    /**
+     *
+     */
+    public static TopicType findTopicType(int id) {
+        for (TopicType topicType : EnumSet.allOf(TopicType.class)) {
+            if (topicType.id == id) {
+                return topicType;
+            }
+        }
+        return null;
+    }
 }

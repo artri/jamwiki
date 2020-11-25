@@ -19,8 +19,9 @@ package org.jamwiki.taglib;
 import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
-import org.jamwiki.utils.WikiLogger;
-import org.jamwiki.WikiVersion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.jamwiki.WikiBase;
 
 /**
  * JSP tag that displays the current Wiki version as specified by
@@ -28,18 +29,19 @@ import org.jamwiki.WikiVersion;
  */
 public class WikiVersionTag extends TagSupport {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(WikiVersionTag.class.getName());
+    private static final long serialVersionUID = 7971125967089337736L;
+    private static final Logger logger = LoggerFactory.getLogger(WikiBase.class);
 
-	/**
-	 *
-	 */
-	public int doEndTag() throws JspException {
-		try {
-			this.pageContext.getOut().print(WikiVersion.CURRENT_WIKI_VERSION);
-		} catch (IOException e) {
-			logger.error("Failure while retrieving Wiki version", e);
-			throw new JspException(e);
-		}
-		return EVAL_PAGE;
-	}
+    /**
+     *
+     */
+    public int doEndTag() throws JspException {
+        try {
+            this.pageContext.getOut().print(WikiBase.CURRENT_WIKI_VERSION);
+        } catch (IOException e) {
+            logger.error("Failure while retrieving Wiki version", e);
+            throw new JspException(e);
+        }
+        return EVAL_PAGE;
+    }
 }

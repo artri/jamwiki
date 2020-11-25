@@ -23,28 +23,28 @@ import java.io.Serializable;
  */
 public class WikiUserDetails implements Serializable {
 
-	private final String username;
-	private final String password;
+    private final String username;
+    private final String password;
 
-	/**
-	 *
-	 */
-	public WikiUserDetails(String username, String password) {
-		this.username = username;
-		this.password = password;
-	}
+    /**
+     *
+     */
+    public WikiUserDetails(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
-	/**
-	 *
-	 */
-	public String getPassword() {
-		return this.password;
-	}
+    /**
+     *
+     */
+    public String getPassword() {
+        return this.password;
+    }
 
-	/**
-	 * Standard get method for the username (login).
-	 */
-	public String getUsername() {
-		return this.username;
-	}
+    /**
+     * Standard get method for the username (login).
+     */
+    public String getUsername() {
+        return this.username;
+    }
 }

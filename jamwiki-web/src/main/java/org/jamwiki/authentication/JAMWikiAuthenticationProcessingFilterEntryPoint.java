@@ -20,7 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jamwiki.utils.WikiUtil;
 
 /**
@@ -33,32 +34,32 @@ import org.jamwiki.utils.WikiUtil;
  */
 public class JAMWikiAuthenticationProcessingFilterEntryPoint extends LoginUrlAuthenticationEntryPoint {
 
-	/** Standard logger. */
-	private static final WikiLogger logger = WikiLogger.getLogger(JAMWikiAuthenticationProcessingFilterEntryPoint.class.getName());
-	private JAMWikiErrorMessageProvider errorMessageProvider;
+    /** Standard logger. */
+    private static final Logger logger = LoggerFactory.getLogger(JAMWikiAuthenticationProcessingFilterEntryPoint.class.getName());
+    private JAMWikiErrorMessageProvider errorMessageProvider;
 
-	/**
-	 *
-	 */
-	public JAMWikiErrorMessageProvider getErrorMessageProvider() {
-		return this.errorMessageProvider;
-	}
+    /**
+     *
+     */
+    public JAMWikiErrorMessageProvider getErrorMessageProvider() {
+        return this.errorMessageProvider;
+    }
 
-	/**
-	 *
-	 */
-	public void setErrorMessageProvider(JAMWikiErrorMessageProvider errorMessageProvider) {
-		this.errorMessageProvider = errorMessageProvider;
-	}
+    /**
+     *
+     */
+    public void setErrorMessageProvider(JAMWikiErrorMessageProvider errorMessageProvider) {
+        this.errorMessageProvider = errorMessageProvider;
+    }
 
-	/**
-	 * Return the URL to redirect to in case of a login being required.  This method
-	 * uses the configured login URL and prepends the virtual wiki.
-	 */
-	protected String determineUrlToUseForThisRequest(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
-		request.getSession().setAttribute(JAMWikiAuthenticationConstants.JAMWIKI_ACCESS_DENIED_ERROR_KEY, this.getErrorMessageProvider().getErrorMessageKey(request));
-		request.getSession().setAttribute(JAMWikiAuthenticationConstants.JAMWIKI_ACCESS_DENIED_URI_KEY, WikiUtil.getTopicFromURI(request));
-		String virtualWiki = WikiUtil.getVirtualWikiFromURI(request);
-		return "/" + virtualWiki + this.getLoginFormUrl();
-	}
+    /**
+     * Return the URL to redirect to in case of a login being required.  This method
+     * uses the configured login URL and prepends the virtual wiki.
+     */
+    protected String determineUrlToUseForThisRequest(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
+        request.getSession().setAttribute(JAMWikiAuthenticationConstants.JAMWIKI_ACCESS_DENIED_ERROR_KEY, this.getErrorMessageProvider().getErrorMessageKey(request));
+        request.getSession().setAttribute(JAMWikiAuthenticationConstants.JAMWIKI_ACCESS_DENIED_URI_KEY, WikiUtil.getTopicFromURI(request));
+        String virtualWiki = WikiUtil.getVirtualWikiFromURI(request);
+        return "/" + virtualWiki + this.getLoginFormUrl();
+    }
 }

@@ -22,32 +22,32 @@ package org.jamwiki.migrate;
  */
 public class MigrationException extends Exception {
 
-	/**
-	 * Constructor for an exception containing a message.
-	 *
-	 * @param message The message information for the exception.
-	 */
-	public MigrationException(String message) {
-		super(message);
-	}
+    /**
+     * Constructor for an exception containing a message.
+     *
+     * @param message The message information for the exception.
+     */
+    public MigrationException(String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructor for an exception containing a message and wrapping another
-	 * exception.
-	 *
-	 * @param message The message information for the exception.
-	 * @param t The exception that is the cause of this exception.
-	 */
-	public MigrationException(String message, Throwable t) {
-		super(message, t);
-	}
+    /**
+     * Constructor for an exception containing a message and wrapping another
+     * exception.
+     *
+     * @param message The message information for the exception.
+     * @param t The exception that is the cause of this exception.
+     */
+    public MigrationException(String message, Throwable t) {
+        super(message, t);
+    }
 
-	/**
-	 * Constructor for an exception that wraps another exception.
-	 *
-	 * @param t The exception that is the cause of this exception.
-	 */
-	public MigrationException(Throwable t) {
-		super(t);
-	}
+    /**
+     * Constructor for an exception that wraps another exception.
+     *
+     * @param t The exception that is the cause of this exception.
+     */
+    public MigrationException(Throwable t) {
+        super(t);
+    }
 }

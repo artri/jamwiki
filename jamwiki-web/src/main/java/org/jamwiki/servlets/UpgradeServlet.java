@@ -16,23 +16,22 @@
  */
 package org.jamwiki.servlets;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.apache.commons.lang3.StringUtils;
 import org.jamwiki.DataAccessException;
 import org.jamwiki.Environment;
+import org.jamwiki.WikiBase;
 import org.jamwiki.WikiException;
 import org.jamwiki.WikiMessage;
-import org.jamwiki.WikiVersion;
 import org.jamwiki.model.VirtualWiki;
 import org.jamwiki.parser.LinkUtil;
 import org.jamwiki.parser.WikiLink;
 import org.jamwiki.utils.UpgradeUtil;
-import org.jamwiki.utils.WikiLogger;
 import org.jamwiki.utils.WikiUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -43,85 +42,86 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class UpgradeServlet extends JAMWikiServlet {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(UpgradeServlet.class.getName());
-	/** The name of the JSP file used to render the servlet output. */
-	protected static final String JSP_UPGRADE = "upgrade.jsp";
+    private static final Logger logger = LoggerFactory.getLogger(UpgradeServlet.class);
 
-	/**
-	 * This servlet requires slightly different initialization parameters from most
-	 * servlets.
-	 */
-	public UpgradeServlet() {
-		this.layout = false;
-		this.displayJSP = "upgrade";
-	}
+    /** The name of the JSP file used to render the servlet output. */
+    protected static final String JSP_UPGRADE = "upgrade.jsp";
 
-	/**
-	 * This method handles the request after its parent class receives control.
-	 *
-	 * @param request - Standard HttpServletRequest object.
-	 * @param response - Standard HttpServletResponse object.
-	 * @return A <code>ModelAndView</code> object to be handled by the rest of the Spring framework.
-	 */
-	public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		if (!WikiUtil.isUpgrade()) {
-			throw new WikiException(new WikiMessage("upgrade.error.notrequired"));
-		}
-		String function = request.getParameter("function");
-		pageInfo.setPageTitle(new WikiMessage("upgrade.title", Environment.getValue(Environment.PROP_BASE_WIKI_VERSION), WikiVersion.CURRENT_WIKI_VERSION));
-		boolean performUpgrade = (!StringUtils.isBlank(function) && function.equals("upgrade"));
-		try {
-			UpgradeUtil upgradeUtil = new UpgradeUtil(pageInfo.getMessages(), performUpgrade);
-			upgradeUtil.upgrade(request.getLocale(), ServletUtil.getIpAddress(request));
-		} catch (WikiException e) {
-			pageInfo.addError(e.getWikiMessage());
-		}
-		if (performUpgrade) {
-			upgrade(request, next, pageInfo);
-		} else {
-			next.addObject("viewOnly", "true");
-			view(request, next, pageInfo);
-		}
-		return next;
-	}
+    /**
+     * This servlet requires slightly different initialization parameters from most
+     * servlets.
+     */
+    public UpgradeServlet() {
+        this.layout = false;
+        this.displayJSP = "upgrade";
+    }
 
-	/**
-	 *
-	 */
-	private void upgrade(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) {
-		if (pageInfo.getErrors().isEmpty()) {
-			// success
-			WikiMessage wm = new WikiMessage("upgrade.caption.upgradecomplete");
-			VirtualWiki virtualWiki = VirtualWiki.defaultVirtualWiki();
-			WikiLink wikiLink = new WikiLink(request.getContextPath(), virtualWiki.getName(), virtualWiki.getRootTopicName());
-			try {
-				String htmlLink = LinkUtil.buildInternalLinkHtml(wikiLink, virtualWiki.getRootTopicName(), null, null, true);
-				// do not escape the HTML link
-				wm.setParamsWithoutEscaping(new String[]{htmlLink});
-			} catch (DataAccessException e) {
-				// building a link to the start page shouldn't fail, but if it does display a message
-				wm = new WikiMessage("upgrade.error.nonfatal", e.toString());
-				logger.warn("Upgrade complete, but unable to build redirect link to the start page.", e);
-			}
-			next.addObject("successMessage", wm);
-			// force logout to ensure current user will be re-validated.  this is
-			// necessary because the upgrade may have changed underlying data structures.
-			SecurityContextHolder.clearContext();
-		} else {
-			// failure
-			pageInfo.addError(new WikiMessage("upgrade.caption.upgradefailed"));
-			next.addObject("failure", "true");
-		}
-		this.view(request, next, pageInfo);
-	}
+    /**
+     * This method handles the request after its parent class receives control.
+     *
+     * @param request - Standard HttpServletRequest object.
+     * @param response - Standard HttpServletResponse object.
+     * @return A <code>ModelAndView</code> object to be handled by the rest of the Spring framework.
+     */
+    public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        if (!WikiUtil.isUpgrade()) {
+            throw new WikiException(new WikiMessage("upgrade.error.notrequired"));
+        }
+        String function = request.getParameter("function");
+        pageInfo.setPageTitle(new WikiMessage("upgrade.title", Environment.getValue(Environment.PROP_BASE_WIKI_VERSION), WikiBase.CURRENT_WIKI_VERSION));
+        boolean performUpgrade = (!StringUtils.isBlank(function) && function.equals("upgrade"));
+        try {
+            UpgradeUtil upgradeUtil = new UpgradeUtil(pageInfo.getMessages(), performUpgrade);
+            upgradeUtil.upgrade(request.getLocale(), ServletUtil.getIpAddress(request));
+        } catch (WikiException e) {
+            pageInfo.addError(e.getWikiMessage());
+        }
+        if (performUpgrade) {
+            upgrade(request, next, pageInfo);
+        } else {
+            next.addObject("viewOnly", "true");
+            view(request, next, pageInfo);
+        }
+        return next;
+    }
 
-	/**
-	 *
-	 */
-	private void view(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) {
-		pageInfo.getMessages().add(new WikiMessage("upgrade.caption.releasenotes"));
-		pageInfo.getMessages().add(new WikiMessage("upgrade.caption.manual"));
-		pageInfo.setContentJsp(JSP_UPGRADE);
-		pageInfo.setSpecial(true);
-	}
+    /**
+     *
+     */
+    private void upgrade(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) {
+        if (pageInfo.getErrors().isEmpty()) {
+            // success
+            WikiMessage wm = new WikiMessage("upgrade.caption.upgradecomplete");
+            VirtualWiki virtualWiki = VirtualWiki.defaultVirtualWiki();
+            WikiLink wikiLink = new WikiLink(request.getContextPath(), virtualWiki.getName(), virtualWiki.getRootTopicName());
+            try {
+                String htmlLink = LinkUtil.buildInternalLinkHtml(wikiLink, virtualWiki.getRootTopicName(), null, null, true);
+                // do not escape the HTML link
+                wm.setParamsWithoutEscaping(new String[]{htmlLink});
+            } catch (DataAccessException e) {
+                // building a link to the start page shouldn't fail, but if it does display a message
+                wm = new WikiMessage("upgrade.error.nonfatal", e.toString());
+                logger.warn("Upgrade complete, but unable to build redirect link to the start page.", e);
+            }
+            next.addObject("successMessage", wm);
+            // force logout to ensure current user will be re-validated.  this is
+            // necessary because the upgrade may have changed underlying data structures.
+            SecurityContextHolder.clearContext();
+        } else {
+            // failure
+            pageInfo.addError(new WikiMessage("upgrade.caption.upgradefailed"));
+            next.addObject("failure", "true");
+        }
+        this.view(request, next, pageInfo);
+    }
+
+    /**
+     *
+     */
+    private void view(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) {
+        pageInfo.getMessages().add(new WikiMessage("upgrade.caption.releasenotes"));
+        pageInfo.getMessages().add(new WikiMessage("upgrade.caption.manual"));
+        pageInfo.setContentJsp(JSP_UPGRADE);
+        pageInfo.setSpecial(true);
+    }
 }

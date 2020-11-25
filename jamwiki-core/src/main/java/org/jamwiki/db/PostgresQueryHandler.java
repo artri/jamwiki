@@ -18,7 +18,8 @@ package org.jamwiki.db;
 
 import java.util.Properties;
 import org.jamwiki.Environment;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Postgres-specific implementation of the QueryHandler interface.  This class implements
@@ -27,22 +28,22 @@ import org.jamwiki.utils.WikiLogger;
  */
 public class PostgresQueryHandler extends AnsiQueryHandler {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(PostgresQueryHandler.class.getName());
-	private static final String SQL_PROPERTY_FILE_NAME = "sql/sql.postgres.properties";
+    private static final Logger logger = LoggerFactory.getLogger(PostgresQueryHandler.class.getName());
+    private static final String SQL_PROPERTY_FILE_NAME = "sql/sql.postgres.properties";
 
-	/**
-	 *
-	 */
-	public PostgresQueryHandler() {
-		Properties defaults = Environment.loadProperties(AnsiQueryHandler.SQL_PROPERTY_FILE_NAME);
-		Properties props = Environment.loadProperties(SQL_PROPERTY_FILE_NAME, defaults);
-		super.init(props);
-	}
+    /**
+     *
+     */
+    public PostgresQueryHandler() {
+        Properties defaults = Environment.loadProperties(AnsiQueryHandler.SQL_PROPERTY_FILE_NAME);
+        Properties props = Environment.loadProperties(SQL_PROPERTY_FILE_NAME, defaults);
+        super.init(props);
+    }
 
-	/**
-	 *
-	 */
-	public boolean autoIncrementPrimaryKeys() {
-		return true;
-	}
+    /**
+     *
+     */
+    public boolean autoIncrementPrimaryKeys() {
+        return true;
+    }
 }

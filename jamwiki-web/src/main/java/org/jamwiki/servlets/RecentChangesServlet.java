@@ -24,7 +24,8 @@ import org.jamwiki.WikiBase;
 import org.jamwiki.WikiMessage;
 import org.jamwiki.model.RecentChange;
 import org.jamwiki.utils.Pagination;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -32,33 +33,33 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class RecentChangesServlet extends JAMWikiServlet {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(RecentChangesServlet.class.getName());
-	/** The name of the JSP file used to render the servlet output when searching. */
-	protected static final String JSP_RECENT_CHANGES = "recent-changes.jsp";
+    private static final Logger logger = LoggerFactory.getLogger(RecentChangesServlet.class.getName());
+    /** The name of the JSP file used to render the servlet output when searching. */
+    protected static final String JSP_RECENT_CHANGES = "recent-changes.jsp";
 
-	/**
-	 *
-	 */
-	public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		this.recentChanges(request, next, pageInfo);
-		return next;
-	}
+    /**
+     *
+     */
+    public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        this.recentChanges(request, next, pageInfo);
+        return next;
+    }
 
-	/**
-	 *
-	 */
-	private void recentChanges(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		String virtualWiki = pageInfo.getVirtualWikiName();
-		Pagination pagination = ServletUtil.loadPagination(request, next);
-		List<RecentChange> changes = WikiBase.getDataHandler().getRecentChanges(virtualWiki, pagination, true);
-		next.addObject("changes", changes);
-		next.addObject("numChanges", changes.size());
-		pageInfo.setPageTitle(new WikiMessage("recentchanges.title"));
-		pageInfo.setContentJsp(JSP_RECENT_CHANGES);
-		pageInfo.setSpecial(true);
-		if (Environment.getBooleanValue(Environment.PROP_PARSER_DISPLAY_SPECIAL_PAGE_VIRTUAL_WIKI_LINKS)) {
-			// add interwiki links to the left nav
-			ServletUtil.buildVirtualWikiLinks(request, pageInfo);
-		}
-	}
+    /**
+     *
+     */
+    private void recentChanges(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        String virtualWiki = pageInfo.getVirtualWikiName();
+        Pagination pagination = ServletUtil.loadPagination(request, next);
+        List<RecentChange> changes = WikiBase.getDataHandler().getRecentChanges(virtualWiki, pagination, true);
+        next.addObject("changes", changes);
+        next.addObject("numChanges", changes.size());
+        pageInfo.setPageTitle(new WikiMessage("recentchanges.title"));
+        pageInfo.setContentJsp(JSP_RECENT_CHANGES);
+        pageInfo.setSpecial(true);
+        if (Environment.getBooleanValue(Environment.PROP_PARSER_DISPLAY_SPECIAL_PAGE_VIRTUAL_WIKI_LINKS)) {
+            // add interwiki links to the left nav
+            ServletUtil.buildVirtualWikiLinks(request, pageInfo);
+        }
+    }
 }

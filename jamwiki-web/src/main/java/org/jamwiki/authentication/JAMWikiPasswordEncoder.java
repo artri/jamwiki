@@ -27,33 +27,33 @@ import org.springframework.security.authentication.encoding.PasswordEncoder;
  */
 public class JAMWikiPasswordEncoder implements PasswordEncoder {
 
-	/**
-	 * Encode a password as specified by the Spring Security PasswordEncoder interface.
-	 *
-	 * @param rawPass the password to encode
-	 * @param salt Ignored by JAMWiki.
-	 * @return encoded password
-	 */
-	public String encodePassword(String rawPass, Object salt) {
-		if (StringUtils.isBlank(rawPass)) {
-			throw new IllegalArgumentException("Password cannot be empty");
-		}
-		return Encryption.encrypt(rawPass);
-	}
+    /**
+     * Encode a password as specified by the Spring Security PasswordEncoder interface.
+     *
+     * @param rawPass the password to encode
+     * @param salt Ignored by JAMWiki.
+     * @return encoded password
+     */
+    public String encodePassword(String rawPass, Object salt) {
+        if (StringUtils.isBlank(rawPass)) {
+            throw new IllegalArgumentException("Password cannot be empty");
+        }
+        return Encryption.encrypt(rawPass);
+    }
 
-	/**
-	 * Validate a raw password against an encoded password as specified by the Spring
-	 * Security PasswordEncoder interface.
-	 *
-	 * @param encPass a pre-encoded password
-	 * @param rawPass a raw password to encode and compare against the pre-encoded password
-	 * @param salt Ignored by JAMWiki.
-	 * @return true if the password is valid , false otherwise
-	 */
-	public boolean isPasswordValid(String encPass, String rawPass, Object salt) {
-		if (StringUtils.isBlank(rawPass)) {
-			return false;
-		}
-		return StringUtils.equals(encPass, Encryption.encrypt(rawPass));
-	}
+    /**
+     * Validate a raw password against an encoded password as specified by the Spring
+     * Security PasswordEncoder interface.
+     *
+     * @param encPass a pre-encoded password
+     * @param rawPass a raw password to encode and compare against the pre-encoded password
+     * @param salt Ignored by JAMWiki.
+     * @return true if the password is valid , false otherwise
+     */
+    public boolean isPasswordValid(String encPass, String rawPass, Object salt) {
+        if (StringUtils.isBlank(rawPass)) {
+            return false;
+        }
+        return StringUtils.equals(encPass, Encryption.encrypt(rawPass));
+    }
 }

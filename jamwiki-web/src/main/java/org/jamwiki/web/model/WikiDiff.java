@@ -26,84 +26,84 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class WikiDiff implements Serializable {
 
-	/** The newly modified text, or <code>null</code> if text was deleted. */
-	private String newText;
-	/** The old text that was changed, or <code>null</code> if new text was added. */
-	private String oldText;
-	/** The zero-based position of the text that was changed. */
-	private int position = -1;
-	/** The diff may (optionally) contain a list of sub-diffs, such as when diffing two topics and then further showing what changed on a line. */
-	private List<WikiDiff> subDiffs;
+    /** The newly modified text, or <code>null</code> if text was deleted. */
+    private String newText;
+    /** The old text that was changed, or <code>null</code> if new text was added. */
+    private String oldText;
+    /** The zero-based position of the text that was changed. */
+    private int position = -1;
+    /** The diff may (optionally) contain a list of sub-diffs, such as when diffing two topics and then further showing what changed on a line. */
+    private List<WikiDiff> subDiffs;
 
-	/**
-	 *
-	 */
-	public WikiDiff(String oldText, String newText, int position) {
-		this.oldText = oldText;
-		this.newText = newText;
-		this.position = position;
-	}
+    /**
+     *
+     */
+    public WikiDiff(String oldText, String newText, int position) {
+        this.oldText = oldText;
+        this.newText = newText;
+        this.position = position;
+    }
 
-	/**
-	 *
-	 */
-	public boolean getChange() {
-		return !StringUtils.equals(this.oldText, this.newText);
-	}
+    /**
+     *
+     */
+    public boolean getChange() {
+        return !StringUtils.equals(this.oldText, this.newText);
+    }
 
-	/**
-	 *
-	 */
-	public String getNewText() {
-		return this.newText;
-	}
+    /**
+     *
+     */
+    public String getNewText() {
+        return this.newText;
+    }
 
-	/**
-	 *
-	 */
-	public void setNewText(String newText) {
-		this.newText = newText;
-	}
+    /**
+     *
+     */
+    public void setNewText(String newText) {
+        this.newText = newText;
+    }
 
-	/**
-	 *
-	 */
-	public String getOldText() {
-		return this.oldText;
-	}
+    /**
+     *
+     */
+    public String getOldText() {
+        return this.oldText;
+    }
 
-	/**
-	 *
-	 */
-	public void setOldText(String oldText) {
-		this.oldText = oldText;
-	}
+    /**
+     *
+     */
+    public void setOldText(String oldText) {
+        this.oldText = oldText;
+    }
 
-	/**
-	 *
-	 */
-	public int getPosition() {
-		return this.position;
-	}
+    /**
+     *
+     */
+    public int getPosition() {
+        return this.position;
+    }
 
-	/**
-	 *
-	 */
-	public void setPosition(int position) {
-		this.position = position;
-	}
+    /**
+     *
+     */
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
-	/**
-	 *
-	 */
-	public List<WikiDiff> getSubDiffs() {
-		return this.subDiffs;
-	}
+    /**
+     *
+     */
+    public List<WikiDiff> getSubDiffs() {
+        return this.subDiffs;
+    }
 
-	/**
-	 *
-	 */
-	public void setSubDiffs(List<WikiDiff> subDiffs) {
-		this.subDiffs = subDiffs;
-	}
+    /**
+     *
+     */
+    public void setSubDiffs(List<WikiDiff> subDiffs) {
+        this.subDiffs = subDiffs;
+    }
 }

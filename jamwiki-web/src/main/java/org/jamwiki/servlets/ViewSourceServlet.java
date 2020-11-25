@@ -19,7 +19,8 @@ package org.jamwiki.servlets;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jamwiki.model.Topic;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jamwiki.utils.WikiUtil;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,24 +30,24 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class ViewSourceServlet extends JAMWikiServlet {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(ViewSourceServlet.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(ViewSourceServlet.class.getName());
 
-	/**
-	 *
-	 */
-	public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		this.view(request, next, pageInfo);
-		return next;
-	}
+    /**
+     *
+     */
+    public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        this.view(request, next, pageInfo);
+        return next;
+    }
 
-	/**
-	 *
-	 */
-	private void view(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		String topicName = WikiUtil.getTopicFromRequest(request);
-		String virtualWiki = pageInfo.getVirtualWikiName();
-		Topic topic = ServletUtil.initializeTopic(virtualWiki, topicName);
-		topicName = topic.getName();
-		ServletUtil.viewTopicSource(next, pageInfo, topic);
-	}
+    /**
+     *
+     */
+    private void view(HttpServletRequest request, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        String topicName = WikiUtil.getTopicFromRequest(request);
+        String virtualWiki = pageInfo.getVirtualWikiName();
+        Topic topic = ServletUtil.initializeTopic(virtualWiki, topicName);
+        topicName = topic.getName();
+        ServletUtil.viewTopicSource(next, pageInfo, topic);
+    }
 }

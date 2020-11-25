@@ -23,52 +23,52 @@ import java.io.Serializable;
  */
 public class WikiGroup implements Serializable {
 
-	private String description;
-	private int groupId;
-	private final String name;
+    private String description;
+    private int groupId;
+    private final String name;
 
-	public static final String GROUP_ANONYMOUS = "GROUP_ANONYMOUS";
-	public static final String GROUP_REGISTERED_USER = "GROUP_REGISTERED_USER";
+    public static final String GROUP_ANONYMOUS = "GROUP_ANONYMOUS";
+    public static final String GROUP_REGISTERED_USER = "GROUP_REGISTERED_USER";
 
-	/**
-	 * @param name The group name.  Group names will be forced to uppercase.
-	 */
-	public WikiGroup(String name) {
-		this.name = ((name == null) ? null : name.toUpperCase());
-	}
+    /**
+     * @param name The group name.  Group names will be forced to uppercase.
+     */
+    public WikiGroup(String name) {
+        this.name = ((name == null) ? null : name.toUpperCase());
+    }
 
-	/**
-	 *
-	 */
-	public String getDescription() {
-		return this.description;
-	}
+    /**
+     *
+     */
+    public String getDescription() {
+        return this.description;
+    }
 
-	/**
-	 *
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    /**
+     *
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	/**
-	 *
-	 */
-	public int getGroupId() {
-		return this.groupId;
-	}
+    /**
+     *
+     */
+    public int getGroupId() {
+        return this.groupId;
+    }
 
-	/**
-	 *
-	 */
-	public void setGroupId(int groupId) {
-		this.groupId = groupId;
-	}
+    /**
+     *
+     */
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
 
-	/**
-	 * Retrieve the group name.  Group names are returned in uppercase.
-	 */
-	public String getName() {
-		return (this.name == null) ? null : this.name.toUpperCase();
-	}
+    /**
+     * Retrieve the group name.  Group names are returned in uppercase.
+     */
+    public String getName() {
+        return (this.name == null) ? null : this.name.toUpperCase();
+    }
 }

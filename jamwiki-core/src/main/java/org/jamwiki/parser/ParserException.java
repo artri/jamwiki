@@ -23,34 +23,34 @@ import java.io.IOException;
  */
 public class ParserException extends IOException {
 
-	/**
-	 * Constructor for an exception containing a message.
-	 *
-	 * @param message The message information for the exception.
-	 */
-	public ParserException(String message) {
-		super(message);
-	}
+    /**
+     * Constructor for an exception containing a message.
+     *
+     * @param message The message information for the exception.
+     */
+    public ParserException(String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructor for an exception containing a message and wrapping another
-	 * exception.
-	 *
-	 * @param message The message information for the exception.
-	 * @param t The exception that is the cause of this exception.
-	 */
-	public ParserException(String message, Throwable t) {
-		super(message);
-		this.initCause(t);
-	}
+    /**
+     * Constructor for an exception containing a message and wrapping another
+     * exception.
+     *
+     * @param message The message information for the exception.
+     * @param t The exception that is the cause of this exception.
+     */
+    public ParserException(String message, Throwable t) {
+        super(message);
+        this.initCause(t);
+    }
 
-	/**
-	 * Constructor for an exception that wraps another exception.
-	 *
-	 * @param t The exception that is the cause of this exception.
-	 */
-	public ParserException(Throwable t) {
-		super();
-		this.initCause(t);
-	}
+    /**
+     * Constructor for an exception that wraps another exception.
+     *
+     * @param t The exception that is the cause of this exception.
+     */
+    public ParserException(Throwable t) {
+        super();
+        this.initCause(t);
+    }
 }

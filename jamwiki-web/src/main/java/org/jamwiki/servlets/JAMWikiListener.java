@@ -28,25 +28,25 @@ import org.jamwiki.utils.WikiUtil;
  */
 public class JAMWikiListener implements ServletContextListener {
 
-	/**
-	 * Initialize the database connection pool and disk cache.
-	 *
-	 * @see javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
-	 */
-	public void contextInitialized(ServletContextEvent arg0) {
-		if (!WikiUtil.isFirstUse()) {
-			WikiDatabase.initialize();
-			WikiCache.initialize();
-		}
-	}
+    /**
+     * Initialize the database connection pool and disk cache.
+     *
+     * @see javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
+     */
+    public void contextInitialized(ServletContextEvent arg0) {
+        if (!WikiUtil.isFirstUse()) {
+            WikiDatabase.initialize();
+            WikiCache.initialize();
+        }
+    }
 
-	/**
-	 * Clean up the database connection pool and disk cache.
-	 *
-	 * @see javax.servlet.ServletContextListener#contextDestroyed(javax.servlet.ServletContextEvent)
-	 */
-	public void contextDestroyed(ServletContextEvent arg0) {
-		WikiDatabase.shutdown();
-		WikiCache.shutdown();
-	}
+    /**
+     * Clean up the database connection pool and disk cache.
+     *
+     * @see javax.servlet.ServletContextListener#contextDestroyed(javax.servlet.ServletContextEvent)
+     */
+    public void contextDestroyed(ServletContextEvent arg0) {
+        WikiDatabase.shutdown();
+        WikiCache.shutdown();
+    }
 }

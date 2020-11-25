@@ -21,53 +21,54 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.jamwiki.parser.ParserException;
 import org.jamwiki.utils.Utilities;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Handle redirects of the form "#REDIRECT [[Target]]".
  */
 public class RedirectTag implements JFlexParserTag {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(RedirectTag.class.getName());
-	/** Pattern to determine if the topic is a redirect. */
-	private static final Pattern REDIRECT_PATTERN = Pattern.compile("#REDIRECT[ ]*\\[\\[([^\\n\\r\\]]+)\\]\\]", Pattern.CASE_INSENSITIVE);
+    private static final Logger logger = LoggerFactory.getLogger(RedirectTag.class.getName());
+    /** Pattern to determine if the topic is a redirect. */
+    private static final Pattern REDIRECT_PATTERN = Pattern.compile("#REDIRECT[ ]*\\[\\[([^\\n\\r\\]]+)\\]\\]", Pattern.CASE_INSENSITIVE);
 
-	/**
-	 * Parse a call to a Mediawiki redirect tag of the form
-	 * "#REDIRECT [[Target]]".
-	 */
-	public String parse(JFlexLexer lexer, String raw, Object... args) throws ParserException {
-		if (lexer.getMode() <= JFlexParser.MODE_MINIMAL) {
-			return raw;
-		}
-		String redirect = this.retrieveTarget(raw);
-		if (StringUtils.isBlank(redirect)) {
-			// if there's no redirect then the syntax is bad
-			return raw;
-		}
-		// store the redirect value & also record it as a "link to" record
-		lexer.getParserOutput().setRedirect(redirect);
-		lexer.getParserOutput().addLink(redirect);
-		return "";
-	}
+    /**
+     * Parse a call to a Mediawiki redirect tag of the form
+     * "#REDIRECT [[Target]]".
+     */
+    public String parse(JFlexLexer lexer, String raw, Object... args) throws ParserException {
+        if (lexer.getMode() <= JFlexParser.MODE_MINIMAL) {
+            return raw;
+        }
+        String redirect = this.retrieveTarget(raw);
+        if (StringUtils.isBlank(redirect)) {
+            // if there's no redirect then the syntax is bad
+            return raw;
+        }
+        // store the redirect value & also record it as a "link to" record
+        lexer.getParserOutput().setRedirect(redirect);
+        lexer.getParserOutput().addLink(redirect);
+        return "";
+    }
 
-	/**
-	 * Use a regular expression to retrieve the redirection target from the
-	 * redirect text.
-	 */
-	private String retrieveTarget(String raw) throws ParserException {
-		if (StringUtils.isBlank(raw)) {
-			return null;
-		}
-		Matcher m = REDIRECT_PATTERN.matcher(raw.trim());
-		String result = (m.matches()) ? Utilities.decodeAndEscapeTopicName(m.group(1).trim(), true) : null;
-		if (result == null) {
-			return null;
-		}
-		boolean colon = (result.length() > 1 && result.charAt(0) == ':');
-		if (colon) {
-			result = result.substring(1);
-		}
-		return result;
-	}
+    /**
+     * Use a regular expression to retrieve the redirection target from the
+     * redirect text.
+     */
+    private String retrieveTarget(String raw) throws ParserException {
+        if (StringUtils.isBlank(raw)) {
+            return null;
+        }
+        Matcher m = REDIRECT_PATTERN.matcher(raw.trim());
+        String result = (m.matches()) ? Utilities.decodeAndEscapeTopicName(m.group(1).trim(), true) : null;
+        if (result == null) {
+            return null;
+        }
+        boolean colon = (result.length() > 1 && result.charAt(0) == ':');
+        if (colon) {
+            result = result.substring(1);
+        }
+        return result;
+    }
 }

@@ -26,14 +26,14 @@ import org.jamwiki.model.Topic;
  */
 public interface TopicImporter {
 
-	/**
-	 * Parse the contents of the file, returning a map of topics and the associated topic
-	 * versions for all data contained in the file.
-	 *
-	 * @param file The file containing all topic data to be imported.
-	 * @param virtualWiki The virtual wiki into which the topic data will be imported.
-	 * @return A map of imported topics and a list of topic version IDs imported for each topic.
-	 * @throws MigrationException Thrown if any error occurs during import.
-	 */
-	public Map<Topic, List<Integer>> importFromFile(File file, String virtualWiki) throws MigrationException;
+    /**
+     * Parse the contents of the file, returning a map of topics and the associated topic
+     * versions for all data contained in the file.
+     *
+     * @param file The file containing all topic data to be imported.
+     * @param virtualWiki The virtual wiki into which the topic data will be imported.
+     * @return A map of imported topics and a list of topic version IDs imported for each topic.
+     * @throws MigrationException Thrown if any error occurs during import.
+     */
+    public Map<Topic, List<Integer>> importFromFile(File file, String virtualWiki) throws MigrationException;
 }

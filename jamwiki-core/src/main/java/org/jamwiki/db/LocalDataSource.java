@@ -34,57 +34,57 @@ import org.jamwiki.utils.ResourceUtil;
  */
 public class LocalDataSource extends BasicDataSource {
 
-	/**
-	 * Constructs a new WikiDataSource
-	 */
-	public LocalDataSource() throws SQLException, ClassNotFoundException {
-		super();
-		if (!StringUtils.isBlank(Environment.getValue(Environment.PROP_DB_DRIVER))) {
-			ResourceUtil.forName(Environment.getValue(Environment.PROP_DB_DRIVER));
-		}
-		setUrl(Environment.getValue(Environment.PROP_DB_URL));
-		setUsername(Environment.getValue(Environment.PROP_DB_USERNAME));
-		setPassword(Encryption.getEncryptedProperty(Environment.PROP_DB_PASSWORD, null));
-		setDefaultReadOnly(false);
-		// AutoCommit should NOT be set to true 
-		// set pool properties
-		setMaxActive(Environment.getIntValue(Environment.PROP_DBCP_MAX_ACTIVE));
-		setMaxIdle(Environment.getIntValue(Environment.PROP_DBCP_MAX_IDLE));
-		setMinEvictableIdleTimeMillis(Environment.getIntValue(Environment.PROP_DBCP_MIN_EVICTABLE_IDLE_TIME) * 1000);
-		setTestOnBorrow(Environment.getBooleanValue(Environment.PROP_DBCP_TEST_ON_BORROW));
-		setTestOnReturn(Environment.getBooleanValue(Environment.PROP_DBCP_TEST_ON_RETURN));
-		setTestWhileIdle(Environment.getBooleanValue(Environment.PROP_DBCP_TEST_WHILE_IDLE));
-		setTimeBetweenEvictionRunsMillis(Environment.getIntValue(Environment.PROP_DBCP_TIME_BETWEEN_EVICTION_RUNS) * 1000);
-		setNumTestsPerEvictionRun(Environment.getIntValue(Environment.PROP_DBCP_NUM_TESTS_PER_EVICTION_RUN));
-		setValidationQuery(WikiDatabase.getConnectionValidationQuery());
-		setPoolPreparedStatements(Environment.getBooleanValue(Environment.PROP_DBCP_POOL_PREPARED_STATEMENTS));
-		setMaxOpenPreparedStatements(Environment.getIntValue(Environment.PROP_DBCP_MAX_OPEN_PREPARED_STATEMENTS));
-		if (Environment.getValue(Environment.PROP_DB_TYPE).equals(QueryHandler.QUERY_HANDLER_ORACLE)) {
-			// handle clobs as strings, Oracle 10g and higher drivers (ojdbc14.jar)
-			addConnectionProperty("SetBigStringTryClob", "true");
-		}
-		if (url.startsWith("jdbc:hsqldb:mem")) {
-			addConnectionProperty("shutdown", "true");
-		}
-		// Test the connection (this will also initialize the connection pool)
-		Connection testConnection = null;
-		try {
-			// try to get a test connection
-			testConnection = getConnection();
-		} catch (SQLException ex) {
-			if (connectionPool != null) {
-				try {
-					connectionPool.close();
-				} catch (Exception e) {
-				} // ignore any exception during cleanup
-			}
-			throw ex;
-		} finally {
-			if (testConnection != null) {
-				testConnection.close();
-			}
-		}
-		// the ConnectionPool is now initialised, so we can set the dbcp-when-exhausted-action
-		connectionPool.setWhenExhaustedAction((byte) Environment.getIntValue(Environment.PROP_DBCP_WHEN_EXHAUSTED_ACTION));
-	}
+    /**
+     * Constructs a new WikiDataSource
+     */
+    public LocalDataSource() throws SQLException, ClassNotFoundException {
+        super();
+        if (!StringUtils.isBlank(Environment.getValue(Environment.PROP_DB_DRIVER))) {
+            ResourceUtil.forName(Environment.getValue(Environment.PROP_DB_DRIVER));
+        }
+        setUrl(Environment.getValue(Environment.PROP_DB_URL));
+        setUsername(Environment.getValue(Environment.PROP_DB_USERNAME));
+        setPassword(Encryption.getEncryptedProperty(Environment.PROP_DB_PASSWORD, null));
+        setDefaultReadOnly(false);
+        // AutoCommit should NOT be set to true 
+        // set pool properties
+        setMaxActive(Environment.getIntValue(Environment.PROP_DBCP_MAX_ACTIVE));
+        setMaxIdle(Environment.getIntValue(Environment.PROP_DBCP_MAX_IDLE));
+        setMinEvictableIdleTimeMillis(Environment.getIntValue(Environment.PROP_DBCP_MIN_EVICTABLE_IDLE_TIME) * 1000);
+        setTestOnBorrow(Environment.getBooleanValue(Environment.PROP_DBCP_TEST_ON_BORROW));
+        setTestOnReturn(Environment.getBooleanValue(Environment.PROP_DBCP_TEST_ON_RETURN));
+        setTestWhileIdle(Environment.getBooleanValue(Environment.PROP_DBCP_TEST_WHILE_IDLE));
+        setTimeBetweenEvictionRunsMillis(Environment.getIntValue(Environment.PROP_DBCP_TIME_BETWEEN_EVICTION_RUNS) * 1000);
+        setNumTestsPerEvictionRun(Environment.getIntValue(Environment.PROP_DBCP_NUM_TESTS_PER_EVICTION_RUN));
+        setValidationQuery(WikiDatabase.getConnectionValidationQuery());
+        setPoolPreparedStatements(Environment.getBooleanValue(Environment.PROP_DBCP_POOL_PREPARED_STATEMENTS));
+        setMaxOpenPreparedStatements(Environment.getIntValue(Environment.PROP_DBCP_MAX_OPEN_PREPARED_STATEMENTS));
+        if (Environment.getValue(Environment.PROP_DB_TYPE).equals(QueryHandler.QUERY_HANDLER_ORACLE)) {
+            // handle clobs as strings, Oracle 10g and higher drivers (ojdbc14.jar)
+            addConnectionProperty("SetBigStringTryClob", "true");
+        }
+        if (url.startsWith("jdbc:hsqldb:mem")) {
+            addConnectionProperty("shutdown", "true");
+        }
+        // Test the connection (this will also initialize the connection pool)
+        Connection testConnection = null;
+        try {
+            // try to get a test connection
+            testConnection = getConnection();
+        } catch (SQLException ex) {
+            if (connectionPool != null) {
+                try {
+                    connectionPool.close();
+                } catch (Exception e) {
+                } // ignore any exception during cleanup
+            }
+            throw ex;
+        } finally {
+            if (testConnection != null) {
+                testConnection.close();
+            }
+        }
+        // the ConnectionPool is now initialised, so we can set the dbcp-when-exhausted-action
+        connectionPool.setWhenExhaustedAction((byte) Environment.getIntValue(Environment.PROP_DBCP_WHEN_EXHAUSTED_ACTION));
+    }
 }

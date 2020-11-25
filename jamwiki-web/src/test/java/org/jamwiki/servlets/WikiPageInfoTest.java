@@ -27,26 +27,26 @@ import static org.junit.Assert.*;
 
 public class WikiPageInfoTest extends JAMWikiUnitTest {
 
-	/**
-	 *
-	 */
-	@Test
-	public void testGetVirtualWiki() {
-		MockHttpServletRequest mockRequest = this.getMockHttpServletRequest("/virtual/Topic");
-		WikiPageInfo p = new WikiPageInfo(mockRequest, null);
-		assertEquals(p.getVirtualWikiName(), "virtual", p.getVirtualWikiName());
-		p.setVirtualWikiName("en");
-		assertEquals(p.getVirtualWikiName(), "en", p.getVirtualWikiName());
-		mockRequest = this.getMockHttpServletRequest("/");
-		p = new WikiPageInfo(mockRequest, null);
-		assertEquals(p.getVirtualWikiName(), VirtualWiki.defaultVirtualWiki().getName(), p.getVirtualWikiName());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testGetVirtualWiki() {
+        MockHttpServletRequest mockRequest = this.getMockHttpServletRequest("/virtual/Topic");
+        WikiPageInfo p = new WikiPageInfo(mockRequest, null);
+        assertEquals(p.getVirtualWikiName(), "virtual", p.getVirtualWikiName());
+        p.setVirtualWikiName("en");
+        assertEquals(p.getVirtualWikiName(), "en", p.getVirtualWikiName());
+        mockRequest = this.getMockHttpServletRequest("/");
+        p = new WikiPageInfo(mockRequest, null);
+        assertEquals(p.getVirtualWikiName(), VirtualWiki.defaultVirtualWiki().getName(), p.getVirtualWikiName());
+    }
 
-	/**
-	 *
-	 */
-	private MockHttpServletRequest getMockHttpServletRequest(String url) {
-		MockServletContext mockContext = new MockServletContext("context");
-		return new MockHttpServletRequest(mockContext, "GET", url);
-	}
+    /**
+     *
+     */
+    private MockHttpServletRequest getMockHttpServletRequest(String url) {
+        MockServletContext mockContext = new MockServletContext("context");
+        return new MockHttpServletRequest(mockContext, "GET", url);
+    }
 }

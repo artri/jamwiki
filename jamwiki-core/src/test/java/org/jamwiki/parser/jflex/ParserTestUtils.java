@@ -33,87 +33,87 @@ import static org.junit.Assert.*;
  */
 public class ParserTestUtils {
 
-	/**
-	 * Generate a generic ParserInput object that can be used for testing.
-	 */
-	public ParserInput parserInput(String topicName) {
-		// set dummy values for parser input
-		ParserInput parserInput = new ParserInput("en", topicName);
-		parserInput.setContext("/wiki");
-		parserInput.setLocale(LocaleUtils.toLocale("en_US"));
-		parserInput.setWikiUser(null);
-		parserInput.setUserDisplay("0.0.0.0");
-		parserInput.setAllowSectionEdit(true);
-		return parserInput;
-	}
+    /**
+     * Generate a generic ParserInput object that can be used for testing.
+     */
+    public ParserInput parserInput(String topicName) {
+        // set dummy values for parser input
+        ParserInput parserInput = new ParserInput("en", topicName);
+        parserInput.setContext("/wiki");
+        parserInput.setLocale(LocaleUtils.toLocale("en_US"));
+        parserInput.setWikiUser(null);
+        parserInput.setUserDisplay("0.0.0.0");
+        parserInput.setAllowSectionEdit(true);
+        return parserInput;
+    }
 
-	/**
-	 *
-	 */
-	private void executeParserTest(String fileName, String resultDirName) throws IOException, ParserException {
-		ParserOutput parserOutput = new ParserOutput();
-		String parserResult = this.parserResult(parserOutput, fileName);
-		String expectedResult = this.expectedResult(fileName, resultDirName);
-		assertEquals("Testing file " + fileName, expectedResult, parserResult);
-	}
+    /**
+     *
+     */
+    private void executeParserTest(String fileName, String resultDirName) throws IOException, ParserException {
+        ParserOutput parserOutput = new ParserOutput();
+        String parserResult = this.parserResult(parserOutput, fileName);
+        String expectedResult = this.expectedResult(fileName, resultDirName);
+        assertEquals("Testing file " + fileName, expectedResult, parserResult);
+    }
 
-	/**
-	 *
-	 */
-	private String expectedResult(String fileName, String resultDirName) throws IOException, ParserException {
-		String result = TestFileUtil.retrieveFileContent(resultDirName, fileName);
-		return this.sanitize(result);
-	}
+    /**
+     *
+     */
+    private String expectedResult(String fileName, String resultDirName) throws IOException, ParserException {
+        String result = TestFileUtil.retrieveFileContent(resultDirName, fileName);
+        return this.sanitize(result);
+    }
 
-	/**
-	 * Read files located in a /results directory, and then parse the file
-	 * in the /topics directory with the same name to ensure that the parsed
-	 * topic generates the expected result.
-	 *
-	 * @param resultDirName The directory that contains the parser results.
-	 *  There must be a corresponding /topics directory that contains the
-	 *  topic file that will generate the result.
-	 * @param knownFailures If there are result files that are known to parse
-	 *  incorrectly then they can be specified in advance, and they will not
-	 *  be executed as part of the test.
-	 */
-	public void parseAllResults(String resultDirName, List<String> knownFailures) throws IOException {
-		File resultDir = TestFileUtil.getClassLoaderFile(resultDirName);
-		File[] resultFiles = resultDir.listFiles();
-		String fileName = null;
-		for (int i = 0; i < resultFiles.length; i++) {
-			fileName = resultFiles[i].getName();
-			if (knownFailures != null && knownFailures.contains(fileName)) {
-				continue;
-			}
-			executeParserTest(fileName, resultDirName);
-		}
-	}
+    /**
+     * Read files located in a /results directory, and then parse the file
+     * in the /topics directory with the same name to ensure that the parsed
+     * topic generates the expected result.
+     *
+     * @param resultDirName The directory that contains the parser results.
+     *  There must be a corresponding /topics directory that contains the
+     *  topic file that will generate the result.
+     * @param knownFailures If there are result files that are known to parse
+     *  incorrectly then they can be specified in advance, and they will not
+     *  be executed as part of the test.
+     */
+    public void parseAllResults(String resultDirName, List<String> knownFailures) throws IOException {
+        File resultDir = TestFileUtil.getClassLoaderFile(resultDirName);
+        File[] resultFiles = resultDir.listFiles();
+        String fileName = null;
+        for (int i = 0; i < resultFiles.length; i++) {
+            fileName = resultFiles[i].getName();
+            if (knownFailures != null && knownFailures.contains(fileName)) {
+                continue;
+            }
+            executeParserTest(fileName, resultDirName);
+        }
+    }
 
-	/**
-	 *
-	 */
-	public ParserOutput parseForParserOutput(String topicName) throws Throwable {
-		ParserOutput parserOutput = new ParserOutput();
-		this.parserResult(parserOutput, topicName);
-		return parserOutput;
-	}
+    /**
+     *
+     */
+    public ParserOutput parseForParserOutput(String topicName) throws Throwable {
+        ParserOutput parserOutput = new ParserOutput();
+        this.parserResult(parserOutput, topicName);
+        return parserOutput;
+    }
 
-	/**
-	 * Given a topic file name (located within the TEST_TOPICS_DIR), parse the
-	 * topic and return the parsed output.
-	 */
-	public String parserResult(ParserOutput parserOutput, String fileName) throws IOException, ParserException {
-		String raw = TestFileUtil.retrieveFileContent(TestFileUtil.TEST_TOPICS_DIR, fileName);
-		String topicName = TestFileUtil.decodeTopicName(fileName);
-		ParserInput parserInput = this.parserInput(topicName);
-		return ParserUtil.parse(parserInput, parserOutput, raw);
-	}
+    /**
+     * Given a topic file name (located within the TEST_TOPICS_DIR), parse the
+     * topic and return the parsed output.
+     */
+    public String parserResult(ParserOutput parserOutput, String fileName) throws IOException, ParserException {
+        String raw = TestFileUtil.retrieveFileContent(TestFileUtil.TEST_TOPICS_DIR, fileName);
+        String topicName = TestFileUtil.decodeTopicName(fileName);
+        ParserInput parserInput = this.parserInput(topicName);
+        return ParserUtil.parse(parserInput, parserOutput, raw);
+    }
 
-	/**
-	 *
-	 */
-	private String sanitize(String value) {
-		return StringUtils.remove(value, '\r').trim();
-	}
+    /**
+     *
+     */
+    private String sanitize(String value) {
+        return StringUtils.remove(value, '\r').trim();
+    }
 }

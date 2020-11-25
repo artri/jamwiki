@@ -24,7 +24,8 @@ import org.jamwiki.parser.ParserException;
 import org.jamwiki.parser.jflex.JFlexCustomTagItem;
 import org.jamwiki.parser.jflex.JFlexLexer;
 import org.jamwiki.parser.jflex.JFlexParserUtil;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Add support for the HTML <iframe> tag for sites that want it.  Sample usage:
@@ -33,83 +34,83 @@ import org.jamwiki.utils.WikiLogger;
  */
 public class IFrameTag implements JFlexCustomTagItem {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(IFrameTag.class.getName());
-	private static List<String> ALLOWED_ATTRIBUTES = Arrays.asList(
-		"accesskey",
-		"align",
-		"class",
-		"dir",
-		"frameborder",
-		"height",
-		"id",
-		"lang",
-		"longdesc",
-		"marginwidth",
-		"marginheight",
-		"name",
-		"sandbox",
-		"scrolling",
-		"seamless",
-		"src",
-		"srcdoc",
-		"style",
-		"tabindex",
-		"title",
-		"width"
-	);
-	private String tagName = "iframe";
+    private static final Logger logger = LoggerFactory.getLogger(IFrameTag.class.getName());
+    private static List<String> ALLOWED_ATTRIBUTES = Arrays.asList(
+        "accesskey",
+        "align",
+        "class",
+        "dir",
+        "frameborder",
+        "height",
+        "id",
+        "lang",
+        "longdesc",
+        "marginwidth",
+        "marginheight",
+        "name",
+        "sandbox",
+        "scrolling",
+        "seamless",
+        "src",
+        "srcdoc",
+        "style",
+        "tabindex",
+        "title",
+        "width"
+    );
+    private String tagName = "iframe";
 
-	/**
-	 * Return the tag name.  If the tag is "<custom>" then the tag name is "custom".
-	 */
-	public String getTagName() {
-		return this.tagName;
-	}
+    /**
+     * Return the tag name.  If the tag is "<custom>" then the tag name is "custom".
+     */
+    public String getTagName() {
+        return this.tagName;
+    }
 
-	/**
-	 * Set the tag name.  If the tag is "<custom>" then the tag name is "custom".
-	 */
-	public void setTagName(String tagName) {
-		this.tagName = tagName;
-	}
+    /**
+     * Set the tag name.  If the tag is "<custom>" then the tag name is "custom".
+     */
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
 
-	/**
-	 * Initialize the tag with any key-value params passed in from the configuration.
-	 */
-	public void initParams(Map<String, String> initParams) {
-	}
+    /**
+     * Initialize the tag with any key-value params passed in from the configuration.
+     */
+    public void initParams(Map<String, String> initParams) {
+    }
 
-	/**
-	 * Convert the attribute map to a string of key-value pairs.
-	 */
-	private String formatAttributes(Map<String, String> attributes) {
-		if (attributes == null || attributes.isEmpty()) {
-			return "";
-		}
-		StringBuilder result = new StringBuilder();
-		for (Map.Entry<String, String> entry : attributes.entrySet()) {
-			if (!ALLOWED_ATTRIBUTES.contains(entry.getKey().toLowerCase())) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("iframe tag called with invalid attribute: " + entry.getKey());
-				}
-				continue;
-			}
-			result.append(' ').append(entry.getKey()).append("=\"").append(entry.getValue()).append("\"");
-		}
-		return result.toString();
-	}
+    /**
+     * Convert the attribute map to a string of key-value pairs.
+     */
+    private String formatAttributes(Map<String, String> attributes) {
+        if (attributes == null || attributes.isEmpty()) {
+            return "";
+        }
+        StringBuilder result = new StringBuilder();
+        for (Map.Entry<String, String> entry : attributes.entrySet()) {
+            if (!ALLOWED_ATTRIBUTES.contains(entry.getKey().toLowerCase())) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("iframe tag called with invalid attribute: " + entry.getKey());
+                }
+                continue;
+            }
+            result.append(' ').append(entry.getKey()).append("=\"").append(entry.getValue()).append("\"");
+        }
+        return result.toString();
+    }
 
-	/**
-	 * Parse an iframe tag of the form <iframe>...</iframe> and return the
-	 * resulting wiki text output.
-	 */
-	public String parse(JFlexLexer lexer, Map<String, String> attributes, String content) throws ParserException {
-		String openTag = "<iframe" + this.formatAttributes(attributes) + ">";
-		String closeTag = "</iframe>";
-		if (StringUtils.isBlank(content)) {
-			return JFlexParserUtil.formatAsNoParse(openTag + closeTag);
-		} else {
-			return JFlexParserUtil.formatAsNoParse(openTag) + content + JFlexParserUtil.formatAsNoParse(closeTag);
-		}
-	}
+    /**
+     * Parse an iframe tag of the form <iframe>...</iframe> and return the
+     * resulting wiki text output.
+     */
+    public String parse(JFlexLexer lexer, Map<String, String> attributes, String content) throws ParserException {
+        String openTag = "<iframe" + this.formatAttributes(attributes) + ">";
+        String closeTag = "</iframe>";
+        if (StringUtils.isBlank(content)) {
+            return JFlexParserUtil.formatAsNoParse(openTag + closeTag);
+        } else {
+            return JFlexParserUtil.formatAsNoParse(openTag) + content + JFlexParserUtil.formatAsNoParse(closeTag);
+        }
+    }
 }

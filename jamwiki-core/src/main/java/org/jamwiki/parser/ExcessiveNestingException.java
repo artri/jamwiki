@@ -22,12 +22,12 @@ package org.jamwiki.parser;
  */
 public class ExcessiveNestingException extends ParserException {
 
-	/**
-	 * Constructor for an exception containing a message.
-	 *
-	 * @param message The message information for the exception.
-	 */
-	public ExcessiveNestingException(String message) {
-		super(message);
-	}
+    /**
+     * Constructor for an exception containing a message.
+     *
+     * @param message The message information for the exception.
+     */
+    public ExcessiveNestingException(String message) {
+        super(message);
+    }
 }

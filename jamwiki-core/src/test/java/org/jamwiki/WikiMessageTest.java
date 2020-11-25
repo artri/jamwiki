@@ -23,75 +23,75 @@ import static org.junit.Assert.*;
 
 public class WikiMessageTest extends JAMWikiUnitTest {
 
-	/**
-	 *
-	 */
-	@Test
-	public void testConstructor() throws Throwable {
-		WikiMessage wikiMessage = new WikiMessage("testWikiMessageKey");
-		assertEquals("wikiMessage.getKey()", "testWikiMessageKey", wikiMessage.getKey());
-		assertNull("wikiMessage.getParams()", wikiMessage.getParams());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testConstructor() throws Throwable {
+        WikiMessage wikiMessage = new WikiMessage("testWikiMessageKey");
+        assertEquals("wikiMessage.getKey()", "testWikiMessageKey", wikiMessage.getKey());
+        assertNull("wikiMessage.getParams()", wikiMessage.getParams());
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testConstructor1() throws Throwable {
-		String[] strings = new String[1];
-		WikiMessage wikiMessage = new WikiMessage("testWikiMessageKey", strings);
-		assertEquals("wikiMessage.getKey()", "testWikiMessageKey", wikiMessage.getKey());
-		assertEquals("wikiMessage.getParams().length", 1, wikiMessage.getParams().length);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testConstructor1() throws Throwable {
+        String[] strings = new String[1];
+        WikiMessage wikiMessage = new WikiMessage("testWikiMessageKey", strings);
+        assertEquals("wikiMessage.getKey()", "testWikiMessageKey", wikiMessage.getKey());
+        assertEquals("wikiMessage.getParams().length", 1, wikiMessage.getParams().length);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testConstructor2() throws Throwable {
-		WikiMessage wikiMessage = new WikiMessage("testWikiMessageKey", (String[]) null);
-		assertEquals("wikiMessage.getKey()", "testWikiMessageKey", wikiMessage.getKey());
-		assertNull("wikiMessage.getParams()", wikiMessage.getParams());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testConstructor2() throws Throwable {
+        WikiMessage wikiMessage = new WikiMessage("testWikiMessageKey", (String[]) null);
+        assertEquals("wikiMessage.getKey()", "testWikiMessageKey", wikiMessage.getKey());
+        assertNull("wikiMessage.getParams()", wikiMessage.getParams());
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testConstructor3() throws Throwable {
-		String[] strings = new String[0];
-		WikiMessage wikiMessage = new WikiMessage("testWikiMessageKey", strings);
-		assertEquals("wikiMessage.getKey()", "testWikiMessageKey", wikiMessage.getKey());
-		assertEquals("wikiMessage.getParams().length", 0, wikiMessage.getParams().length);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testConstructor3() throws Throwable {
+        String[] strings = new String[0];
+        WikiMessage wikiMessage = new WikiMessage("testWikiMessageKey", strings);
+        assertEquals("wikiMessage.getKey()", "testWikiMessageKey", wikiMessage.getKey());
+        assertEquals("wikiMessage.getParams().length", 0, wikiMessage.getParams().length);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testConstructor4() throws Throwable {
-		WikiMessage wikiMessage = new WikiMessage("testWikiMessageKey", "testWikiMessageParam1");
-		assertEquals("wikiMessage.getKey()", "testWikiMessageKey", wikiMessage.getKey());
-		assertEquals("wikiMessage.getParams().length", 1, wikiMessage.getParams().length);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testConstructor4() throws Throwable {
+        WikiMessage wikiMessage = new WikiMessage("testWikiMessageKey", "testWikiMessageParam1");
+        assertEquals("wikiMessage.getKey()", "testWikiMessageKey", wikiMessage.getKey());
+        assertEquals("wikiMessage.getParams().length", 1, wikiMessage.getParams().length);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testConstructor5() throws Throwable {
-		WikiMessage wikiMessage = new WikiMessage("testWikiMessageKey", "testWikiMessageParam1", "testWikiMessageParam2");
-		assertEquals("wikiMessage.getKey()", "testWikiMessageKey", wikiMessage.getKey());
-		assertEquals("wikiMessage.getParams().length", 2, wikiMessage.getParams().length);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testConstructor5() throws Throwable {
+        WikiMessage wikiMessage = new WikiMessage("testWikiMessageKey", "testWikiMessageParam1", "testWikiMessageParam2");
+        assertEquals("wikiMessage.getKey()", "testWikiMessageKey", wikiMessage.getKey());
+        assertEquals("wikiMessage.getParams().length", 2, wikiMessage.getParams().length);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testGetKey() throws Throwable {
-		String result = new WikiMessage("testWikiMessageKey").getKey();
-		assertSame("result", "testWikiMessageKey", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testGetKey() throws Throwable {
+        String result = new WikiMessage("testWikiMessageKey").getKey();
+        assertSame("result", "testWikiMessageKey", result);
+    }
 }
 

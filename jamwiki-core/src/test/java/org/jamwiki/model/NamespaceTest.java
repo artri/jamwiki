@@ -26,84 +26,84 @@ import static org.junit.Assert.*;
  */
 public class NamespaceTest extends JAMWikiUnitTest {
 
-	/**
-	 *
-	 */
-	@Test
-	public void testFindMainNamespace() {
-		Namespace result = Namespace.findMainNamespace(null);
-		assertNull("result", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testFindMainNamespace() {
+        Namespace result = Namespace.findMainNamespace(null);
+        assertNull("result", result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testFindMainNamespace1() {
-		Namespace result = Namespace.findMainNamespace(Namespace.namespace(Namespace.MAIN_ID));
-		assertEquals("result", Namespace.namespace(Namespace.MAIN_ID), result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testFindMainNamespace1() {
+        Namespace result = Namespace.findMainNamespace(Namespace.namespace(Namespace.MAIN_ID));
+        assertEquals("result", Namespace.namespace(Namespace.MAIN_ID), result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testFindMainNamespace2() {
-		Namespace result = Namespace.findMainNamespace(Namespace.namespace(Namespace.USER_ID));
-		assertEquals("result", Namespace.namespace(Namespace.USER_ID), result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testFindMainNamespace2() {
+        Namespace result = Namespace.findMainNamespace(Namespace.namespace(Namespace.USER_ID));
+        assertEquals("result", Namespace.namespace(Namespace.USER_ID), result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testFindMainNamespace3() {
-		Namespace result = Namespace.findMainNamespace(Namespace.namespace(Namespace.USER_COMMENTS_ID));
-		assertEquals("result", Namespace.namespace(Namespace.USER_ID), result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testFindMainNamespace3() {
+        Namespace result = Namespace.findMainNamespace(Namespace.namespace(Namespace.USER_COMMENTS_ID));
+        assertEquals("result", Namespace.namespace(Namespace.USER_ID), result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testFindMainNamespace4() {
-		Namespace result = Namespace.findMainNamespace(Namespace.namespace(Namespace.SPECIAL_ID));
-		assertEquals("result", Namespace.namespace(Namespace.SPECIAL_ID), result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testFindMainNamespace4() {
+        Namespace result = Namespace.findMainNamespace(Namespace.namespace(Namespace.SPECIAL_ID));
+        assertEquals("result", Namespace.namespace(Namespace.SPECIAL_ID), result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testFindCommentsNamespace1() throws DataAccessException {
-		Namespace result = Namespace.findCommentsNamespace(Namespace.namespace(Namespace.MAIN_ID));
-		assertEquals("result", Namespace.namespace(Namespace.COMMENTS_ID), result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testFindCommentsNamespace1() throws DataAccessException {
+        Namespace result = Namespace.findCommentsNamespace(Namespace.namespace(Namespace.MAIN_ID));
+        assertEquals("result", Namespace.namespace(Namespace.COMMENTS_ID), result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testFindCommentsNamespace2() throws DataAccessException {
-		Namespace result = Namespace.findCommentsNamespace(Namespace.namespace(Namespace.USER_ID));
-		assertEquals("result", Namespace.namespace(Namespace.USER_COMMENTS_ID), result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testFindCommentsNamespace2() throws DataAccessException {
+        Namespace result = Namespace.findCommentsNamespace(Namespace.namespace(Namespace.USER_ID));
+        assertEquals("result", Namespace.namespace(Namespace.USER_COMMENTS_ID), result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testFindCommentsNamespace3() throws DataAccessException {
-		Namespace result = Namespace.findCommentsNamespace(Namespace.namespace(Namespace.USER_COMMENTS_ID));
-		assertEquals("result", Namespace.namespace(Namespace.USER_COMMENTS_ID), result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testFindCommentsNamespace3() throws DataAccessException {
+        Namespace result = Namespace.findCommentsNamespace(Namespace.namespace(Namespace.USER_COMMENTS_ID));
+        assertEquals("result", Namespace.namespace(Namespace.USER_COMMENTS_ID), result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testFindCommentsNamespace4() throws DataAccessException {
-		Namespace result = Namespace.findCommentsNamespace(Namespace.namespace(Namespace.SPECIAL_ID));
-		assertNull("result", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testFindCommentsNamespace4() throws DataAccessException {
+        Namespace result = Namespace.findCommentsNamespace(Namespace.namespace(Namespace.SPECIAL_ID));
+        assertNull("result", result);
+    }
 }

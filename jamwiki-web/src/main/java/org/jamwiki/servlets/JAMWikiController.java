@@ -25,19 +25,19 @@ import org.springframework.web.servlet.ModelAndView;
  */
 interface JAMWikiController {
 
-	/**
-	 * Method that will be called by all implementing servlets to handle the
-	 * servlet request.
-	 *
-	 * @param request The servlet request object.
-	 * @param response The servlet response object.
-	 * @param next A ModelAndView object that has been initialized to the view
-	 *  specified by the <code>displayJSP</code> member variable.
-	 * @param pageInfo A WikiPageInfo object that will hold output parameters
-	 *  to be passed to the output JSP.
-	 * @return A ModelAndView object corresponding to the information to be
-	 *  rendered, or <code>null</code> if the method directly handles its own
-	 *  output, for example by writing directly to the output response.
-	 */
-	ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception;
+    /**
+     * Method that will be called by all implementing servlets to handle the
+     * servlet request.
+     *
+     * @param request The servlet request object.
+     * @param response The servlet response object.
+     * @param next A ModelAndView object that has been initialized to the view
+     *  specified by the <code>displayJSP</code> member variable.
+     * @param pageInfo A WikiPageInfo object that will hold output parameters
+     *  to be passed to the output JSP.
+     * @return A ModelAndView object corresponding to the information to be
+     *  rendered, or <code>null</code> if the method directly handles its own
+     *  output, for example by writing directly to the output response.
+     */
+    ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception;
 }

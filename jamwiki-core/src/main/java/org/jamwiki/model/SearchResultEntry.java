@@ -21,40 +21,40 @@ package org.jamwiki.model;
  */
 public class SearchResultEntry {
 
-	/** The topic of this entry */
-	private final String topic;
-	/** the hit ranking */
-	private final float ranking;
-	/** Result summary */
-	private final String summary;
+    /** The topic of this entry */
+    private final String topic;
+    /** the hit ranking */
+    private final float ranking;
+    /** Result summary */
+    private final String summary;
 
-	/**
-	 *
-	 */
-	public SearchResultEntry(String topic, float ranking, String summary) {
-		this.topic = topic;
-		this.ranking = ranking;
-		this.summary = summary;
-	}
+    /**
+     *
+     */
+    public SearchResultEntry(String topic, float ranking, String summary) {
+        this.topic = topic;
+        this.ranking = ranking;
+        this.summary = summary;
+    }
 
-	/**
-	 *
-	 */
-	public float getRanking() {
-		return this.ranking;
-	}
+    /**
+     *
+     */
+    public float getRanking() {
+        return this.ranking;
+    }
 
-	/**
-	 *
-	 */
-	public String getSummary() {
-		return this.summary;
-	}
+    /**
+     *
+     */
+    public String getSummary() {
+        return this.summary;
+    }
 
-	/**
-	 *
-	 */
-	public String getTopic() {
-		return this.topic;
-	}
+    /**
+     *
+     */
+    public String getTopic() {
+        return this.topic;
+    }
 }

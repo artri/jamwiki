@@ -17,29 +17,30 @@
 package org.jamwiki.parser.jflex;
 
 import org.jamwiki.parser.ParserException;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class parses nowiki tags of the form <code>&lt;noinclude&gt;content&lt;/noinclude&gt;</code>.
  */
 public class NoIncludeTag implements JFlexParserTag {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(NoIncludeTag.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(NoIncludeTag.class.getName());
 
-	/**
-	 * Parse a call to a Mediawiki noinclude tag of the form
-	 * "<noinclude>text</noinclude>" and return the resulting output.
-	 */
-	public String parse(JFlexLexer lexer, String raw, Object... args) throws ParserException {
-		if (lexer.getMode() <= JFlexParser.MODE_MINIMAL) {
-			return raw;
-		}
-		if (lexer.getParserInput().getTemplateDepth() > 0) {
-			// no content is returned when called from a template
-			return "";
-		}
-		String content = JFlexParserUtil.tagContent(raw);
-		// run the pre-processor against the noinclude content
-		return JFlexParserUtil.parseFragment(lexer.getParserInput(), lexer.getParserOutput(), content, JFlexParser.MODE_TEMPLATE);
-	}
+    /**
+     * Parse a call to a Mediawiki noinclude tag of the form
+     * "<noinclude>text</noinclude>" and return the resulting output.
+     */
+    public String parse(JFlexLexer lexer, String raw, Object... args) throws ParserException {
+        if (lexer.getMode() <= JFlexParser.MODE_MINIMAL) {
+            return raw;
+        }
+        if (lexer.getParserInput().getTemplateDepth() > 0) {
+            // no content is returned when called from a template
+            return "";
+        }
+        String content = JFlexParserUtil.tagContent(raw);
+        // run the pre-processor against the noinclude content
+        return JFlexParserUtil.parseFragment(lexer.getParserInput(), lexer.getParserOutput(), content, JFlexParser.MODE_TEMPLATE);
+    }
 }

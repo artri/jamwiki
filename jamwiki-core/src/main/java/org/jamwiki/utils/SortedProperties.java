@@ -21,6 +21,9 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class acts as a utility class for providing the capability of a property file
  * that is sorted alphabetically by key value.  It is useful for things like translation
@@ -28,34 +31,33 @@ import java.util.Vector;
  */
 public class SortedProperties extends Properties {
 
-	/** Logger */
-	public static final WikiLogger logger = WikiLogger.getLogger(SortedProperties.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(SortedProperties.class);
 
-	/**
-	 * Standard constructor for creating a sorted properties file.
-	 */
-	public SortedProperties() {
-		super();
-	}
+    /**
+     * Standard constructor for creating a sorted properties file.
+     */
+    public SortedProperties() {
+        super();
+    }
 
-	/**
-	 * Copy constructor used to create a sorted properties file.
-	 */
-	public SortedProperties(Properties properties) {
-		super();
-		this.putAll(properties);
-	}
+    /**
+     * Copy constructor used to create a sorted properties file.
+     */
+    public SortedProperties(Properties properties) {
+        super();
+        this.putAll(properties);
+    }
 
-	/**
-	 * Override the Properties.keys() method so that the keyset returned is sorted.
-	 */
-	public Enumeration keys() {
-		Enumeration keyEnum = super.keys();
-		Vector keys = new Vector();
-		while (keyEnum.hasMoreElements()) {
-			keys.add(keyEnum.nextElement());
-		}
-		Collections.sort(keys);
-		return keys.elements();
-	}
+    /**
+     * Override the Properties.keys() method so that the keyset returned is sorted.
+     */
+    public Enumeration keys() {
+        Enumeration keyEnum = super.keys();
+        Vector keys = new Vector();
+        while (keyEnum.hasMoreElements()) {
+            keys.add(keyEnum.nextElement());
+        }
+        Collections.sort(keys);
+        return keys.elements();
+    }
 }

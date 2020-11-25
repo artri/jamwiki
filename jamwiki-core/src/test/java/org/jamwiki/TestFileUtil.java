@@ -27,67 +27,67 @@ import org.jamwiki.utils.ResourceUtil;
  */
 public class TestFileUtil {
 
-	public static final String TEST_RESULTS_DIR = "data/results/";
-	public static final String TEST_JS_RESULTS_DIR = "data/javascript/";
-	public static final String TEST_TOPICS_DIR = "data/topics/";
-	public static final String TEST_FILES_DIR = "data/files/";
+    public static final String TEST_RESULTS_DIR = "data/results/";
+    public static final String TEST_JS_RESULTS_DIR = "data/javascript/";
+    public static final String TEST_TOPICS_DIR = "data/topics/";
+    public static final String TEST_FILES_DIR = "data/files/";
 
-	/**
-	 *
-	 */
-	public static String decodeTopicName(String fileName) {
-		// files containing colons aren't allowed, so they are replaced with "_-_"
-		String result = StringUtils.replace(fileName, "_-_", ":");
-		result = StringUtils.replace(result, "_", " ");
-		// files containing slashes aren't allowed, so they are replaced with "~"
-		result = StringUtils.replace(result, "~", "/");
-		return result;
-	}
+    /**
+     *
+     */
+    public static String decodeTopicName(String fileName) {
+        // files containing colons aren't allowed, so they are replaced with "_-_"
+        String result = StringUtils.replace(fileName, "_-_", ":");
+        result = StringUtils.replace(result, "_", " ");
+        // files containing slashes aren't allowed, so they are replaced with "~"
+        result = StringUtils.replace(result, "~", "/");
+        return result;
+    }
 
-	/**
-	 *
-	 */
-	public static String encodeTopicName(String topicName) {
-		// files containing colons aren't allowed, so they are replaced with "_-_"
-		String result = StringUtils.replace(topicName, ":", "_-_");
-		return StringUtils.replace(result, " ", "_");
-	}
+    /**
+     *
+     */
+    public static String encodeTopicName(String topicName) {
+        // files containing colons aren't allowed, so they are replaced with "_-_"
+        String result = StringUtils.replace(topicName, ":", "_-_");
+        return StringUtils.replace(result, " ", "_");
+    }
 
-	/**
-	 *
-	 */
-	public static File getClassLoaderFile(String fileName) throws IOException {
-		try {
-			return ResourceUtil.getClassLoaderFile(fileName);
-		} catch (IOException e) {
-			// ignore
-		}
-		return new File(ResourceUtil.getClassLoaderRoot(), fileName);
-	}
+    /**
+     *
+     */
+    public static File getClassLoaderFile(String fileName) throws IOException {
+        try {
+            return ResourceUtil.getClassLoaderFile(fileName);
+        } catch (IOException e) {
+            // ignore
+        }
+        return new File(ResourceUtil.getClassLoaderRoot(), fileName);
+    }
 
-	/**
-	 *
-	 */
-	public static File retrieveFile(String directory, String fileName) {
-		fileName = encodeTopicName(fileName);
-		String fullName = directory + fileName;
-		try {
-			return ResourceUtil.getClassLoaderFile(fullName);
-		} catch (IOException e) { }
-		try {
-			return new File(ResourceUtil.getClassLoaderRoot(), fullName);
-		} catch (IOException e) { }
-		return null;
-	}
+    /**
+     *
+     */
+    public static File retrieveFile(String directory, String fileName) {
+        fileName = encodeTopicName(fileName);
+        String fullName = directory + fileName;
+        try {
+            return ResourceUtil.getClassLoaderFile(fullName);
+        } catch (IOException e) { }
+        try {
+            return new File(ResourceUtil.getClassLoaderRoot(), fullName);
+        } catch (IOException e) { }
+        return null;
+    }
 
-	/**
-	 *
-	 */
-	public static String retrieveFileContent(String directory, String fileName) throws IOException {
-		File file = TestFileUtil.retrieveFile(directory, fileName);
-		if (file == null || !file.exists()) {
-			return null;
-		}
-		return FileUtils.readFileToString(file, "UTF-8");
-	}
+    /**
+     *
+     */
+    public static String retrieveFileContent(String directory, String fileName) throws IOException {
+        File file = TestFileUtil.retrieveFile(directory, fileName);
+        if (file == null || !file.exists()) {
+            return null;
+        }
+        return FileUtils.readFileToString(file, "UTF-8");
+    }
 }

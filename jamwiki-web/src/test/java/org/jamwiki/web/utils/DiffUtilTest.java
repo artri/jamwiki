@@ -29,121 +29,121 @@ import static org.junit.Assert.*;
  */
 public class DiffUtilTest extends JAMWikiUnitTest {
 
-	/**
-	 *
-	 */
-	@Test
-	public void testDiff() throws Throwable {
-		List<WikiDiff> result = DiffUtil.diff("", "testDiffUtilOldVersion");
-		assertEquals("result.size()", 1, result.size());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testDiff() throws Throwable {
+        List<WikiDiff> result = DiffUtil.diff("", "testDiffUtilOldVersion");
+        assertEquals("result.size()", 1, result.size());
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testDiff1() throws Throwable {
-		List<WikiDiff> result = DiffUtil.diff(null, "testDiffUtilOldVersion");
-		assertEquals("result.size()", 1, result.size());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testDiff1() throws Throwable {
+        List<WikiDiff> result = DiffUtil.diff(null, "testDiffUtilOldVersion");
+        assertEquals("result.size()", 1, result.size());
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testDiff2() throws Throwable {
-		List<WikiDiff> result = DiffUtil.diff("testDiffUtilNewVersion", "testDiffUtil\nOldVersion");
-		assertEquals("result.size()", 2, result.size());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testDiff2() throws Throwable {
+        List<WikiDiff> result = DiffUtil.diff("testDiffUtilNewVersion", "testDiffUtil\nOldVersion");
+        assertEquals("result.size()", 2, result.size());
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testDiff3() throws Throwable {
-		List<WikiDiff> result = DiffUtil.diff("testDiffUtilNewVersion", "");
-		assertEquals("result.size()", 1, result.size());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testDiff3() throws Throwable {
+        List<WikiDiff> result = DiffUtil.diff("testDiffUtilNewVersion", "");
+        assertEquals("result.size()", 1, result.size());
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testDiff4() throws Throwable {
-		List<WikiDiff> result = DiffUtil.diff("testDiffUtil\nNewVersion", null);
-		assertEquals("result.size()", 2, result.size());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testDiff4() throws Throwable {
+        List<WikiDiff> result = DiffUtil.diff("testDiffUtil\nNewVersion", null);
+        assertEquals("result.size()", 2, result.size());
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testDiff5() throws Throwable {
-		List<WikiDiff> result = DiffUtil.diff("testDiffUtil\nNewVersion", "testDiffUtilOldVersion");
-		assertEquals("result.size()", 2, result.size());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testDiff5() throws Throwable {
+        List<WikiDiff> result = DiffUtil.diff("testDiffUtil\nNewVersion", "testDiffUtilOldVersion");
+        assertEquals("result.size()", 2, result.size());
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testDiff6() throws Throwable {
-		List<WikiDiff> result = DiffUtil.diff("testDiffUtilNewVersion", "testDiffUtilOldVersion");
-		assertEquals("result.size()", 1, result.size());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testDiff6() throws Throwable {
+        List<WikiDiff> result = DiffUtil.diff("testDiffUtilNewVersion", "testDiffUtilOldVersion");
+        assertEquals("result.size()", 1, result.size());
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testDiff7() throws Throwable {
-		List<WikiDiff> result = DiffUtil.diff("foo\n", null);
-		assertEquals("result.size()", 1, result.size());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testDiff7() throws Throwable {
+        List<WikiDiff> result = DiffUtil.diff("foo\n", null);
+        assertEquals("result.size()", 1, result.size());
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testDiff8() throws Throwable {
-		List<WikiDiff> result = DiffUtil.diff(null, null);
-		assertEquals("result.size()", 0, result.size());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testDiff8() throws Throwable {
+        List<WikiDiff> result = DiffUtil.diff(null, null);
+        assertEquals("result.size()", 0, result.size());
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testDiff9() throws Throwable {
-		List<WikiDiff> result = DiffUtil.diff("", null);
-		assertEquals("result.size()", 0, result.size());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testDiff9() throws Throwable {
+        List<WikiDiff> result = DiffUtil.diff("", null);
+        assertEquals("result.size()", 0, result.size());
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testDiff10() throws Throwable {
-		List<WikiDiff> result = DiffUtil.diff(null, "");
-		assertEquals("result.size()", 0, result.size());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testDiff10() throws Throwable {
+        List<WikiDiff> result = DiffUtil.diff(null, "");
+        assertEquals("result.size()", 0, result.size());
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testDiff11() throws Throwable {
-		List<WikiDiff> result = DiffUtil.diff("\n", "");
-		assertEquals("result.size()", 1, result.size());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testDiff11() throws Throwable {
+        List<WikiDiff> result = DiffUtil.diff("\n", "");
+        assertEquals("result.size()", 1, result.size());
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testDiff12() throws Throwable {
-		List<WikiDiff> result = DiffUtil.diff("testString", "testString");
-		assertEquals("result.size()", 0, result.size());
-	}
+    /**
+     *
+     */
+    @Test
+    public void testDiff12() throws Throwable {
+        List<WikiDiff> result = DiffUtil.diff("testString", "testString");
+        assertEquals("result.size()", 0, result.size());
+    }
 }
 

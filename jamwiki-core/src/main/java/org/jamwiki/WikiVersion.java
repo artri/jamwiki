@@ -24,64 +24,61 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class WikiVersion {
 
-	private final int major;
-	private final int minor;
-	private final int patch;
+    private final int major;
+    private final int minor;
+    private final int patch;
 
-	/** Current software version.  If this differs from the version in the properties an upgrade is performed. */
-	public final static String CURRENT_WIKI_VERSION = "2.0.0";
+    /**
+     * Constructor to create a new Wiki version object using a version string of
+     * the form "0.3.5".
+     *
+     * @param version A version string of the form "0.3.5".
+     */
+    public WikiVersion(String version) {
+        if (StringUtils.isBlank(version)) {
+            throw new IllegalArgumentException("Invalid Wiki version: " + version);
+        }
+        String[] tokens = version.split("\\.");
+        if (tokens.length != 3) {
+            throw new IllegalArgumentException("Invalid Wiki version: " + version);
+        }
+        this.major = Integer.valueOf(tokens[0]);
+        this.minor = Integer.valueOf(tokens[1]);
+        this.patch = Integer.valueOf(tokens[2]);
+    }
 
-	/**
-	 * Constructor to create a new Wiki version object using a version string of
-	 * the form "0.3.5".
-	 *
-	 * @param version A version string of the form "0.3.5".
-	 */
-	public WikiVersion(String version) {
-		if (StringUtils.isBlank(version)) {
-			throw new IllegalArgumentException("Invalid Wiki version: " + version);
-		}
-		String[] tokens = version.split("\\.");
-		if (tokens.length != 3) {
-			throw new IllegalArgumentException("Invalid Wiki version: " + version);
-		}
-		this.major = Integer.valueOf(tokens[0]);
-		this.minor = Integer.valueOf(tokens[1]);
-		this.patch = Integer.valueOf(tokens[2]);
-	}
+    /**
+     * Utility method for comparing the current Wiki version with another
+     * version.
+     *
+     * @param version A Wiki version to compare against.
+     * @return Returns <code>true</code> if the current version is older than
+     *  the version being compared against.
+     */
+    public boolean before(WikiVersion version) {
+        return this.before(version.major, version.minor, version.patch);
+    }
 
-	/**
-	 * Utility method for comparing the current Wiki version with another
-	 * version.
-	 *
-	 * @param version A Wiki version to compare against.
-	 * @return Returns <code>true</code> if the current version is older than
-	 *  the version being compared against.
-	 */
-	public boolean before(WikiVersion version) {
-		return this.before(version.major, version.minor, version.patch);
-	}
-
-	/**
-	 * Utility method for comparing the current Wiki version with another
-	 * version.
-	 *
-	 * @param major The major version number to compare against.
-	 * @param minor The minor version number to compare against.
-	 * @param patch The patch level to compare against.
-	 * @return Returns <code>true</code> if the current version is older than
-	 *  the version being compared against.
-	 */
-	public boolean before(int major, int minor, int patch) {
-		if (this.major < major) {
-			return true; // NOPMD
-		}
-		if (this.major == major && this.minor < minor) {
-			return true; // NOPMD
-		}
-		if (this.major == major && this.minor == minor && this.patch < patch) {
-			return true; // NOPMD
-		}
-		return false;
-	}
+    /**
+     * Utility method for comparing the current Wiki version with another
+     * version.
+     *
+     * @param major The major version number to compare against.
+     * @param minor The minor version number to compare against.
+     * @param patch The patch level to compare against.
+     * @return Returns <code>true</code> if the current version is older than
+     *  the version being compared against.
+     */
+    public boolean before(int major, int minor, int patch) {
+        if (this.major < major) {
+            return true; // NOPMD
+        }
+        if (this.major == major && this.minor < minor) {
+            return true; // NOPMD
+        }
+        if (this.major == major && this.minor == minor && this.patch < patch) {
+            return true; // NOPMD
+        }
+        return false;
+    }
 }

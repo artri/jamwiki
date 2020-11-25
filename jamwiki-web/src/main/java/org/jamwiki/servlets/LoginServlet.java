@@ -23,7 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.jamwiki.authentication.JAMWikiAuthenticationConstants;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jamwiki.utils.WikiUtil;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,52 +35,52 @@ import org.jamwiki.Environment;
  */
 public class LoginServlet extends JAMWikiServlet {
 
-	/** Logger */
-	private static final WikiLogger logger = WikiLogger.getLogger(LoginServlet.class.getName());
+    /** Logger */
+    private static final Logger logger = LoggerFactory.getLogger(LoginServlet.class.getName());
 
-	/**
-	 *
-	 */
-	public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		// FIXME - hard coding
-		if (ServletUtil.isTopic(request, "Special:Logout")) {
-			// redirect to the Spring Security logout
-			viewLogout(request, response, pageInfo);
-			return null;
-		}
-		// retrieve the URL to redirect to after successful login (if one is defined)
-		String loginSuccessTarget = request.getParameter(PARAM_LOGIN_SUCCESS_TARGET);
-		next = ServletUtil.viewLogin(request, pageInfo, loginSuccessTarget, null);
-		// use a minimal page during upgrades since underlying data structures may
-		// not yet be in sync with the database
-		this.layout = !WikiUtil.isUpgrade();
-		// Addition for test
-		next.addObject("mailEnabled", Environment.getBooleanValue(Environment.PROP_EMAIL_SMTP_ENABLE) && Environment.getBooleanValue(Environment.PROP_EMAIL_SERVICE_FORGOT_PASSWORD));
-		return next;
-	}
+    /**
+     *
+     */
+    public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        // FIXME - hard coding
+        if (ServletUtil.isTopic(request, "Special:Logout")) {
+            // redirect to the Spring Security logout
+            viewLogout(request, response, pageInfo);
+            return null;
+        }
+        // retrieve the URL to redirect to after successful login (if one is defined)
+        String loginSuccessTarget = request.getParameter(PARAM_LOGIN_SUCCESS_TARGET);
+        next = ServletUtil.viewLogin(request, pageInfo, loginSuccessTarget, null);
+        // use a minimal page during upgrades since underlying data structures may
+        // not yet be in sync with the database
+        this.layout = !WikiUtil.isUpgrade();
+        // Addition for test
+        next.addObject("mailEnabled", Environment.getBooleanValue(Environment.PROP_EMAIL_SMTP_ENABLE) && Environment.getBooleanValue(Environment.PROP_EMAIL_SERVICE_FORGOT_PASSWORD));
+        return next;
+    }
 
-	/**
-	 * Redirect to the default Spring Security logout URL after adding a "successful logout"
-	 * URL to the request.  See the Spring Security LogoutFilter.determineTargetUrl() for
-	 * further details.
-	 */
-	private void viewLogout(HttpServletRequest request, HttpServletResponse response, WikiPageInfo pageInfo) throws IOException {
-		String virtualWikiName = pageInfo.getVirtualWikiName();
-		String logoutSuccessUrl = (request.getContextPath().endsWith("/") ? "" : request.getContextPath());
-		logoutSuccessUrl += WikiUtil.findDefaultVirtualWikiUrl(virtualWikiName);
-		try {
-			logoutSuccessUrl = URLEncoder.encode(logoutSuccessUrl, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// this should never happen
-			throw new IllegalStateException("Unsupporting encoding UTF-8");
-		}
-		StringBuilder springSecurityLogoutUrl = new StringBuilder();
-		if (!StringUtils.equals(request.getContextPath(), "/")) {
-			springSecurityLogoutUrl.append(request.getContextPath());
-		}
-		springSecurityLogoutUrl.append(JAMWikiAuthenticationConstants.SPRING_SECURITY_LOGOUT_URL);
-		springSecurityLogoutUrl.append('?').append(JAMWikiAuthenticationConstants.SPRING_SECURITY_LOGOUT_REDIRECT_QUERY_PARAM);
-		springSecurityLogoutUrl.append('=').append(logoutSuccessUrl);
-		response.sendRedirect(response.encodeRedirectURL(springSecurityLogoutUrl.toString()));
-	}
+    /**
+     * Redirect to the default Spring Security logout URL after adding a "successful logout"
+     * URL to the request.  See the Spring Security LogoutFilter.determineTargetUrl() for
+     * further details.
+     */
+    private void viewLogout(HttpServletRequest request, HttpServletResponse response, WikiPageInfo pageInfo) throws IOException {
+        String virtualWikiName = pageInfo.getVirtualWikiName();
+        String logoutSuccessUrl = (request.getContextPath().endsWith("/") ? "" : request.getContextPath());
+        logoutSuccessUrl += WikiUtil.findDefaultVirtualWikiUrl(virtualWikiName);
+        try {
+            logoutSuccessUrl = URLEncoder.encode(logoutSuccessUrl, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            // this should never happen
+            throw new IllegalStateException("Unsupporting encoding UTF-8");
+        }
+        StringBuilder springSecurityLogoutUrl = new StringBuilder();
+        if (!StringUtils.equals(request.getContextPath(), "/")) {
+            springSecurityLogoutUrl.append(request.getContextPath());
+        }
+        springSecurityLogoutUrl.append(JAMWikiAuthenticationConstants.SPRING_SECURITY_LOGOUT_URL);
+        springSecurityLogoutUrl.append('?').append(JAMWikiAuthenticationConstants.SPRING_SECURITY_LOGOUT_REDIRECT_QUERY_PARAM);
+        springSecurityLogoutUrl.append('=').append(logoutSuccessUrl);
+        response.sendRedirect(response.encodeRedirectURL(springSecurityLogoutUrl.toString()));
+    }
 }

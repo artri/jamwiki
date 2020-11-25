@@ -23,29 +23,29 @@ import org.jamwiki.model.UserBlock;
  */
 public class UserBlockValidatorInfo extends RequestValidatorInfo {
 
-	/** The {@link org.jamwiki.model.UserBlock} object associated with this validation. */
-	private final UserBlock userBlock;
+    /** The {@link org.jamwiki.model.UserBlock} object associated with this validation. */
+    private final UserBlock userBlock;
 
-	/**
-	 * Standard constructor.
-	 *
-	 * @param userBlock If the UserBlock object is <code>null</code> then the
-	 *  request that generated this validation object will be considered valid,
-	 *  otherwise it will be considered invalid.
-	 */
-	public UserBlockValidatorInfo(UserBlock userBlock) {
-		super(userBlock == null);
-		this.userBlock = userBlock;
-	}
+    /**
+     * Standard constructor.
+     *
+     * @param userBlock If the UserBlock object is <code>null</code> then the
+     *  request that generated this validation object will be considered valid,
+     *  otherwise it will be considered invalid.
+     */
+    public UserBlockValidatorInfo(UserBlock userBlock) {
+        super(userBlock == null);
+        this.userBlock = userBlock;
+    }
 
-	/**
-	 * Return the {@link org.jamwiki.model.UserBlock} object associated with
-	 * this validation.
-	 *
-	 * @return Returns the {@link org.jamwiki.model.UserBlock} object
-	 *  associated with this validation.
-	 */
-	public UserBlock getUserBlock() {
-		return this.userBlock;
-	}
+    /**
+     * Return the {@link org.jamwiki.model.UserBlock} object associated with
+     * this validation.
+     *
+     * @return Returns the {@link org.jamwiki.model.UserBlock} object
+     *  associated with this validation.
+     */
+    public UserBlock getUserBlock() {
+        return this.userBlock;
+    }
 }

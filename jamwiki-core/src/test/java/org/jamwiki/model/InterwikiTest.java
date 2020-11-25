@@ -28,32 +28,32 @@ import static org.junit.Assert.*;
  */
 public class InterwikiTest extends JAMWikiUnitTest {
 
-	/**
-	 *
-	 */
-	@Test
-	public void testFormatInterWiki1() throws Throwable {
-		Interwiki interwiki = WikiBase.getDataHandler().lookupInterwiki("wikipedia");
-		String result = interwiki.format("Test");
-		assertEquals("result", "http://en.wikipedia.org/wiki/Test", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testFormatInterWiki1() throws Throwable {
+        Interwiki interwiki = WikiBase.getDataHandler().lookupInterwiki("wikipedia");
+        String result = interwiki.format("Test");
+        assertEquals("result", "http://en.wikipedia.org/wiki/Test", result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testFormatInterWiki2() throws Throwable {
-		Interwiki interwiki = WikiBase.getDataHandler().lookupInterwiki("wIkIpEdIa");
-		String result = interwiki.format("Test");
-		assertEquals("result", "http://en.wikipedia.org/wiki/Test", result);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testFormatInterWiki2() throws Throwable {
+        Interwiki interwiki = WikiBase.getDataHandler().lookupInterwiki("wIkIpEdIa");
+        String result = interwiki.format("Test");
+        assertEquals("result", "http://en.wikipedia.org/wiki/Test", result);
+    }
 
-	/**
-	 *
-	 */
-	@Test
-	public void testFormatNullInterWiki() throws Throwable {
-		Interwiki interwiki = WikiBase.getDataHandler().lookupInterwiki("fakeinterwiki");
-		assertNull("result", interwiki);
-	}
+    /**
+     *
+     */
+    @Test
+    public void testFormatNullInterWiki() throws Throwable {
+        Interwiki interwiki = WikiBase.getDataHandler().lookupInterwiki("fakeinterwiki");
+        assertNull("result", interwiki);
+    }
 }

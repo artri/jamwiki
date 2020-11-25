@@ -20,7 +20,8 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
@@ -29,24 +30,24 @@ import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuc
  */
 public class JAMWikiLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
-	/** Standard logger. */
-	private static final WikiLogger logger = WikiLogger.getLogger(JAMWikiLogoutSuccessHandler.class.getName());
+    /** Standard logger. */
+    private static final Logger logger = LoggerFactory.getLogger(JAMWikiLogoutSuccessHandler.class.getName());
 
-	/**
-	 *
-	 */
-	public JAMWikiLogoutSuccessHandler() {
-		this.setTargetUrlParameter(JAMWikiAuthenticationConstants.SPRING_SECURITY_LOGIN_TARGET_URL_FIELD_NAME);
-	}
+    /**
+     *
+     */
+    public JAMWikiLogoutSuccessHandler() {
+        this.setTargetUrlParameter(JAMWikiAuthenticationConstants.SPRING_SECURITY_LOGIN_TARGET_URL_FIELD_NAME);
+    }
 
-	/**
-	 *
-	 */
-	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-		// Special:Logout adds a proper redirection URL as a parameter in the
-		// Spring logout URL.
-		String targetUrl = request.getParameter(JAMWikiAuthenticationConstants.SPRING_SECURITY_LOGOUT_REDIRECT_QUERY_PARAM);
-		logger.info("Redirecting to: " + targetUrl);
-		response.sendRedirect(targetUrl);
-	}
+    /**
+     *
+     */
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        // Special:Logout adds a proper redirection URL as a parameter in the
+        // Spring logout URL.
+        String targetUrl = request.getParameter(JAMWikiAuthenticationConstants.SPRING_SECURITY_LOGOUT_REDIRECT_QUERY_PARAM);
+        logger.info("Redirecting to: " + targetUrl);
+        response.sendRedirect(targetUrl);
+    }
 }

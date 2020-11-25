@@ -25,187 +25,187 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class WikiFile implements Serializable {
 
-	public static final String UNKNOWN_MIME_TYPE = "application/unknown";
-	// FIXME - consider making this an ACL (more flexible)
-	private boolean adminOnly = false;
-	private Timestamp deleteDate;
-	private int fileId = -1;
-	private String fileName;
-	private long fileSize = -1;
-	private String mimeType = UNKNOWN_MIME_TYPE;
-	private boolean readOnly = false;
-	/** The URL is the image file path relative to the file upload directory. */
-	private String url;
-	private int topicId = -1;
-	private String virtualWiki;
+    public static final String UNKNOWN_MIME_TYPE = "application/unknown";
+    // FIXME - consider making this an ACL (more flexible)
+    private boolean adminOnly = false;
+    private Timestamp deleteDate;
+    private int fileId = -1;
+    private String fileName;
+    private long fileSize = -1;
+    private String mimeType = UNKNOWN_MIME_TYPE;
+    private boolean readOnly = false;
+    /** The URL is the image file path relative to the file upload directory. */
+    private String url;
+    private int topicId = -1;
+    private String virtualWiki;
 
-	/**
-	 *
-	 */
-	public WikiFile() {
-	}
+    /**
+     *
+     */
+    public WikiFile() {
+    }
 
-	/**
-	 *
-	 */
-	public WikiFile(WikiFile wikiFile) {
-		this.adminOnly = wikiFile.getAdminOnly();
-		this.deleteDate = wikiFile.getDeleteDate();
-		this.fileId = wikiFile.getFileId();
-		this.fileName = wikiFile.getFileName();
-		this.fileSize = wikiFile.getFileSize();
-		this.mimeType = wikiFile.getMimeType();
-		this.readOnly = wikiFile.getReadOnly();
-		this.url = wikiFile.getUrl();
-		this.topicId = wikiFile.getTopicId();
-		this.virtualWiki = wikiFile.getVirtualWiki();
-	}
+    /**
+     *
+     */
+    public WikiFile(WikiFile wikiFile) {
+        this.adminOnly = wikiFile.getAdminOnly();
+        this.deleteDate = wikiFile.getDeleteDate();
+        this.fileId = wikiFile.getFileId();
+        this.fileName = wikiFile.getFileName();
+        this.fileSize = wikiFile.getFileSize();
+        this.mimeType = wikiFile.getMimeType();
+        this.readOnly = wikiFile.getReadOnly();
+        this.url = wikiFile.getUrl();
+        this.topicId = wikiFile.getTopicId();
+        this.virtualWiki = wikiFile.getVirtualWiki();
+    }
 
-	/**
-	 *
-	 */
-	public boolean getAdminOnly() {
-		return this.adminOnly;
-	}
+    /**
+     *
+     */
+    public boolean getAdminOnly() {
+        return this.adminOnly;
+    }
 
-	/**
-	 *
-	 */
-	public void setAdminOnly(boolean adminOnly) {
-		this.adminOnly = adminOnly;
-	}
+    /**
+     *
+     */
+    public void setAdminOnly(boolean adminOnly) {
+        this.adminOnly = adminOnly;
+    }
 
-	/**
-	 *
-	 */
-	public Timestamp getDeleteDate() {
-		return this.deleteDate;
-	}
+    /**
+     *
+     */
+    public Timestamp getDeleteDate() {
+        return this.deleteDate;
+    }
 
-	/**
-	 *
-	 */
-	public void setDeleteDate(Timestamp deleteDate) {
-		this.deleteDate = deleteDate;
-	}
+    /**
+     *
+     */
+    public void setDeleteDate(Timestamp deleteDate) {
+        this.deleteDate = deleteDate;
+    }
 
-	/**
-	 *
-	 */
-	public int getFileId() {
-		return this.fileId;
-	}
+    /**
+     *
+     */
+    public int getFileId() {
+        return this.fileId;
+    }
 
-	/**
-	 *
-	 */
-	public void setFileId(int fileId) {
-		this.fileId = fileId;
-	}
+    /**
+     *
+     */
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
+    }
 
-	/**
-	 *
-	 */
-	public String getFileName() {
-		return this.fileName;
-	}
+    /**
+     *
+     */
+    public String getFileName() {
+        return this.fileName;
+    }
 
-	/**
-	 *
-	 */
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    /**
+     *
+     */
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-	/**
-	 *
-	 */
-	public long getFileSize() {
-		return this.fileSize;
-	}
+    /**
+     *
+     */
+    public long getFileSize() {
+        return this.fileSize;
+    }
 
-	/**
-	 *
-	 */
-	public void setFileSize(long fileSize) {
-		this.fileSize = fileSize;
-	}
+    /**
+     *
+     */
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
+    }
 
-	/**
-	 * This method will either return the MIME type set for the file, or a default
-	 * MIME type indicating that the MIME type is unknown.  This method will never
-	 * return <code>null</code>.
-	 */
-	public String getMimeType() {
-		return (StringUtils.isBlank(this.mimeType)) ? UNKNOWN_MIME_TYPE : this.mimeType;
-	}
+    /**
+     * This method will either return the MIME type set for the file, or a default
+     * MIME type indicating that the MIME type is unknown.  This method will never
+     * return <code>null</code>.
+     */
+    public String getMimeType() {
+        return (StringUtils.isBlank(this.mimeType)) ? UNKNOWN_MIME_TYPE : this.mimeType;
+    }
 
-	/**
-	 *
-	 */
-	public void setMimeType(String mimeType) {
-		this.mimeType = mimeType;
-	}
+    /**
+     *
+     */
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
 
-	/**
-	 *
-	 */
-	public boolean getReadOnly() {
-		return this.readOnly;
-	}
+    /**
+     *
+     */
+    public boolean getReadOnly() {
+        return this.readOnly;
+    }
 
-	/**
-	 *
-	 */
-	public void setReadOnly(boolean readOnly) {
-		this.readOnly = readOnly;
-	}
+    /**
+     *
+     */
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
 
-	/**
-	 *
-	 */
-	public int getTopicId() {
-		return this.topicId;
-	}
+    /**
+     *
+     */
+    public int getTopicId() {
+        return this.topicId;
+    }
 
-	/**
-	 *
-	 */
-	public void setTopicId(int topicId) {
-		this.topicId = topicId;
-	}
+    /**
+     *
+     */
+    public void setTopicId(int topicId) {
+        this.topicId = topicId;
+    }
 
-	/**
-	 * Return the image file path relative to the file upload directory. For example,
-	 * if the file upload directory is <code>/home/wiki/files</code> and the file
-	 * is <code>/home/wiki/files/en/2011/10/image-06222500.png</code> then the URL
-	 * would be <code>/en/2011/10/image-06222500.png</code>.
-	 */
-	public String getUrl() {
-		return this.url;
-	}
+    /**
+     * Return the image file path relative to the file upload directory. For example,
+     * if the file upload directory is <code>/home/wiki/files</code> and the file
+     * is <code>/home/wiki/files/en/2011/10/image-06222500.png</code> then the URL
+     * would be <code>/en/2011/10/image-06222500.png</code>.
+     */
+    public String getUrl() {
+        return this.url;
+    }
 
-	/**
-	 * Set the image file path relative to the file upload directory. For example,
-	 * if the file upload directory is <code>/home/wiki/files</code> and the file
-	 * is <code>/home/wiki/files/en/2011/10/image-06222500.png</code> then the URL
-	 * would be <code>/en/2011/10/image-06222500.png</code>.
-	 */
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    /**
+     * Set the image file path relative to the file upload directory. For example,
+     * if the file upload directory is <code>/home/wiki/files</code> and the file
+     * is <code>/home/wiki/files/en/2011/10/image-06222500.png</code> then the URL
+     * would be <code>/en/2011/10/image-06222500.png</code>.
+     */
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	/**
-	 *
-	 */
-	public String getVirtualWiki() {
-		return this.virtualWiki;
-	}
+    /**
+     *
+     */
+    public String getVirtualWiki() {
+        return this.virtualWiki;
+    }
 
-	/**
-	 *
-	 */
-	public void setVirtualWiki(String virtualWiki) {
-		this.virtualWiki = virtualWiki;
-	}
+    /**
+     *
+     */
+    public void setVirtualWiki(String virtualWiki) {
+        this.virtualWiki = virtualWiki;
+    }
 }

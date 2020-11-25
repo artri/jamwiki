@@ -20,29 +20,29 @@ package org.jamwiki.parser.image;
  *
  */
 public enum ImageVerticalAlignmentEnum {
-	BASELINE("baseline"),
-	SUB("sub"),
-	SUPER("super"),
-	TOP("top"),
-	TEXT_TOP("text-top"),
-	MIDDLE("middle"),
-	BOTTOM("bottom"),
-	TEXT_BOTTOM("text-bottom"),
-	NOT_SPECIFIED("not-specified");
+    BASELINE("baseline"),
+    SUB("sub"),
+    SUPER("super"),
+    TOP("top"),
+    TEXT_TOP("text-top"),
+    MIDDLE("middle"),
+    BOTTOM("bottom"),
+    TEXT_BOTTOM("text-bottom"),
+    NOT_SPECIFIED("not-specified");
 
-	private String label;
+    private String label;
 
-	/**
-	 *
-	 */
-	ImageVerticalAlignmentEnum(String label) {
-		this.label = label;
-	}
+    /**
+     *
+     */
+    ImageVerticalAlignmentEnum(String label) {
+        this.label = label;
+    }
 
-	/**
-	 * Override the default toString() method so that valid CSS is returned.
-	 */
-	public String toString() {
-		return this.label;
-	}
+    /**
+     * Override the default toString() method so that valid CSS is returned.
+     */
+    public String toString() {
+        return this.label;
+    }
 }

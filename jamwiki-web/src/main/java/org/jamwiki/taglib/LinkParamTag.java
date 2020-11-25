@@ -19,7 +19,8 @@ package org.jamwiki.taglib;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import org.apache.commons.lang3.StringUtils;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * JSP tag used within {@link org.jamwiki.taglib.LinkTag} tags to add query
@@ -28,58 +29,58 @@ import org.jamwiki.utils.WikiLogger;
  */
 public class LinkParamTag extends BodyTagSupport {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(LinkParamTag.class.getName());
-	private String value = null;
-	private String key = null;
+    private static final Logger logger = LoggerFactory.getLogger(LinkParamTag.class.getName());
+    private String value = null;
+    private String key = null;
 
-	/**
-	 *
-	 */
-	public int doEndTag() throws JspException {
-		String tagValue = null;
-		LinkTag parent = (LinkTag)this.getParent();
-		if (parent == null) {
-			throw new JspException("linkParam tag not nested within a link tag");
-		}
-		try {
-			if (!StringUtils.isBlank(this.value)) {
-				tagValue = this.value;
-			} else {
-				tagValue = this.getBodyContent().getString();
-			}
-			parent.addQueryParam(this.key, tagValue);
-		} catch (JspException e) {
-			logger.error("Failure in link param tag for " + this.value, e);
-			throw e;
-		}
-		return EVAL_PAGE;
-	}
+    /**
+     *
+     */
+    public int doEndTag() throws JspException {
+        String tagValue = null;
+        LinkTag parent = (LinkTag)this.getParent();
+        if (parent == null) {
+            throw new JspException("linkParam tag not nested within a link tag");
+        }
+        try {
+            if (!StringUtils.isBlank(this.value)) {
+                tagValue = this.value;
+            } else {
+                tagValue = this.getBodyContent().getString();
+            }
+            parent.addQueryParam(this.key, tagValue);
+        } catch (JspException e) {
+            logger.error("Failure in link param tag for " + this.value, e);
+            throw e;
+        }
+        return EVAL_PAGE;
+    }
 
-	/**
-	 *
-	 */
-	public String getKey() {
-		return this.key;
-	}
+    /**
+     *
+     */
+    public String getKey() {
+        return this.key;
+    }
 
-	/**
-	 *
-	 */
-	public void setKey(String key) {
-		this.key = key;
-	}
+    /**
+     *
+     */
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-	/**
-	 *
-	 */
-	public String getValue() {
-		return this.value;
-	}
+    /**
+     *
+     */
+    public String getValue() {
+        return this.value;
+    }
 
-	/**
-	 *
-	 */
-	public void setValue(String value) {
-		this.value = value;
-	}
+    /**
+     *
+     */
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

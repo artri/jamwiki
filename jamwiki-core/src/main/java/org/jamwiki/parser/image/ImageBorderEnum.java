@@ -20,5 +20,5 @@ package org.jamwiki.parser.image;
  *
  */
 public enum ImageBorderEnum {
-	_GALLERY, BORDER, FRAME, THUMB, FRAMELESS, NOT_SPECIFIED
+    _GALLERY, BORDER, FRAME, THUMB, FRAMELESS, NOT_SPECIFIED
 }

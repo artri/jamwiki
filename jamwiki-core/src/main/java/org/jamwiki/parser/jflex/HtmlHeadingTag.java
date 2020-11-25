@@ -17,42 +17,43 @@
 package org.jamwiki.parser.jflex;
 
 import org.jamwiki.parser.ParserException;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Handle HTML heading tags such as <h1>...</h1>.
  */
 public class HtmlHeadingTag extends AbstractHeadingTag {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(HtmlHeadingTag.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(HtmlHeadingTag.class.getName());
 
-	/**
-	 *
-	 */
-	protected int generateTagLevel(String raw, Object... args) throws ParserException {
-		String openTag = this.generateTagOpen(raw, args);
-		int tagLevelPos = openTag.toLowerCase().indexOf("h") + 1;
-		return Integer.parseInt(openTag.substring(tagLevelPos, tagLevelPos + 1));
-	}
+    /**
+     *
+     */
+    protected int generateTagLevel(String raw, Object... args) throws ParserException {
+        String openTag = this.generateTagOpen(raw, args);
+        int tagLevelPos = openTag.toLowerCase().indexOf("h") + 1;
+        return Integer.parseInt(openTag.substring(tagLevelPos, tagLevelPos + 1));
+    }
 
-	/**
-	 *
-	 */
-	protected String generateTagOpen(String raw, Object... args) throws ParserException {
-		int pos = raw.indexOf('>');
-		String openTagRaw = raw.substring(0, pos + 1);
-		return JFlexParserUtil.sanitizeHtmlTag(openTagRaw).toHtml();
-	}
+    /**
+     *
+     */
+    protected String generateTagOpen(String raw, Object... args) throws ParserException {
+        int pos = raw.indexOf('>');
+        String openTagRaw = raw.substring(0, pos + 1);
+        return JFlexParserUtil.sanitizeHtmlTag(openTagRaw).toHtml();
+    }
 
-	/**
-	 *
-	 */
-	protected String generateTagText(String raw, Object... args) throws ParserException {
-		// get end of opening tag
-		int pos = raw.indexOf('>');
-		String tagText = raw.substring(pos + 1);
-		// get start of closing tag
-		pos = tagText.lastIndexOf('<');
-		return tagText.substring(0, pos).trim();
-	}
+    /**
+     *
+     */
+    protected String generateTagText(String raw, Object... args) throws ParserException {
+        // get end of opening tag
+        int pos = raw.indexOf('>');
+        String tagText = raw.substring(pos + 1);
+        // get start of closing tag
+        pos = tagText.lastIndexOf('<');
+        return tagText.substring(0, pos).trim();
+    }
 }

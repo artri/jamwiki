@@ -20,7 +20,8 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jamwiki.WikiBase;
-import org.jamwiki.utils.WikiLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -28,32 +29,32 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class StylesheetServlet extends JAMWikiServlet {
 
-	private static final WikiLogger logger = WikiLogger.getLogger(StylesheetServlet.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(StylesheetServlet.class.getName());
 
-	/**
-	 * This servlet requires slightly different initialization parameters from most
-	 * servlets.
-	 */
-	public StylesheetServlet() {
-		this.layout = false;
-	}
+    /**
+     * This servlet requires slightly different initialization parameters from most
+     * servlets.
+     */
+    public StylesheetServlet() {
+        this.layout = false;
+    }
 
-	/**
-	 *
-	 */
-	public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
-		String virtualWiki = pageInfo.getVirtualWikiName();
-		String stylesheet = ServletUtil.cachedContent(request.getContextPath(), request.getLocale(), virtualWiki, WikiBase.SPECIAL_PAGE_SYSTEM_CSS, false);
-		stylesheet += '\n' + ServletUtil.cachedContent(request.getContextPath(), request.getLocale(), virtualWiki, WikiBase.SPECIAL_PAGE_CUSTOM_CSS, false);
-		response.setContentType("text/css");
-		response.setCharacterEncoding("UTF-8");
-		// cache for 30 minutes (60 * 30 = 1800)
-		// FIXME - make configurable
-		response.setHeader("Cache-Control", "max-age=1800");
-		PrintWriter out = response.getWriter();
-		out.print(stylesheet);
-		out.close();
-		// do not load defaults or redirect - return as raw CSS
-		return null;
-	}
+    /**
+     *
+     */
+    public ModelAndView handleJAMWikiRequest(HttpServletRequest request, HttpServletResponse response, ModelAndView next, WikiPageInfo pageInfo) throws Exception {
+        String virtualWiki = pageInfo.getVirtualWikiName();
+        String stylesheet = ServletUtil.cachedContent(request.getContextPath(), request.getLocale(), virtualWiki, WikiBase.SPECIAL_PAGE_SYSTEM_CSS, false);
+        stylesheet += '\n' + ServletUtil.cachedContent(request.getContextPath(), request.getLocale(), virtualWiki, WikiBase.SPECIAL_PAGE_CUSTOM_CSS, false);
+        response.setContentType("text/css");
+        response.setCharacterEncoding("UTF-8");
+        // cache for 30 minutes (60 * 30 = 1800)
+        // FIXME - make configurable
+        response.setHeader("Cache-Control", "max-age=1800");
+        PrintWriter out = response.getWriter();
+        out.print(stylesheet);
+        out.close();
+        // do not load defaults or redirect - return as raw CSS
+        return null;
+    }
 }

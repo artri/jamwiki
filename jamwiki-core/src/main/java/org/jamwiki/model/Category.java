@@ -23,79 +23,79 @@ import java.io.Serializable;
  */
 public class Category implements Serializable {
 
-	private String childTopicName;
-	private String name;
-	private String sortKey;
-	private TopicType topicType;
-	private String virtualWiki;
+    private String childTopicName;
+    private String name;
+    private String sortKey;
+    private TopicType topicType;
+    private String virtualWiki;
 
-	/**
-	 *
-	 */
-	public String getChildTopicName() {
-		return this.childTopicName;
-	}
+    /**
+     *
+     */
+    public String getChildTopicName() {
+        return this.childTopicName;
+    }
 
-	/**
-	 *
-	 */
-	public void setChildTopicName(String childTopicName) {
-		this.childTopicName = childTopicName;
-	}
+    /**
+     *
+     */
+    public void setChildTopicName(String childTopicName) {
+        this.childTopicName = childTopicName;
+    }
 
-	/**
-	 *
-	 */
-	public String getName() {
-		return this.name;
-	}
+    /**
+     *
+     */
+    public String getName() {
+        return this.name;
+    }
 
-	/**
-	 *
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     *
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 *
-	 */
-	public String getSortKey() {
-		return this.sortKey;
-	}
+    /**
+     *
+     */
+    public String getSortKey() {
+        return this.sortKey;
+    }
 
-	/**
-	 *
-	 */
-	public void setSortKey(String sortKey) {
-		this.sortKey = sortKey;
-	}
+    /**
+     *
+     */
+    public void setSortKey(String sortKey) {
+        this.sortKey = sortKey;
+    }
 
-	/**
-	 *
-	 */
-	public TopicType getTopicType() {
-		return this.topicType;
-	}
+    /**
+     *
+     */
+    public TopicType getTopicType() {
+        return this.topicType;
+    }
 
-	/**
-	 *
-	 */
-	public void setTopicType(TopicType topicType) {
-		this.topicType = topicType;
-	}
+    /**
+     *
+     */
+    public void setTopicType(TopicType topicType) {
+        this.topicType = topicType;
+    }
 
-	/**
-	 *
-	 */
-	public String getVirtualWiki() {
-		return this.virtualWiki;
-	}
+    /**
+     *
+     */
+    public String getVirtualWiki() {
+        return this.virtualWiki;
+    }
 
-	/**
-	 *
-	 */
-	public void setVirtualWiki(String virtualWiki) {
-		this.virtualWiki = virtualWiki;
-	}
+    /**
+     *
+     */
+    public void setVirtualWiki(String virtualWiki) {
+        this.virtualWiki = virtualWiki;
+    }
 }
