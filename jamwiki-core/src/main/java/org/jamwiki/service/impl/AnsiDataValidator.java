@@ -14,7 +14,7 @@
  * along with this program (LICENSE.txt); if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.jamwiki.db;
+package org.jamwiki.service.impl;
 
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;

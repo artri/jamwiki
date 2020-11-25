@@ -4,10 +4,10 @@
 <p>4: 5</p>
 <p>5. 8</p>
 <p>6. 8</p>
-<p>7. <strong class="error">Expression error: / 0</strong></p>
+<p>7. {{#expr: 3 / 0 }}</p>
 <p>8. 5</p>
-<p>9. <strong class="error">Expression error: (3 * 2</strong></p>
-<p>10. <strong class="error">Expression error: 3 * 2)</strong></p>
+<p>9. <strong class="error">Expression error: There are 1 unmatched parantheses in expression '(3 * 2'</strong></p>
+<p>10. <strong class="error">Expression error: There are 1 unmatched parantheses in expression '3 * 2)'</strong></p>
 <p>11. <strong class="error">Expression error: 3 *</strong></p>
 <p>12. 17</p>
 <p>13. -12</p>

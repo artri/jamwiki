@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Properties;
 
-// import org.apache.commons.lang.ObjectUtils.Null;
 import org.apache.commons.lang3.StringUtils;
 import org.jamwiki.Environment;
 import org.jamwiki.model.Category;
@@ -297,7 +296,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setString(2, encryptedPassword);
             return (stmt.executeQuery().next());
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -319,47 +318,47 @@ public class AnsiQueryHandler implements QueryHandler {
      *
      */
     public void createTables(Connection conn) throws SQLException {
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_VIRTUAL_WIKI_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_USERS_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_WIKI_USER_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_WIKI_USER_LOGIN_INDEX, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_USER_PREFERENCES_DEFAULTS_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_USER_PREFERENCES_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_USER_PREFERENCES_WIKI_USER_INDEX, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_NAMESPACE_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_NAMESPACE_TRANSLATION_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_TOPIC_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_TOPIC_PAGE_NAME_INDEX, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_TOPIC_PAGE_NAME_LOWER_INDEX, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_TOPIC_NAMESPACE_INDEX, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_TOPIC_VIRTUAL_WIKI_INDEX, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_TOPIC_CURRENT_VERSION_INDEX, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_TOPIC_VERSION_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_TOPIC_VERSION_TOPIC_INDEX, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_TOPIC_VERSION_PREVIOUS_INDEX, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_TOPIC_VERSION_USER_DISPLAY_INDEX, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_TOPIC_VERSION_USER_ID_INDEX, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_TOPIC_CURRENT_VERSION_CONSTRAINT, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_TOPIC_LINKS_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_TOPIC_LINKS_INDEX, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_WIKI_FILE_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_WIKI_FILE_VERSION_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_CATEGORY_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_CATEGORY_INDEX, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_GROUP_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_GROUP_MEMBERS_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_ROLE_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_AUTHORITIES_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_GROUP_AUTHORITIES_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_LOG_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_RECENT_CHANGE_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_WATCHLIST_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_INTERWIKI_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_CONFIGURATION_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_USER_BLOCK_TABLE, conn);
-        DatabaseConnection.executeUpdate(STATEMENT_CREATE_FILE_DATA_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_VIRTUAL_WIKI_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_USERS_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_WIKI_USER_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_WIKI_USER_LOGIN_INDEX, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_USER_PREFERENCES_DEFAULTS_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_USER_PREFERENCES_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_USER_PREFERENCES_WIKI_USER_INDEX, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_NAMESPACE_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_NAMESPACE_TRANSLATION_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_TOPIC_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_TOPIC_PAGE_NAME_INDEX, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_TOPIC_PAGE_NAME_LOWER_INDEX, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_TOPIC_NAMESPACE_INDEX, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_TOPIC_VIRTUAL_WIKI_INDEX, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_TOPIC_CURRENT_VERSION_INDEX, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_TOPIC_VERSION_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_TOPIC_VERSION_TOPIC_INDEX, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_TOPIC_VERSION_PREVIOUS_INDEX, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_TOPIC_VERSION_USER_DISPLAY_INDEX, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_TOPIC_VERSION_USER_ID_INDEX, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_TOPIC_CURRENT_VERSION_CONSTRAINT, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_TOPIC_LINKS_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_TOPIC_LINKS_INDEX, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_WIKI_FILE_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_WIKI_FILE_VERSION_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_CATEGORY_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_CATEGORY_INDEX, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_GROUP_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_GROUP_MEMBERS_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_ROLE_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_AUTHORITIES_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_GROUP_AUTHORITIES_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_LOG_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_RECENT_CHANGE_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_WATCHLIST_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_INTERWIKI_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_CONFIGURATION_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_USER_BLOCK_TABLE, conn);
+        WikiDatabase.executeUpdate(STATEMENT_CREATE_FILE_DATA_TABLE, conn);
         if (!StringUtils.isBlank(STATEMENT_CREATE_SEQUENCES)) {
-            DatabaseConnection.executeUpdate(STATEMENT_CREATE_SEQUENCES, conn);
+            WikiDatabase.executeUpdate(STATEMENT_CREATE_SEQUENCES, conn);
         }
     }
 
@@ -373,7 +372,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(1, groupId);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -399,7 +398,7 @@ public class AnsiQueryHandler implements QueryHandler {
             default: throw new SQLException("deleteGroupMap - Group type invalid");
             }
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
     
@@ -413,7 +412,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setString(1, interwiki.getInterwikiPrefix());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -427,7 +426,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(1, topicId);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -441,7 +440,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(1, childTopicId);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -455,7 +454,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(1, topicId);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -470,7 +469,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(1, topicVersionId);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         try {
             // delete references to the topic version from the recent changes table
@@ -478,7 +477,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(1, topicVersionId);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         try {
             // update any recent changes that refer to this record as the previous record
@@ -491,7 +490,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(2, topicVersionId);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         try {
             // delete the topic version record
@@ -499,7 +498,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(1, topicVersionId);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -513,7 +512,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setString(1, username);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -529,7 +528,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(3, userId);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -542,32 +541,32 @@ public class AnsiQueryHandler implements QueryHandler {
         // note that the coding style violation here is intentional since it makes the
         // actual work of the method more obvious.
         if (!StringUtils.isBlank(STATEMENT_DROP_SEQUENCES)) {
-            DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_SEQUENCES, conn);
+            WikiDatabase.executeUpdateNoException(STATEMENT_DROP_SEQUENCES, conn);
         }
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_FILE_DATA_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_USER_BLOCK_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_CONFIGURATION_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_INTERWIKI_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_WATCHLIST_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_RECENT_CHANGE_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_LOG_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_GROUP_AUTHORITIES_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_AUTHORITIES_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_ROLE_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_GROUP_MEMBERS_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_GROUP_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_CATEGORY_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_WIKI_FILE_VERSION_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_WIKI_FILE_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_TOPIC_LINKS_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_TOPIC_CURRENT_VERSION_CONSTRAINT, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_TOPIC_VERSION_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_TOPIC_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_NAMESPACE_TRANSLATION_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_NAMESPACE_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_WIKI_USER_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_USERS_TABLE, conn);
-        DatabaseConnection.executeUpdateNoException(STATEMENT_DROP_VIRTUAL_WIKI_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_FILE_DATA_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_USER_BLOCK_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_CONFIGURATION_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_INTERWIKI_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_WATCHLIST_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_RECENT_CHANGE_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_LOG_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_GROUP_AUTHORITIES_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_AUTHORITIES_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_ROLE_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_GROUP_MEMBERS_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_GROUP_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_CATEGORY_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_WIKI_FILE_VERSION_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_WIKI_FILE_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_TOPIC_LINKS_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_TOPIC_CURRENT_VERSION_CONSTRAINT, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_TOPIC_VERSION_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_TOPIC_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_NAMESPACE_TRANSLATION_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_NAMESPACE_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_WIKI_USER_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_USERS_TABLE, conn);
+        WikiDatabase.executeUpdateNoException(STATEMENT_DROP_VIRTUAL_WIKI_TABLE, conn);
     }
 
     /**
@@ -588,7 +587,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt = conn.prepareStatement(sql);
             stmt.executeQuery();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -616,7 +615,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt = conn.prepareStatement(sql);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         return true;
     }
@@ -625,7 +624,7 @@ public class AnsiQueryHandler implements QueryHandler {
      * Return a simple query, that if successfully run indicates that JAMWiki
      * tables have been initialized in the database.  This method should not
      * be overridden as it is directly invoked by the
-     * {@link DatabaseConnection#testDatabase} method and should thus be used
+     * {@link WikiDatabase#testDatabase} method and should thus be used
      * in its base class form for all databases.
      *
      * @return Returns a simple query that, if successfully run, indicates
@@ -672,7 +671,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_WIKI_FILE_VERSIONS);
             // FIXME - sort order ignored
             stmt.setInt(1, wikiFile.getFileId());
@@ -683,7 +682,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return fileVersions;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -695,7 +694,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.getCategoriesStatement(conn, virtualWikiId, virtualWikiName, pagination);
             rs = stmt.executeQuery();
             List<Category> results = new ArrayList<Category>();
@@ -710,7 +709,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return results;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -734,7 +733,7 @@ public class AnsiQueryHandler implements QueryHandler {
         ResultSet rs = null;
         List<LogItem> logItems = new ArrayList<LogItem>();
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.getLogItemsStatement(conn, virtualWikiId, virtualWikiName, logType, pagination, descending);
             // FIXME - sort order ignored
             rs = stmt.executeQuery();
@@ -743,7 +742,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return logItems;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -773,7 +772,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.getRecentChangesStatement(conn, virtualWiki, pagination, descending);
             // FIXME - sort order ignored
             rs = stmt.executeQuery();
@@ -783,7 +782,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return recentChanges;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -809,7 +808,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_AUTHORITIES_LOGIN);
             loginFragment = '%' + loginFragment.toLowerCase() + '%';
             stmt.setString(1, loginFragment);
@@ -829,7 +828,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return new ArrayList<RoleMap>(roleMaps.values());
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -841,7 +840,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             if (includeInheritedRoles) {
                 stmt = conn.prepareStatement(STATEMENT_SELECT_AUTHORITIES_AUTHORITY_ALL);
                 stmt.setString(1, authority);
@@ -881,7 +880,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return new ArrayList<RoleMap>(roleMaps.values());
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -893,7 +892,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_GROUP_AUTHORITIES);
             stmt.setString(1, groupName);
             rs = stmt.executeQuery();
@@ -903,7 +902,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return roles;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -915,7 +914,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_GROUPS_AUTHORITIES);
             rs = stmt.executeQuery();
             LinkedHashMap<Integer, RoleMap> roleMaps = new LinkedHashMap<Integer, RoleMap>();
@@ -933,7 +932,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return new ArrayList<RoleMap>(roleMaps.values());
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -945,7 +944,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_AUTHORITIES_USER);
             stmt.setString(1, login);
             stmt.setString(2, login);
@@ -956,7 +955,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return roles;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -968,7 +967,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_ROLES);
             rs = stmt.executeQuery();
             List<Role> roles = new ArrayList<Role>();
@@ -977,7 +976,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return roles;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -989,7 +988,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_GROUPS);
             rs = stmt.executeQuery();
             List<WikiGroup> groups = new ArrayList<WikiGroup>();
@@ -998,19 +997,19 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return groups;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
-    
+
     /**
      * 
      */
-    public LinkedHashMap<String, Map<String, String>> getUserPreferencesDefaults() throws SQLException {
+    public Map<String, Map<String, String>> getUserPreferencesDefaults() throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_USER_PREFERENCES_DEFAULTS);
             rs = stmt.executeQuery();
             // the map of groups containing the maps to their preferences
@@ -1030,7 +1029,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return groups;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -1042,7 +1041,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = getTopicHistoryStatement(conn, topicId, pagination, descending, selectDeleted);
             // FIXME - sort order ignored
             rs = stmt.executeQuery();
@@ -1052,7 +1051,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return recentChanges;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -1081,7 +1080,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.getTopicsAdminStatement(conn, virtualWikiId, pagination);
             rs = stmt.executeQuery();
             List<String> results = new ArrayList<String>();
@@ -1090,7 +1089,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return results;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -1128,7 +1127,7 @@ public class AnsiQueryHandler implements QueryHandler {
             return userBlocks;
         } finally {
             // close only the statement and result set - leave the connection open for further use
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
     }
 
@@ -1140,7 +1139,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.getUserContributionsByLoginStatement(conn, virtualWiki, login, pagination, descending);
             // FIXME - sort order ignored
             rs = stmt.executeQuery();
@@ -1150,7 +1149,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return recentChanges;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -1174,7 +1173,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.getUserContributionsByUserDisplayStatement(conn, virtualWiki, userDisplay, pagination, descending);
             // FIXME - sort order ignored
             rs = stmt.executeQuery();
@@ -1184,7 +1183,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return recentChanges;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -1222,7 +1221,7 @@ public class AnsiQueryHandler implements QueryHandler {
             return results;
         } finally {
             // close only the statement and result set - leave the connection open for further use
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
     }
 
@@ -1234,7 +1233,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_WATCHLIST);
             stmt.setInt(1, virtualWikiId);
             stmt.setInt(2, userId);
@@ -1245,7 +1244,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return watchedTopicNames;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -1257,7 +1256,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.getWatchlistStatement(conn, virtualWikiId, userId, pagination);
             rs = stmt.executeQuery();
             List<RecentChange> recentChanges = new ArrayList<RecentChange>();
@@ -1266,7 +1265,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return recentChanges;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -1758,7 +1757,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             stmt.executeBatch();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -1773,7 +1772,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setString(2, authority);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -1795,7 +1794,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(index++, groupId);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -1812,7 +1811,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(4, interwiki.getInterwikiType());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -1851,7 +1850,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -1911,7 +1910,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setString(15, change.getParamString());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -1926,7 +1925,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setString(2, role.getDescription());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -1971,7 +1970,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
         } finally {
             // close only the statement and result set - leave the connection open for further use
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
     }
 
@@ -1993,7 +1992,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             stmt.executeBatch();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -2046,7 +2045,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
         } finally {
             // close only the statement and result set - leave the connection open for further use
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
             stmt = null;
             rs = null;
         }
@@ -2063,7 +2062,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setString(2, authority);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -2110,7 +2109,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
         } finally {
             // close only the statement and result set - leave the connection open for further use
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
     }
 
@@ -2125,7 +2124,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setString(2, userDetails.getPassword());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -2160,7 +2159,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
         } finally {
             // close only the statement and result set - leave the connection open for further use
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
     }
 
@@ -2176,7 +2175,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(3, userId);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -2215,7 +2214,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
         } finally {
             // close only the statement and result set - leave the connection open for further use
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
     }
 
@@ -2261,7 +2260,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
         } finally {
             // close only the statement and result set - leave the connection open for further use
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
     }
 
@@ -2293,7 +2292,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
         } finally {
             // close only the statement and result set - leave the connection open for further use
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
     }
 
@@ -2330,7 +2329,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
         } finally {
             // close only the statement and result set - leave the connection open for further use
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
         // Store user preferences
         Map<String, String> defaults = this.lookupUserPreferencesDefaults(conn);
@@ -2351,7 +2350,7 @@ public class AnsiQueryHandler implements QueryHandler {
                 }
             }
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -2368,7 +2367,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(4, sequenceNr);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -2380,7 +2379,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_CATEGORY_TOPICS);
             // category name must be lowercase since search is case-insensitive
             categoryName = categoryName.toLowerCase();
@@ -2393,7 +2392,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return results;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -2406,7 +2405,7 @@ public class AnsiQueryHandler implements QueryHandler {
         ResultSet rs = null;
         Map<String, String> configuration = new HashMap<String, String>();
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_CONFIGURATION);
             rs = stmt.executeQuery();
             while (rs.next()) {
@@ -2416,7 +2415,7 @@ public class AnsiQueryHandler implements QueryHandler {
                 configuration.put(rs.getString("config_key"), rs.getString("config_value").trim());
             }
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
         return configuration;
     }
@@ -2443,7 +2442,7 @@ public class AnsiQueryHandler implements QueryHandler {
                 interwikis.put(interwikiPrefix, interwiki);
             }
         } finally {
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
         return new ArrayList<Interwiki>(interwikis.values());
     }
@@ -2490,7 +2489,7 @@ public class AnsiQueryHandler implements QueryHandler {
                 namespaces.put(talkNamespace.getId(), talkNamespace);
             }
         } finally {
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
         return new ArrayList<Namespace>(namespaces.values());
     }
@@ -2510,7 +2509,7 @@ public class AnsiQueryHandler implements QueryHandler {
         Topic topic = null;
         try {
             if (conn == null) {
-                conn = DatabaseConnection.getConnection();
+                conn = WikiDatabase.getConnection();
             }
             stmt1 = conn.prepareStatement(STATEMENT_SELECT_TOPIC);
             stmt1.setString(1, pageName);
@@ -2528,12 +2527,12 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return topic;
         } finally {
-            DatabaseConnection.closeStatement(stmt1);
+            WikiDatabase.closeStatement(stmt1);
             if (closeConnection) {
-                DatabaseConnection.closeConnection(conn, stmt2, rs);
+                WikiDatabase.closeConnection(conn, stmt2, rs);
             } else {
                 // close only the statement and result set - leave the connection open for further use
-                DatabaseConnection.closeConnection(null, stmt2, rs);
+                WikiDatabase.closeConnection(null, stmt2, rs);
             }
         }
     }
@@ -2547,7 +2546,7 @@ public class AnsiQueryHandler implements QueryHandler {
         ResultSet rs = null;
         try {
             if (conn == null) {
-                conn = DatabaseConnection.getConnection();
+                conn = WikiDatabase.getConnection();
             }
             stmt = conn.prepareStatement(STATEMENT_SELECT_TOPIC_BY_ID);
             stmt.setInt(1, topicId);
@@ -2555,10 +2554,10 @@ public class AnsiQueryHandler implements QueryHandler {
             return (rs.next()) ? this.initTopic(rs) : null;
         } finally {
             if (closeConnection) {
-                DatabaseConnection.closeConnection(conn, stmt, rs);
+                WikiDatabase.closeConnection(conn, stmt, rs);
             } else {
                 // close only the statement and result set - leave the connection open for further use
-                DatabaseConnection.closeConnection(null, stmt, rs);
+                WikiDatabase.closeConnection(null, stmt, rs);
             }
         }
     }
@@ -2571,7 +2570,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.lookupTopicByTypeStatement(conn, virtualWikiId, topicType1, topicType2, namespaceStart, namespaceEnd, pagination);
             rs = stmt.executeQuery();
             Map<Integer, String> results = new LinkedHashMap<Integer, String>();
@@ -2580,7 +2579,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return results;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -2607,7 +2606,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_TOPIC_COUNT);
             stmt.setInt(1, virtualWikiId);
             stmt.setInt(2, namespaceStart);
@@ -2616,7 +2615,7 @@ public class AnsiQueryHandler implements QueryHandler {
             rs = stmt.executeQuery();
             return (rs.next()) ? rs.getInt("topic_count") : 0;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -2634,7 +2633,7 @@ public class AnsiQueryHandler implements QueryHandler {
         ResultSet rs = null;
         String topicName = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt1 = conn.prepareStatement(STATEMENT_SELECT_TOPIC_NAME);
             stmt1.setString(1, pageName);
             stmt1.setInt(2, virtualWikiId);
@@ -2651,8 +2650,8 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return topicName;
         } finally {
-            DatabaseConnection.closeStatement(stmt1);
-            DatabaseConnection.closeConnection(conn, stmt2, rs);
+            WikiDatabase.closeStatement(stmt1);
+            WikiDatabase.closeConnection(conn, stmt2, rs);
         }
     }
 
@@ -2664,7 +2663,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_TOPIC_LINKS);
             stmt.setInt(1, virtualWikiId);
             stmt.setInt(2, topic.getNamespace().getId());
@@ -2681,7 +2680,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return results;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -2693,7 +2692,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_TOPIC_LINK_ORPHANS);
             stmt.setInt(1, virtualWikiId);
             stmt.setInt(2, namespaceId);
@@ -2705,7 +2704,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return results;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -2728,7 +2727,7 @@ public class AnsiQueryHandler implements QueryHandler {
             return results;
         } finally {
             // close only the statement and result set - leave the connection open for further use
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
     }
 
@@ -2738,10 +2737,10 @@ public class AnsiQueryHandler implements QueryHandler {
     public TopicVersion lookupTopicVersion(int topicVersionId) throws SQLException {
         Connection conn = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             return this.lookupTopicVersion(topicVersionId, conn);
         } finally {
-            DatabaseConnection.closeConnection(conn);
+            WikiDatabase.closeConnection(conn);
         }
     }
 
@@ -2759,7 +2758,7 @@ public class AnsiQueryHandler implements QueryHandler {
             return (rs.next()) ? this.initTopicVersion(rs) : null;
         } finally {
             // close only the statement and result set - leave the connection open for further use
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
     }
 
@@ -2771,13 +2770,13 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_TOPIC_VERSION_NEXT_ID);
             stmt.setInt(1, topicVersionId);
             rs = stmt.executeQuery();
             return (rs.next()) ? rs.getInt("topic_version_id") : null;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -2797,7 +2796,7 @@ public class AnsiQueryHandler implements QueryHandler {
             return defaults;
         } finally {
             // close only the statement and result set - leave the connection open for further use
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
     }
 
@@ -2809,14 +2808,14 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_WIKI_FILE);
             stmt.setInt(1, virtualWikiId);
             stmt.setInt(2, topicId);
             rs = stmt.executeQuery();
             return (rs.next()) ? this.initWikiFile(rs, virtualWikiName) : null;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -2832,13 +2831,13 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_WIKI_FILE_COUNT);
             stmt.setInt(1, virtualWikiId);
             rs = stmt.executeQuery();
             return (rs.next()) ? rs.getInt("file_count") : 0;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -2854,7 +2853,7 @@ public class AnsiQueryHandler implements QueryHandler {
         ResultSet rs = null;
         GroupMap groupMap = new GroupMap(groupId);
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_GROUP_MAP_GROUP);
             stmt.setInt(1, groupId);
             rs = stmt.executeQuery();
@@ -2866,7 +2865,7 @@ public class AnsiQueryHandler implements QueryHandler {
             groupMap.setGroupMembers(userLogins);
             return groupMap;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt,rs);
+            WikiDatabase.closeConnection(conn, stmt,rs);
         }
     }
 
@@ -2880,7 +2879,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt2 = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt1 = conn.prepareStatement(STATEMENT_SELECT_GROUP_MAP_USER);
             stmt1.setString(1,userLogin);
             rs = stmt1.executeQuery();
@@ -2901,8 +2900,8 @@ public class AnsiQueryHandler implements QueryHandler {
             groupMap.setRoleNames(roleNames);
             return groupMap;
         } finally {
-            DatabaseConnection.closeStatement(stmt1);
-            DatabaseConnection.closeConnection(conn, stmt2,rs);
+            WikiDatabase.closeStatement(stmt1);
+            WikiDatabase.closeConnection(conn, stmt2,rs);
         }
     }
 
@@ -2914,13 +2913,13 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_GROUP);
             stmt.setString(1, groupName);
             rs = stmt.executeQuery();
             return (rs.next()) ? this.initWikiGroup(rs) : null;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -2932,13 +2931,13 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_GROUP_BY_ID);
             stmt.setInt(1, groupId);
             rs = stmt.executeQuery();
             return (rs.next()) ? this.initWikiGroup(rs) : null;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
     
@@ -2952,7 +2951,7 @@ public class AnsiQueryHandler implements QueryHandler {
         ResultSet rs = null;
         WikiUser user = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt1 = conn.prepareStatement(STATEMENT_SELECT_WIKI_USER);
             stmt1.setInt(1, userId);
             rs = stmt1.executeQuery();
@@ -2972,8 +2971,8 @@ public class AnsiQueryHandler implements QueryHandler {
             user.setPreferences(preferences);
             return user;
         } finally {
-            DatabaseConnection.closeStatement(stmt1);
-            DatabaseConnection.closeConnection(conn, stmt2, rs);
+            WikiDatabase.closeStatement(stmt1);
+            WikiDatabase.closeConnection(conn, stmt2, rs);
         }
     }
     
@@ -2990,7 +2989,7 @@ public class AnsiQueryHandler implements QueryHandler {
             return (rs.next()) ? rs.getInt("wiki_user_id") : -1;
         } finally {
             // close only the statement and result set - leave the connection open for further use
-            DatabaseConnection.closeConnection(null, stmt, rs);
+            WikiDatabase.closeConnection(null, stmt, rs);
         }
     }
 
@@ -3000,7 +2999,7 @@ public class AnsiQueryHandler implements QueryHandler {
         ResultSet rs = null;
         WikiUser user = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             user = lookupWikiUser(lookupWikiUser(username, conn));
             if(user == null) {
                 return null;
@@ -3017,7 +3016,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return user;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
     
@@ -3029,12 +3028,12 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_WIKI_USER_COUNT);
             rs = stmt.executeQuery();
             return (rs.next()) ? rs.getInt("user_count") : 0;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -3046,13 +3045,13 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_WIKI_USER_DETAILS_PASSWORD);
             stmt.setString(1, username);
             rs = stmt.executeQuery();
             return (rs.next()) ? rs.getString("password") : null;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -3064,7 +3063,7 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.lookupWikiUsersStatement(conn, pagination);
             rs = stmt.executeQuery();
             List<String> results = new ArrayList<String>();
@@ -3073,7 +3072,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             return results;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -3096,7 +3095,7 @@ public class AnsiQueryHandler implements QueryHandler {
      * @throws SQLException Thrown if any error occurs during method execution.
      */
     private int nextGroupMemberId(Connection conn) throws SQLException {
-        int nextId = DatabaseConnection.executeSequenceQuery(STATEMENT_SELECT_GROUP_MEMBERS_SEQUENCE, "id", conn);
+        int nextId = WikiDatabase.executeSequenceQuery(STATEMENT_SELECT_GROUP_MEMBERS_SEQUENCE, "id", conn);
         // note - this returns the last id in the system, so add one
         return nextId + 1;
     }
@@ -3110,7 +3109,7 @@ public class AnsiQueryHandler implements QueryHandler {
      * @throws SQLException Thrown if any error occurs during method execution.
      */
     private int nextTopicId(Connection conn) throws SQLException {
-        int nextId = DatabaseConnection.executeSequenceQuery(STATEMENT_SELECT_TOPIC_SEQUENCE, "topic_id", conn);
+        int nextId = WikiDatabase.executeSequenceQuery(STATEMENT_SELECT_TOPIC_SEQUENCE, "topic_id", conn);
         // note - this returns the last id in the system, so add one
         return nextId + 1;
     }
@@ -3124,7 +3123,7 @@ public class AnsiQueryHandler implements QueryHandler {
      * @throws SQLException Thrown if any error occurs during method execution.
      */
     public int nextTopicVersionId(Connection conn) throws SQLException {
-        int nextId = DatabaseConnection.executeSequenceQuery(STATEMENT_SELECT_TOPIC_VERSION_SEQUENCE, "topic_version_id", conn);
+        int nextId = WikiDatabase.executeSequenceQuery(STATEMENT_SELECT_TOPIC_VERSION_SEQUENCE, "topic_version_id", conn);
         // note - this returns the last id in the system, so add one
         return nextId + 1;
     }
@@ -3138,7 +3137,7 @@ public class AnsiQueryHandler implements QueryHandler {
      * @throws SQLException Thrown if any error occurs during method execution.
      */
     private int nextUserBlockId(Connection conn) throws SQLException {
-        int nextId = DatabaseConnection.executeSequenceQuery(STATEMENT_SELECT_USER_BLOCK_SEQUENCE, "user_block_id", conn);
+        int nextId = WikiDatabase.executeSequenceQuery(STATEMENT_SELECT_USER_BLOCK_SEQUENCE, "user_block_id", conn);
         // note - this returns the last id in the system, so add one
         return nextId + 1;
     }
@@ -3152,7 +3151,7 @@ public class AnsiQueryHandler implements QueryHandler {
      * @throws SQLException Thrown if any error occurs during method execution.
      */
     private int nextVirtualWikiId(Connection conn) throws SQLException {
-        int nextId = DatabaseConnection.executeSequenceQuery(STATEMENT_SELECT_VIRTUAL_WIKI_SEQUENCE, "virtual_wiki_id", conn);
+        int nextId = WikiDatabase.executeSequenceQuery(STATEMENT_SELECT_VIRTUAL_WIKI_SEQUENCE, "virtual_wiki_id", conn);
         // note - this returns the last id in the system, so add one
         return nextId + 1;
     }
@@ -3166,7 +3165,7 @@ public class AnsiQueryHandler implements QueryHandler {
      * @throws SQLException Thrown if any error occurs during method execution.
      */
     private int nextWikiFileId(Connection conn) throws SQLException {
-        int nextId = DatabaseConnection.executeSequenceQuery(STATEMENT_SELECT_WIKI_FILE_SEQUENCE, "file_id", conn);
+        int nextId = WikiDatabase.executeSequenceQuery(STATEMENT_SELECT_WIKI_FILE_SEQUENCE, "file_id", conn);
         // note - this returns the last id in the system, so add one
         return nextId + 1;
     }
@@ -3182,7 +3181,7 @@ public class AnsiQueryHandler implements QueryHandler {
      * @throws SQLException Thrown if any error occurs during method execution.
      */
     private int nextWikiFileVersionId(Connection conn) throws SQLException {
-        int nextId = DatabaseConnection.executeSequenceQuery(STATEMENT_SELECT_WIKI_FILE_VERSION_SEQUENCE, "file_version_id", conn);
+        int nextId = WikiDatabase.executeSequenceQuery(STATEMENT_SELECT_WIKI_FILE_VERSION_SEQUENCE, "file_version_id", conn);
         // note - this returns the last id in the system, so add one
         return nextId + 1;
     }
@@ -3196,7 +3195,7 @@ public class AnsiQueryHandler implements QueryHandler {
      * @throws SQLException Thrown if any error occurs during method execution.
      */
     private int nextWikiGroupId(Connection conn) throws SQLException {
-        int nextId = DatabaseConnection.executeSequenceQuery(STATEMENT_SELECT_GROUP_SEQUENCE, "group_id", conn);
+        int nextId = WikiDatabase.executeSequenceQuery(STATEMENT_SELECT_GROUP_SEQUENCE, "group_id", conn);
         // note - this returns the last id in the system, so add one
         return nextId + 1;
     }
@@ -3210,7 +3209,7 @@ public class AnsiQueryHandler implements QueryHandler {
      * @throws SQLException Thrown if any error occurs during method execution.
      */
     private int nextWikiUserId(Connection conn) throws SQLException {
-        int nextId = DatabaseConnection.executeSequenceQuery(STATEMENT_SELECT_WIKI_USER_SEQUENCE, "wiki_user_id", conn);
+        int nextId = WikiDatabase.executeSequenceQuery(STATEMENT_SELECT_WIKI_USER_SEQUENCE, "wiki_user_id", conn);
         // note - this returns the last id in the system, so add one
         return nextId + 1;
     }
@@ -3225,7 +3224,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(1, virtualWikiId);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         try {
             stmt = conn.prepareStatement(STATEMENT_INSERT_LOG_ITEMS_BY_TOPIC_VERSION_TYPE);
@@ -3235,7 +3234,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(4, TopicVersion.EDIT_DELETE);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         try {
             stmt = conn.prepareStatement(STATEMENT_INSERT_LOG_ITEMS_BY_TOPIC_VERSION_TYPE);
@@ -3245,7 +3244,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(4, TopicVersion.EDIT_UNDELETE);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         try {
             stmt = conn.prepareStatement(STATEMENT_INSERT_LOG_ITEMS_BY_TOPIC_VERSION_TYPE);
@@ -3255,7 +3254,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(4, TopicVersion.EDIT_PERMISSION);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         try {
             stmt = conn.prepareStatement(STATEMENT_INSERT_LOG_ITEMS_IMPORT);
@@ -3265,7 +3264,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(4, TopicVersion.EDIT_IMPORT);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         try {
             stmt = conn.prepareStatement(STATEMENT_INSERT_LOG_ITEMS_MOVE);
@@ -3274,7 +3273,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(3, TopicVersion.EDIT_MOVE);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         try {
             stmt = conn.prepareStatement(STATEMENT_INSERT_LOG_ITEMS_UPLOAD);
@@ -3283,7 +3282,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(3, TopicVersion.EDIT_NORMAL);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         try {
             stmt = conn.prepareStatement(STATEMENT_INSERT_LOG_ITEMS_USER);
@@ -3291,7 +3290,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(2, LogItem.LOG_TYPE_USER_CREATION);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         try {
             stmt = conn.prepareStatement(STATEMENT_INSERT_LOG_ITEMS_BLOCK);
@@ -3300,7 +3299,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(3, LogItem.LOG_SUBTYPE_BLOCK_BLOCK);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         try {
             stmt = conn.prepareStatement(STATEMENT_INSERT_LOG_ITEMS_UNBLOCK);
@@ -3309,7 +3308,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(3, LogItem.LOG_SUBTYPE_BLOCK_UNBLOCK);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3320,7 +3319,7 @@ public class AnsiQueryHandler implements QueryHandler {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             conn.setAutoCommit(false);
             stmt = conn.prepareStatement(STATEMENT_UPDATE_TOPIC_VERSION_PREVIOUS_VERSION_ID);
             Integer previousTopicVersionId = null;
@@ -3350,7 +3349,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             throw e;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt);
+            WikiDatabase.closeConnection(conn, stmt);
             // explicitly null the variable to improve garbage collection.
             // with very large loops this can help avoid OOM "GC overhead
             // limit exceeded" errors.
@@ -3396,13 +3395,13 @@ public class AnsiQueryHandler implements QueryHandler {
     public void reloadRecentChanges(Connection conn, int limit) throws SQLException {
         PreparedStatement stmt = null;
         try {
-            DatabaseConnection.executeUpdate(STATEMENT_DELETE_RECENT_CHANGES, conn);
+            WikiDatabase.executeUpdate(STATEMENT_DELETE_RECENT_CHANGES, conn);
             stmt = conn.prepareStatement(STATEMENT_INSERT_RECENT_CHANGES_VERSIONS);
             stmt.setInt(1, limit);
             stmt.executeUpdate();
-            DatabaseConnection.executeUpdate(STATEMENT_INSERT_RECENT_CHANGES_LOGS, conn);
+            WikiDatabase.executeUpdate(STATEMENT_INSERT_RECENT_CHANGES_LOGS, conn);
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3429,8 +3428,8 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             pstmt.executeBatch();
         } finally {
-            DatabaseConnection.closeStatement(pstmt);
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(pstmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3445,7 +3444,7 @@ public class AnsiQueryHandler implements QueryHandler {
             // if adding determine the namespace ID(s)
             if (!isUpdate && namespace.getId() == null) {
                 // note - this returns the last id in the system, so add one
-                int nextId = DatabaseConnection.executeSequenceQuery(STATEMENT_SELECT_NAMESPACE_SEQUENCE, "namespace_id", conn);
+                int nextId = WikiDatabase.executeSequenceQuery(STATEMENT_SELECT_NAMESPACE_SEQUENCE, "namespace_id", conn);
                 if (nextId < 200) {
                     // custom namespaces start with IDs of 200 or more to leave room for future expansion
                     nextId = 199;
@@ -3463,7 +3462,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(3, namespace.getId());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3478,7 +3477,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(1, virtualWikiId);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         try {
             stmt = conn.prepareStatement(STATEMENT_INSERT_NAMESPACE_TRANSLATION);
@@ -3495,7 +3494,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             stmt.executeBatch();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3510,7 +3509,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setString(2, role.getAuthority());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
     
@@ -3539,7 +3538,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(12, topic.getTopicId());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3559,7 +3558,7 @@ public class AnsiQueryHandler implements QueryHandler {
             }
             stmt.executeBatch();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3591,7 +3590,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(11, topicVersion.getTopicVersionId());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3622,7 +3621,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(10, userBlock.getBlockId());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3638,7 +3637,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setString(3, userDetails.getUsername());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3656,7 +3655,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(5, virtualWiki.getVirtualWikiId());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3679,7 +3678,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(10, wikiFile.getFileId());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3695,7 +3694,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(3, group.getGroupId());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3719,7 +3718,7 @@ public class AnsiQueryHandler implements QueryHandler {
             logger.error(e.getMessage());
             throw e;
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3734,7 +3733,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(1, user.getUserId());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         Map<String, String> preferences = user.getPreferences();
         try {
@@ -3755,7 +3754,7 @@ public class AnsiQueryHandler implements QueryHandler {
             logger.error(e.getMessage());
             throw e;
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3772,12 +3771,12 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setString(4, userPreferenceKey);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
     
     public boolean existsUserPreferenceDefault(String userPreferenceKey) throws SQLException {
-        HashMap<String, Map<String, String>> defaultPrefs = this.getUserPreferencesDefaults();
+        Map<String, Map<String, String>> defaultPrefs = this.getUserPreferencesDefaults();
         for (Map<String, String> group: defaultPrefs.values()) {
             if (group.containsKey(userPreferenceKey)) {
                 return true;
@@ -3790,7 +3789,7 @@ public class AnsiQueryHandler implements QueryHandler {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_UPDATE_PW_RESET_CHALLENGE_DATA);
             stmt.setString(1, user.getChallengeValue());
             stmt.setTimestamp(2, user.getChallengeDate());
@@ -3799,7 +3798,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setString(5, user.getUsername());
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt);
+            WikiDatabase.closeConnection(conn, stmt);
             // explicitly null the variable to improve garbage collection.
             // with very large loops this can help avoid OOM "GC overhead
             // limit exceeded" errors.
@@ -3821,7 +3820,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setBytes(5, imageData.data);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3835,7 +3834,7 @@ public class AnsiQueryHandler implements QueryHandler {
             stmt.setInt(1, fileId);
             stmt.executeUpdate();
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 
@@ -3847,14 +3846,14 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_FILE_INFO);
             stmt.setInt(1, fileId);
             stmt.setInt(2, resized);
             rs = stmt.executeQuery();
             return (rs.next()) ? new ImageData(rs.getString(1), rs.getInt(2), rs.getInt(3), null) : null;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -3866,14 +3865,14 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_FILE_DATA);
             stmt.setInt(1, fileId);
             stmt.setInt(2, resized);
             rs = stmt.executeQuery();
             return (rs.next()) ? new ImageData(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getBytes(5)) : null;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -3885,14 +3884,14 @@ public class AnsiQueryHandler implements QueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_FILE_VERSION_DATA);
             stmt.setInt(1, fileVersionId);
             stmt.setInt(2, resized);
             rs = stmt.executeQuery();
             return (rs.next()) ? new ImageData(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getBytes(5)) : null;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 }

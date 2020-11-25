@@ -40,7 +40,6 @@ import org.jamwiki.WikiException;
 import org.jamwiki.WikiMessage;
 import org.jamwiki.authentication.JAMWikiAuthenticationConstants;
 import org.jamwiki.authentication.WikiUserDetailsImpl;
-import org.jamwiki.db.DatabaseConnection;
 import org.jamwiki.model.Category;
 import org.jamwiki.model.Namespace;
 import org.jamwiki.model.Role;

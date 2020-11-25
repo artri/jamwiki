@@ -75,7 +75,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.getCategoriesStatement(conn, virtualWikiId, virtualWikiName, pagination);
             rs = stmt.executeQuery();
             List<Category> results = new ArrayList<Category>();
@@ -90,7 +90,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
             }
             return results;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -114,7 +114,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
         ResultSet rs = null;
         List<LogItem> logItems = new ArrayList<LogItem>();
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.getLogItemsStatement(conn, virtualWikiId, virtualWikiName, logType, pagination, descending);
             // FIXME - sort order ignored
             rs = stmt.executeQuery();
@@ -123,7 +123,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
             }
             return logItems;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -153,7 +153,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.getRecentChangesStatement(conn, virtualWiki, pagination, descending);
             // FIXME - sort order ignored
             rs = stmt.executeQuery();
@@ -163,7 +163,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
             }
             return recentChanges;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -186,7 +186,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = getTopicHistoryStatement(conn, topicId, pagination, descending, selectDeleted);
             // FIXME - sort order ignored
             rs = stmt.executeQuery();
@@ -196,7 +196,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
             }
             return recentChanges;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -225,7 +225,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.getTopicsAdminStatement(conn, virtualWikiId, pagination);
             rs = stmt.executeQuery();
             List<String> results = new ArrayList<String>();
@@ -234,7 +234,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
             }
             return results;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -257,7 +257,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.getUserContributionsByLoginStatement(conn, virtualWiki, login, pagination, descending);
             // FIXME - sort order ignored
             rs = stmt.executeQuery();
@@ -267,7 +267,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
             }
             return recentChanges;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -291,7 +291,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.getUserContributionsByUserDisplayStatement(conn, virtualWiki, userDisplay, pagination, descending);
             // FIXME - sort order ignored
             rs = stmt.executeQuery();
@@ -301,7 +301,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
             }
             return recentChanges;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -325,7 +325,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.prepareStatement(STATEMENT_SELECT_WATCHLIST);
             stmt.setInt(1, virtualWikiId);
             stmt.setInt(2, userId);
@@ -336,7 +336,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
             }
             return watchedTopicNames;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -348,7 +348,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.getWatchlistStatement(conn, virtualWikiId, userId, pagination);
             rs = stmt.executeQuery();
             List<RecentChange> recentChanges = new ArrayList<RecentChange>();
@@ -357,7 +357,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
             }
             return recentChanges;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
@@ -381,7 +381,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = this.lookupTopicByTypeStatement(conn, virtualWikiId, topicType1, topicType2, namespaceStart, namespaceEnd, pagination);
             rs = stmt.executeQuery();
             Map<Integer, String> results = new LinkedHashMap<Integer, String>();
@@ -390,7 +390,7 @@ public class CacheQueryHandler extends AnsiQueryHandler {
             }
             return results;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 

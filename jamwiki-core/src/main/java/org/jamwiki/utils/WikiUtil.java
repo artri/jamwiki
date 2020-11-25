@@ -39,7 +39,7 @@ import org.jamwiki.WikiBase;
 import org.jamwiki.WikiException;
 import org.jamwiki.WikiMessage;
 import org.jamwiki.WikiVersion;
-import org.jamwiki.db.DatabaseConnection;
+import org.jamwiki.db.WikiDatabase;
 import org.jamwiki.model.Namespace;
 import org.jamwiki.model.Role;
 import org.jamwiki.model.TopicType;
@@ -656,7 +656,7 @@ public class WikiUtil {
         String userName = props.getProperty(Environment.PROP_DB_USERNAME);
         String password = Encryption.getEncryptedProperty(Environment.PROP_DB_PASSWORD, props);
         try {
-            DatabaseConnection.testDatabase(driver, url, userName, password, false);
+            WikiDatabase.testDatabase(driver, url, userName, password, false);
         } catch (ClassNotFoundException e) {
             logger.error("Invalid database settings", e);
             errors.add(new WikiMessage("error.databaseconnection", e.getMessage()));

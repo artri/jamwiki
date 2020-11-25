@@ -74,12 +74,9 @@ public interface QueryHandler {
      * Retrieve a result set containing all user information for a given WikiUser.
      *
      * @param login The login of the user record being retrieved.
-     * @param encryptedPassword The encrypted password for the user record being
-     *  retrieved.
-     * @param conn A database connection to use when connecting to the database
-     *  from this method.
-     * @return <code>true</code> if the login and password matches an existing
-     *  user, <code>false</code> otherwise.
+     * @param encryptedPassword The encrypted password for the user record being retrieved.
+     * @param conn A database connection to use when connecting to the database from this method.
+     * @return <code>true</code> if the login and password matches an existing user, <code>false</code> otherwise.
      * @throws SQLException Thrown if any error occurs during method execution.
      */
     boolean authenticateUser(String login, String encryptedPassword, Connection conn) throws SQLException;

@@ -15,10 +15,13 @@ import org.jamwiki.parser.image.ImageBorderEnum;
 import org.jamwiki.parser.image.ImageHorizontalAlignmentEnum;
 import org.jamwiki.parser.image.ImageMetadata;
 import org.jamwiki.parser.image.ImageUtil;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.commons.lang3.StringUtils;
 
 public class JAMHTMLConverter extends HTMLConverter {
+    private static final Logger logger = LoggerFactory.getLogger(JAMHTMLConverter.class);
+
     private static final int DEFAULT_THUMBNAIL_SIZE = 180;
 
     private ParserInput fParserInput;
@@ -72,7 +75,7 @@ public class JAMHTMLConverter extends HTMLConverter {
             resultBuffer.append(ImageUtil.buildImageLinkHtml(fParserInput.getContext(), fParserInput.getVirtualWiki(), model
                     .getImageNamespace() + Namespace.SEPARATOR + imageName, imageMetadata, null, false, null));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
     }

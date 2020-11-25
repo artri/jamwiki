@@ -29,7 +29,6 @@ import org.jamwiki.WikiBase;
 import org.jamwiki.WikiConfiguration;
 import org.jamwiki.WikiException;
 import org.jamwiki.WikiMessage;
-import org.jamwiki.db.DatabaseConnection;
 import org.jamwiki.db.WikiDatabase;
 import org.jamwiki.model.VirtualWiki;
 import org.jamwiki.model.WikiConfigurationObject;
@@ -164,7 +163,7 @@ public class SetupServlet extends JAMWikiServlet {
         String userName = Environment.getValue(Environment.PROP_DB_USERNAME);
         String password = Encryption.getEncryptedProperty(Environment.PROP_DB_PASSWORD, null);
         try {
-            DatabaseConnection.testDatabase(driver, url, userName, password, true);
+            WikiDatabase.testDatabase(driver, url, userName, password, true);
         } catch (Exception e) {
             // no previous database, all good
             return false;

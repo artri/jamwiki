@@ -203,13 +203,13 @@ public class DB2400QueryHandler extends AnsiQueryHandler {
         PreparedStatement stmt = null;
         String sql = this.formatStatement(STATEMENT_INSERT_RECENT_CHANGES_VERSIONS, limit);
         try {
-            DatabaseConnection.executeUpdate(STATEMENT_DELETE_RECENT_CHANGES, conn);
+            WikiDatabase.executeUpdate(STATEMENT_DELETE_RECENT_CHANGES, conn);
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, limit);
             stmt.executeUpdate();
-            DatabaseConnection.executeUpdate(STATEMENT_INSERT_RECENT_CHANGES_LOGS, conn);
+            WikiDatabase.executeUpdate(STATEMENT_INSERT_RECENT_CHANGES_LOGS, conn);
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
     }
 }

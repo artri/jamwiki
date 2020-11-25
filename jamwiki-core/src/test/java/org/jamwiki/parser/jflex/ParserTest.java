@@ -16,6 +16,8 @@
  */
 package org.jamwiki.parser.jflex;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -29,8 +31,8 @@ import org.jamwiki.model.Topic;
 import org.jamwiki.parser.ParserInput;
 import org.jamwiki.parser.ParserOutput;
 import org.jamwiki.parser.ParserUtil;
+import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * This class will first get a list of all parser result files in the /data/results
@@ -51,6 +53,11 @@ public class ParserTest extends JAMWikiUnitTest {
         "UnbalancedTag3"
     );
     private ParserTestUtils parserTestUtils = new ParserTestUtils();
+
+    @Before
+    public void setUp() throws Exception {
+        super.setup();
+    }
 
     /**
      *

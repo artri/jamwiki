@@ -19,6 +19,7 @@ package org.jamwiki.db;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -31,6 +32,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.jamwiki.DataAccessException;
 import org.jamwiki.Environment;
@@ -55,7 +63,15 @@ import org.jamwiki.utils.ResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.jamwiki.utils.WikiUtil;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.jdbc.datasource.DelegatingDataSource;
+import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.TransactionSystemException;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 /**
  * This class contains general database utility methods that are useful for a
@@ -63,8 +79,10 @@ import org.springframework.transaction.TransactionStatus;
  */
 public class WikiDatabase {
 
+    private static final Logger logger = LoggerFactory.getLogger(WikiDatabase.class);
+
     private static String CONNECTION_VALIDATION_QUERY = null;
-    private static final Logger logger = LoggerFactory.getLogger(WikiDatabase.class.getName());
+
     /** Root directory within the WAR distribution that contains the default topic pages. */
     public static final String SPECIAL_PAGE_DIR = "pages";
     // array used in database migration - elements are table name and, if elements within the
@@ -96,11 +114,394 @@ public class WikiDatabase {
         {"jam_file_data", "file_version_id"}
     };
 
+    // TODO - remove when the ability to upgrade to 1.3 is deprecated
+    private static final Map<String, String> LEGACY_DATA_HANDLER_MAP = new HashMap<String, String>();
+    static {
+        LEGACY_DATA_HANDLER_MAP.put("org.jamwiki.db.AnsiDataHandler", QueryHandler.QUERY_HANDLER_ANSI);
+        LEGACY_DATA_HANDLER_MAP.put("org.jamwiki.db.CacheDataHandler", QueryHandler.QUERY_HANDLER_CACHE);
+        LEGACY_DATA_HANDLER_MAP.put("org.jamwiki.db.DB2DataHandler", QueryHandler.QUERY_HANDLER_DB2);
+        LEGACY_DATA_HANDLER_MAP.put("org.jamwiki.db.DB2400DataHandler", QueryHandler.QUERY_HANDLER_DB2400);
+        LEGACY_DATA_HANDLER_MAP.put("org.jamwiki.db.H2DataHandler", QueryHandler.QUERY_HANDLER_H2);
+        LEGACY_DATA_HANDLER_MAP.put("org.jamwiki.db.HSqlDataHandler", QueryHandler.QUERY_HANDLER_HSQL);
+        LEGACY_DATA_HANDLER_MAP.put("org.jamwiki.db.MSSqlDataHandler", QueryHandler.QUERY_HANDLER_MSSQL);
+        LEGACY_DATA_HANDLER_MAP.put("org.jamwiki.db.MySqlDataHandler", QueryHandler.QUERY_HANDLER_MYSQL);
+        LEGACY_DATA_HANDLER_MAP.put("org.jamwiki.db.OracleDataHandler", QueryHandler.QUERY_HANDLER_ORACLE);
+        LEGACY_DATA_HANDLER_MAP.put("org.jamwiki.db.PostgresDataHandler", QueryHandler.QUERY_HANDLER_POSTGRES);
+        LEGACY_DATA_HANDLER_MAP.put("org.jamwiki.db.SybaseASADataHandler", QueryHandler.QUERY_HANDLER_SYBASE);
+    }
+
+    private static DataSource dataSource = null;
+    private static DataSourceTransactionManager transactionManager = null;
+
     /**
      *
      */
     private WikiDatabase() {
     }
+
+   /**
+    * Utility method to retrieve an instance of the current query handler.
+    *
+    * @return An instance of the current query handler.
+    * @throws IllegalStateException Thrown if a data handler instance can not be
+    *  instantiated.
+    */
+   public static QueryHandler queryHandlerInstance() {
+       if (StringUtils.isBlank(Environment.getValue(Environment.PROP_DB_TYPE))) {
+           // this is a problem, but it should never occur
+           logger.warn("AnsiDataHandler.queryHandlerInstance called without a valid PROP_DB_TYPE value");
+       }
+       String queryHandlerClass = Environment.getValue(Environment.PROP_DB_TYPE);
+       // TODO - remove when the ability to upgrade to 1.3 is removed
+       String dataHandlerClass = LEGACY_DATA_HANDLER_MAP.get(queryHandlerClass);
+       if (dataHandlerClass != null) {
+           queryHandlerClass = dataHandlerClass;
+           Environment.setValue(Environment.PROP_DB_TYPE, queryHandlerClass);
+           try {
+               Environment.saveConfiguration();
+           } catch (WikiException e) {
+               throw new IllegalStateException("Failure while updating properties", e);
+           }
+       }
+       try {
+           return (QueryHandler)ResourceUtil.instantiateClass(queryHandlerClass);
+       } catch (ClassCastException e) {
+           throw new IllegalStateException("Query handler specified in jamwiki.properties does not implement org.jamwiki.db.QueryHandler: " + dataHandlerClass);
+       }
+   }
+
+   /**
+    * Utility method for closing a database connection, a statement and a result set.
+    * This method must ALWAYS be called for any connection retrieved by the
+    * {@link DatabaseConnection#getConnection getConnection()} method, and the
+    * connection SHOULD NOT have already been closed.
+    *
+    * @param conn A database connection, retrieved using DatabaseConnection.getConnection(),
+    *  that is to be closed.  This connection SHOULD NOT have been previously closed.
+    * @param stmt A statement object that is to be closed.  May be <code>null</code>.
+    * @param rs A result set object that is to be closed.  May be <code>null</code>.
+    */
+   protected static void closeConnection(Connection conn, Statement stmt, ResultSet rs) {
+	   WikiDatabase.closeResultSet(rs);
+	   WikiDatabase.closeConnection(conn, stmt);
+   }
+
+   /**
+    * Utility method for closing a database connection and a statement.  This method
+    * must ALWAYS be called for any connection retrieved by the
+    * {@link DatabaseConnection#getConnection getConnection()} method, and the
+    * connection SHOULD NOT have already been closed.
+    *
+    * @param conn A database connection, retrieved using DatabaseConnection.getConnection(),
+    *  that is to be closed.  This connection SHOULD NOT have been previously closed.
+    * @param stmt A statement object that is to be closed.  May be <code>null</code>.
+    */
+   public static void closeConnection(Connection conn, Statement stmt) {
+	   WikiDatabase.closeStatement(stmt);
+	   WikiDatabase.closeConnection(conn);
+   }
+
+   /**
+    * Utility method for closing a database connection.  This method must ALWAYS be
+    * called for any connection retrieved by the
+    * {@link DatabaseConnection#getConnection getConnection()} method, and the
+    * connection SHOULD NOT have already been closed.
+    *
+    * @param conn A database connection, retrieved using DatabaseConnection.getConnection(),
+    *  that is to be closed.  This connection SHOULD NOT have been previously closed.
+    */
+   public static void closeConnection(Connection conn) {
+       if (conn == null) {
+           return;
+       }
+       DataSourceUtils.releaseConnection(conn, dataSource);
+   }
+
+   /**
+    * Close the connection pool, to be called for example during Servlet shutdown.
+    * <p>
+    * Note that this only applies if the DataSource was created by JAMWiki;
+    * in the case of a container DataSource obtained via JNDI this method does nothing
+    * except clear the static reference to the DataSource.
+    */
+   protected static void closeConnectionPool() throws SQLException {
+       try {
+           DataSource testDataSource = dataSource;
+           while (testDataSource instanceof DelegatingDataSource) {
+               testDataSource = ((DelegatingDataSource) testDataSource).getTargetDataSource();
+           }
+           if (testDataSource instanceof BasicDataSource) {
+               // required to release any connections e.g. in case of servlet shutdown
+               ((BasicDataSource) testDataSource).close();
+           }
+       } catch (SQLException e) {
+           logger.error("Unable to close connection pool", e);
+           throw e;
+       }
+       // clear references to prevent them being reused (& allow garbage collection)
+       dataSource = null;
+       transactionManager = null;
+   }
+
+   /**
+    * Utility method for closing a result set that may or may not be <code>null</code>.
+    * The result set SHOULD NOT have already been closed.
+    *
+    * @param rs A statement object that is to be closed.  May be <code>null</code>.
+    */
+   protected static void closeResultSet(ResultSet rs) {
+       if (rs != null) {
+           try {
+               rs.close();
+           } catch (SQLException e) {}
+       }
+   }
+
+   /**
+    * Utility method for closing a statement that may or may not be <code>null</code>.
+    * The statement SHOULD NOT have already been closed.
+    *
+    * @param stmt A statement object that is to be closed.  May be <code>null</code>.
+    */
+   protected static void closeStatement(Statement stmt) {
+       if (stmt != null) {
+           try {
+               stmt.close();
+           } catch (SQLException e) {}
+       }
+   }
+
+   /**
+    * Execute a query to retrieve a single integer value, generally the result of SQL such
+    * as "select max(id) from table".
+    *
+    * @param sql The SQL to execute.
+    * @param field The field that is returned containing the integer value.
+    * @param conn The database connection to use when querying.
+    * @return Returns the result of the query or 0 if no result is found.
+    */
+   protected static int executeSequenceQuery(String sql, String field, Connection conn) throws SQLException {
+       Statement stmt = null;
+       ResultSet rs = null;
+       try {
+           stmt = conn.createStatement();
+           rs = stmt.executeQuery(sql);
+           return (rs.next()) ? rs.getInt(field) : 0;
+       } finally {
+            WikiDatabase.closeConnection(null, stmt, rs);
+       }
+   }
+
+   /**
+    *
+    */
+   protected static int executeUpdate(String sql, Connection conn) throws SQLException {
+       Statement stmt = null;
+       try {
+           long start = System.currentTimeMillis();
+           stmt = conn.createStatement();
+           if (logger.isInfoEnabled()) {
+               logger.info("Executing SQL: " + sql);
+           }
+           int result = stmt.executeUpdate(sql);
+           if (logger.isDebugEnabled()) {
+               long execution = System.currentTimeMillis() - start;
+               logger.debug("Executed " + sql + " (" + (execution / 1000.000) + " s.)");
+           }
+           return result;
+       } catch (SQLException e) {
+           logger.error("Failure while executing " + sql, e);
+           throw e;
+       } finally {
+           WikiDatabase.closeStatement(stmt);
+       }
+   }
+
+   /**
+    * Execute a string representing a SQL statement, suppressing any exceptions.
+    */
+    protected static void executeUpdateNoException(String sql, Connection conn) {
+       try {
+           WikiDatabase.executeUpdate(sql, conn);
+       } catch (SQLException e) {
+           // suppress
+       }
+    }
+
+   /**
+    *
+    */
+   public static Connection getConnection() throws SQLException {
+       if (dataSource == null) {
+           // DataSource has not yet been created, obtain it now
+           configDataSource();
+       }
+       return DataSourceUtils.getConnection(dataSource);
+   }
+
+   /**
+    * Static method that will configure a DataSource based on the Environment setup.
+    */
+   private synchronized static void configDataSource() throws SQLException {
+       if (dataSource != null) {
+           closeConnectionPool(); // DataSource has already been created so remove it
+       }
+       String url = Environment.getValue(Environment.PROP_DB_URL);
+       DataSource targetDataSource = null;
+       if (url.startsWith("jdbc:")) {
+           try {
+               // Use an internal "LocalDataSource" configured from the Environment
+               targetDataSource = new LocalDataSource();
+           } catch (ClassNotFoundException e) {
+               logger.error("Failure while configuring local data source", e);
+               throw new SQLException("Failure while configuring local data source: " + e.toString());
+           }
+       } else {
+           try {
+               // Use a container DataSource obtained via JNDI lookup
+               // TODO: Should try prefix java:comp/env/ if not already part of the JNDI name?
+               Context ctx = new InitialContext();
+               targetDataSource = (DataSource)ctx.lookup(url);
+           } catch (NamingException e) {
+               logger.error("Failure while configuring JNDI data source with URL: " + url, e);
+               throw new SQLException("Unable to configure JNDI data source with URL " + url + ": " + e.toString());
+           }
+       }
+       dataSource = new LazyConnectionDataSourceProxy(targetDataSource);
+       transactionManager = new DataSourceTransactionManager(targetDataSource);
+   }
+
+   /**
+    * Test whether the database identified by the given parameters can be connected to.
+    *
+    * @param driver A String indicating the full path for the database driver class.
+    * @param url The JDBC driver URL.
+    * @param user The database user.
+    * @param password The database user password.
+    * @param existence Set to <code>true</code> if a test query should be executed.
+    * @throws SQLException Thrown if any failure occurs while creating a test connection.
+    */
+   public static void testDatabase(String driver, String url, String user, String password, boolean existence) throws SQLException, ClassNotFoundException {
+       Connection conn = null;
+       Statement stmt = null;
+       try {
+           conn = getTestConnection(driver, url, user, password);
+           if (existence) {
+               stmt = conn.createStatement();
+               // test to see if database exists
+               AnsiQueryHandler queryHandler = new AnsiQueryHandler();
+               stmt.executeQuery(queryHandler.existenceValidationQuery());
+           }
+       } finally {
+           WikiDatabase.closeConnection(conn, stmt);
+           // explicitly null the variable to improve garbage collection.
+           // with very large loops this can help avoid OOM "GC overhead
+           // limit exceeded" errors.
+           stmt = null;
+           conn = null;
+       }
+   }
+
+   /**
+    * Return a connection to the database with the specified parameters.
+    * The caller <b>must</b> close this connection when finished!
+    *
+    * @param driver A String indicating the full path for the database driver class.
+    * @param url The JDBC driver URL.
+    * @param user The database user.
+    * @param password The database user password.
+    * @throws SQLException Thrown if any failure occurs while getting the test connection.
+    */
+   protected static Connection getTestConnection(String driver, String url, String user, String password) throws SQLException {
+       if (url.startsWith("jdbc:")) {
+           if (!StringUtils.isBlank(driver)) {
+               try {
+                   // ensure that the Driver class has been loaded
+                   ResourceUtil.forName(driver);
+               } catch (ClassNotFoundException e) {
+                   throw new SQLException("Unable to instantiate class with name: " + driver);
+               }
+           }
+           return DriverManager.getConnection(url, user, password);
+       } else {
+           DataSource testDataSource = null;
+           try {
+               Context ctx = new InitialContext();
+               // TODO: Try appending "java:comp/env/" to the JNDI Name if it is missing?
+               testDataSource = (DataSource) ctx.lookup(url);
+           } catch (NamingException e) {
+               logger.error("Failure while configuring JNDI data source with URL: " + url, e);
+               throw new SQLException("Unable to configure JNDI data source with URL " + url + ": " + e.toString());
+           }
+           return testDataSource.getConnection();
+       }
+   }
+
+   /**
+    * Starts a transaction using the default settings.
+    *
+    * @return TransactionStatus representing the status of the Transaction
+    * @throws SQLException
+    */
+   public static TransactionStatus startTransaction() throws SQLException {
+       return startTransaction(new DefaultTransactionDefinition());
+   }
+
+   /**
+    * Starts a transaction, using the given TransactionDefinition
+    *
+    * @param definition TransactionDefinition
+    * @return TransactionStatus
+    * @throws SQLException
+    */
+   protected static TransactionStatus startTransaction(TransactionDefinition definition) throws SQLException {
+       if (transactionManager == null || dataSource == null) {
+           configDataSource(); // this will create both the DataSource and a TransactionManager
+       }
+       return transactionManager.getTransaction(definition);
+   }
+
+   /**
+    * Perform a rollback, handling rollback exceptions properly.
+    * @param status object representing the transaction
+    * @param ex the thrown application exception or error
+    * @throws TransactionException in case of a rollback error
+    */
+   public static void rollbackOnException(TransactionStatus status, Throwable ex) throws TransactionException {
+       logger.debug("Initiating transaction rollback on application exception", ex);
+       if (status == null) {
+           logger.info("TransactionStatus is null, unable to rollback");
+           return;
+       }
+       try {
+           transactionManager.rollback(status);
+       } catch (TransactionSystemException ex2) {
+           logger.error("Application exception overridden by rollback exception", ex);
+           ex2.initApplicationException(ex);
+           throw ex2;
+       } catch (RuntimeException ex2) {
+           logger.error("Application exception overridden by rollback exception", ex);
+           throw ex2;
+       } catch (Error err) {
+           logger.error("Application exception overridden by rollback error", ex);
+           throw err;
+       }
+   }
+
+   /**
+    * Commit the current transaction.
+    * Note if the transaction has been programmatically marked for rollback then
+    * a rollback will occur instead.
+    *
+    * @param status TransactionStatus representing the status of the transaction
+    */
+   public static void commit(TransactionStatus status) {
+       if (status == null) {
+           logger.info("TransactionStatus is null, unable to commit");
+           return;
+       }
+       transactionManager.commit(status);
+   }
 
     /**
      *
@@ -125,9 +526,10 @@ public class WikiDatabase {
         List<VirtualWiki> virtualWikis = WikiBase.getDataHandler().getVirtualWikiList();
         Connection conn = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
+            QueryHandler queryHandler = queryHandlerInstance();
             for (VirtualWiki virtualWiki : virtualWikis) {
-                topicNames = WikiBase.getDataHandler().queryHandler().lookupTopicNames(virtualWiki.getVirtualWikiId(), true, conn);
+                topicNames = queryHandler.lookupTopicNames(virtualWiki.getVirtualWikiId(), true, conn);
                 if (topicNames.isEmpty()) {
                     continue;
                 }
@@ -138,13 +540,13 @@ public class WikiDatabase {
                     topic.setTopicId(entry.getKey());
                     topics.add(topic);
                 }
-                WikiBase.getDataHandler().queryHandler().updateTopicNamespaces(topics, conn);
+                queryHandler.updateTopicNamespaces(topics, conn);
                 count += topicNames.size();
             }
         } catch (SQLException e) {
             throw new DataAccessException(e);
         } finally {
-            DatabaseConnection.closeConnection(conn);
+            WikiDatabase.closeConnection(conn);
         }
         return count;
     }
@@ -181,7 +583,7 @@ public class WikiDatabase {
             // locking issues when loading the database.
             conn.setAutoCommit(true);
             // copy the existing table content from the CURRENT database across to the NEW database
-            from = DatabaseConnection.getConnection();
+            from = WikiDatabase.getConnection();
             from.setReadOnly(true);
             from.setAutoCommit(true);
             // used to track current_version_id for each jam_topic row inserted
@@ -274,8 +676,8 @@ public class WikiDatabase {
                         }
                     }
                     rs.close();
-                    DatabaseConnection.closeStatement(stmt);
-                    DatabaseConnection.closeStatement(insertStmt);
+                    WikiDatabase.closeStatement(stmt);
+                    WikiDatabase.closeStatement(insertStmt);
                 }
             }
             // update the jam_topic.current_version_id field that we had to leave blank on initial insert
@@ -303,7 +705,7 @@ public class WikiDatabase {
                 } catch (SQLException e) {}
             }
             if (from != null) {
-                DatabaseConnection.closeConnection(from, stmt, rs);
+                WikiDatabase.closeConnection(from, stmt, rs);
             }
         }
     }
@@ -320,11 +722,11 @@ public class WikiDatabase {
      */
     public synchronized static void initialize() {
         try {
-            WikiDatabase.CONNECTION_VALIDATION_QUERY = WikiBase.getDataHandler().queryHandler().connectionValidationQuery();
+            WikiDatabase.CONNECTION_VALIDATION_QUERY = queryHandlerInstance().connectionValidationQuery();
             // initialize connection pool in its own try-catch to avoid an error
             // causing property values not to be saved.
             // this clears out any existing connection pool, so that a new one will be created on first access
-            DatabaseConnection.closeConnectionPool();
+            WikiDatabase.closeConnectionPool();
         } catch (Exception e) {
             logger.error("Unable to initialize database", e);
         }
@@ -341,7 +743,7 @@ public class WikiDatabase {
         Connection conn = null;
         try {
             // test to see if we can connect to the new database
-            conn = DatabaseConnection.getTestConnection(driver, url, userName, password);
+            conn = WikiDatabase.getTestConnection(driver, url, userName, password);
             conn.setAutoCommit(true);
         } catch (Exception e) {
             if (conn != null) {
@@ -368,7 +770,7 @@ public class WikiDatabase {
             // we expect this exception as the JAMWiki tables don't exist
             logger.debug("NEW Database does not contain any JAMWiki instance");
         } finally {
-            DatabaseConnection.closeStatement(stmt);
+            WikiDatabase.closeStatement(stmt);
         }
         try {
             newQueryHandler.createTables(conn);
@@ -391,7 +793,7 @@ public class WikiDatabase {
 
     public synchronized static void shutdown() {
         try {
-            DatabaseConnection.closeConnectionPool();
+            WikiDatabase.closeConnectionPool();
         } catch (Exception e) {
             logger.error("Unable to close the connection pool on shutdown", e);
         }
@@ -403,14 +805,15 @@ public class WikiDatabase {
      * DELETE ALL WIKI DATA!
      */
     protected static void purgeData(Connection conn) throws DataAccessException {
+        QueryHandler queryHandler = queryHandlerInstance();
         // BOOM!  Everything gone...
-        WikiBase.getDataHandler().queryHandler().dropTables(conn);
+        queryHandler.dropTables(conn);
         try {
             // re-create empty tables
-            WikiBase.getDataHandler().queryHandler().createTables(conn);
+            queryHandler.createTables(conn);
         } catch (Exception e) {
             // creation failure, don't leave tables half-committed
-            WikiBase.getDataHandler().queryHandler().dropTables(conn);
+            queryHandler.dropTables(conn);
         }
     }
 
@@ -421,7 +824,7 @@ public class WikiDatabase {
      * @param locale The locale for the user viewing the special page.
      * @param pageName The name of the special page being retrieved.
      */
-    protected static String readSpecialPage(Locale locale, String pageName) throws IOException {
+    public static String readSpecialPage(Locale locale, String pageName) throws IOException {
         String contents = null;
         String filename = null;
         String language = null;
@@ -531,7 +934,7 @@ public class WikiDatabase {
         try {
             conn.commit();
         } finally {
-            DatabaseConnection.closeConnection(conn);
+            WikiDatabase.closeConnection(conn);
         }
     }
 
@@ -548,25 +951,26 @@ public class WikiDatabase {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = WikiDatabase.getConnection();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             return (rs.next()) ? rs.getInt("max_table_id") : 0;
         } finally {
-            DatabaseConnection.closeConnection(conn, stmt, rs);
+            WikiDatabase.closeConnection(conn, stmt, rs);
         }
     }
 
     /**
      *
      */
-    protected static void setup(Locale locale, WikiUser user, String username, String encryptedPassword) throws DataAccessException, WikiException {
+    public static void setup(Locale locale, WikiUser user, String username, String encryptedPassword) throws DataAccessException, WikiException {
+        QueryHandler queryHandler = queryHandlerInstance();
         TransactionStatus status = null;
         try {
-            status = DatabaseConnection.startTransaction();
-            Connection conn = DatabaseConnection.getConnection();
+            status = WikiDatabase.startTransaction();
+            Connection conn = WikiDatabase.getConnection();
             // set up tables
-            WikiBase.getDataHandler().queryHandler().createTables(conn);
+            queryHandler.createTables(conn);
             WikiDatabase.setupDefaultVirtualWiki();
             WikiDatabase.setupDefaultNamespaces();
             WikiDatabase.setupDefaultInterwikis();
@@ -576,34 +980,34 @@ public class WikiDatabase {
             WikiDatabase.setupAdminUser(user, username, encryptedPassword);
             WikiDatabase.setupSpecialPages(locale, user);
         } catch (SQLException e) {
-            DatabaseConnection.rollbackOnException(status, e);
+            WikiDatabase.rollbackOnException(status, e);
             logger.error("Unable to set up database tables", e);
             // clean up anything that might have been created
             try {
-                Connection conn = DatabaseConnection.getConnection();
-                WikiBase.getDataHandler().queryHandler().dropTables(conn);
+                Connection conn = WikiDatabase.getConnection();
+                queryHandler.dropTables(conn);
             } catch (Exception e2) {}
             throw new DataAccessException(e);
         } catch (DataAccessException e) {
-            DatabaseConnection.rollbackOnException(status, e);
+            WikiDatabase.rollbackOnException(status, e);
             logger.error("Unable to set up database tables", e);
             // clean up anything that might have been created
             try {
-                Connection conn = DatabaseConnection.getConnection();
-                WikiBase.getDataHandler().queryHandler().dropTables(conn);
+                Connection conn = WikiDatabase.getConnection();
+                queryHandler.dropTables(conn);
             } catch (Exception e2) {}
             throw e;
         } catch (WikiException e) {
-            DatabaseConnection.rollbackOnException(status, e);
+            WikiDatabase.rollbackOnException(status, e);
             logger.error("Unable to set up database tables", e);
             // clean up anything that might have been created
             try {
-                Connection conn = DatabaseConnection.getConnection();
-                WikiBase.getDataHandler().queryHandler().dropTables(conn);
+                Connection conn = WikiDatabase.getConnection();
+                queryHandler.dropTables(conn);
             } catch (Exception e2) {}
             throw e;
         }
-        DatabaseConnection.commit(status);
+        WikiDatabase.commit(status);
     }
 
     /**
@@ -775,7 +1179,7 @@ public class WikiDatabase {
     /**
      *
      */
-    protected static void setupSpecialPage(Locale locale, String virtualWiki, String topicName, WikiUser user, boolean adminOnly, boolean readOnly) throws DataAccessException, WikiException {
+    public static void setupSpecialPage(Locale locale, String virtualWiki, String topicName, WikiUser user, boolean adminOnly, boolean readOnly) throws DataAccessException, WikiException {
         logger.info("Setting up special page " + virtualWiki + " / " + topicName);
         if (user == null) {
             throw new IllegalArgumentException("Cannot pass null WikiUser object to setupSpecialPage");

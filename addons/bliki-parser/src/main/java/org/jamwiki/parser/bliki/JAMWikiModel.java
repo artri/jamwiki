@@ -242,7 +242,7 @@ public class JAMWikiModel extends AbstractWikiModel {
             }
             return topic.getTopicContent();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("getRawWikiContent failed", e);
         }
         return result;
     }
