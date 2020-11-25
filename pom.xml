@@ -208,11 +208,6 @@
 				<version>${lucene.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>info.bliki.wiki</groupId>
-				<artifactId>bliki-core</artifactId>
-				<version>3.0.16</version>
-			</dependency>
-			<dependency>
 				<groupId>net.tanesha.recaptcha4j</groupId>
 				<artifactId>recaptcha4j</artifactId>
 				<version>0.0.7</version>
